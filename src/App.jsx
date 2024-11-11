@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme';
+import Button from '@mui/material/Button';
+
 import './App.css'
 
 function App() {
@@ -28,6 +32,12 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <ThemeProvider theme={theme}>
+        <div style={{ backgroundColor: theme.colors.background, padding: '20px' }}>
+          <h1>Hello, Vite + React + Styled Components + MUI!</h1>
+          <Button variant="contained" color="primary">MUI Button</Button>
+        </div>
+      </ThemeProvider>
     </>
   )
 }
