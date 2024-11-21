@@ -81,7 +81,7 @@ const ListBigContainer = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1200px) {
     grid-gap: 4%;
     grid-template-columns: repeat(4, 1fr);
   }
@@ -123,7 +123,7 @@ const ListContainer = styled.div`
           return 'none';
       }
     }};
-    @media (max-width: 1500px) {
+    @media (max-width: 1200px) {
       background-image: none; /* 1500px 미만에서 이미지 제거 */
     }
     width: 95%;
@@ -144,9 +144,9 @@ const ListContainer = styled.div`
 const CardTitle = styled.div`
   text-align: center;
   font-style: normal;
-  font-weight: bold;
-  font-size: 40px;
-  line-height: 50px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 35px;
   color: #111111;
   font-family: 'Noto Sans KR';
 `;
@@ -154,7 +154,7 @@ const CardTitle = styled.div`
 const CardContent = styled.div`
   font-style: normal;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 0.8rem;
   line-height: 140%;
   /* or 17px */
   text-align: center;
