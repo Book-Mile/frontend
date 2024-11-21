@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import LGButton from './components/LGButton/LGButton';
+import LGButton from '../components/LGButton/LGButton';
 
-export default function Main() {
+export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
