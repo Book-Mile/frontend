@@ -15,17 +15,18 @@ const MainContainer = styled.div`
   gap: 10px;
   position: relative;
   width: ${(props) => props.width || '148px'};
-  height: 48px;
+  height: ${(props) => props.height || '48px'};
   margin: 0 auto;
   padding: 10px 10px 10px 10px;
-  background: #ffffff;
-  border: 2px solid #ab0909;
+  background-color: ${(props) => props.bgColor || '#FFFFFF'};
+  border: 2px solid ${(props) => props.borderColor || props.theme.colors.main};
   border-radius: 30px;
   box-sizing: border-box;
 
   & * {
     box-sizing: border-box;
   }
+  cursor: pointer;
 
   input,
   select,
@@ -37,17 +38,34 @@ const MainContainer = styled.div`
 
 const SignIn = styled.span`
   position: absolute;
-  color: #ab0909;
+  color: ${(props) => props.textColor || '#ab0909'};
   font-family: 'Noto Sans KR', sans-serif;
-  font-size: 20px;
+  font-size: ${(props) => props.textSize || '20px'};
   font-weight: 400;
 `;
 
-export default function Main({ text, width }) {
+export default function Main({
+  text,
+  width,
+  height,
+  bgColor,
+  textSize,
+  onClick,
+  textColor,
+  borderColor,
+}) {
   return (
     <div>
-      <MainContainer style={{ width }}>
-        <SignIn>{text}</SignIn>
+      <MainContainer
+        width={width}
+        height={height}
+        bgColor={bgColor}
+        onClick={onClick}
+        borderColor={borderColor}
+      >
+        <SignIn textSize={textSize} textColor={textColor}>
+          {text}
+        </SignIn>
       </MainContainer>
     </div>
   );
