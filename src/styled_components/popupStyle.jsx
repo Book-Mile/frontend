@@ -1,11 +1,12 @@
 import styled, { css } from 'styled-components';
-import { slideIn, slideOut } from '../assets/animations/animations';
 import {
+  slideIn,
+  slideOut,
   slideInLeft,
   slideInRight,
   slideOutLeft,
   slideOutRight,
-} from '../assets/animations/modalTransition';
+} from '../animations/animations';
 
 export const PopupContainer = styled.div`
   display: flex;
@@ -264,7 +265,7 @@ export const Rightpopup_oneInput = styled.input`
   border-radius: 10px;
   margin-bottom: 10px;
   &:focus {
-    border-color: #a00000;
+    border-color: ${(props) => props.theme.colors.main};
     outline: none;
   }
 `;
