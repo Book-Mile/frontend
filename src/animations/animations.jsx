@@ -62,3 +62,12 @@ export const slideOut = keyframes`
     transform: translateY(100%);
   }
 `;
+
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;

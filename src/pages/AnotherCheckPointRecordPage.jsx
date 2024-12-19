@@ -8,6 +8,7 @@ import {
   AnotherBox,
   BoxInnerContainer,
   LastBox,
+  UserTitle,
 } from '../styled_components/CheckPointRecordPageStyle';
 import { scrollToBottom } from '../utils/scrollUtils';
 import { checkPoints } from '../data/checkPoint';
@@ -25,12 +26,13 @@ const CircleSvg = ({ color = '#982B1C' }) => (
   </svg>
 );
 
-const CheckPointRecordPage = () => {
+const AnotherCheckPointRecordPage = () => {
   useIntersectionObserver('.animate-on-scroll', 'appear');
 
   return (
     <>
       <CheckPointRecordPageContainer>
+        <UserTitle>팀원 1의 성취도 기록</UserTitle>
         <RecordContainer>
           <FirstBox>
             <svg
@@ -68,8 +70,8 @@ const CheckPointRecordPage = () => {
               <LastBox key={index}>
                 <CircleSvg color="#ccc" />
                 <BoxInnerContainer
-                  className="animate-on-scroll last"
-                  backgroundColor="#ffe58c"
+                  className="animate-on-scroll"
+                  backgroundColor="#FF9999"
                 >
                   <p className="checkpoint-date">{item.date}</p>
                   <h3 className="checkpoint-title">{item.title}</h3>
@@ -81,7 +83,7 @@ const CheckPointRecordPage = () => {
                 <CircleSvg />
                 <BoxInnerContainer
                   className="animate-on-scroll"
-                  backgroundColor="#FBF3D7"
+                  backgroundColor="#F9D1BE"
                 >
                   <p className="checkpoint-date">{item.date}</p>
                   <h3 className="checkpoint-title">{item.title}</h3>
@@ -122,4 +124,4 @@ const CheckPointRecordPage = () => {
   );
 };
 
-export default CheckPointRecordPage;
+export default AnotherCheckPointRecordPage;
