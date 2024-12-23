@@ -5,11 +5,14 @@ import SignUp from './pages/SignUp';
 import { theme } from './theme';
 import { ThemeProvider } from 'styled-components';
 import CheckPointRecordPage from './pages/CheckPointRecordPage';
+{/*import NavBar from './components/NavBar'*/}
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+      {/*<NavBar />*/}
+      <div className="main-content">
         <Routes>
           <Route path="/" element={<MakingGroupPage />} />
           <Route path="/makingGroup" element={<MakingGroupPage />} />
@@ -17,6 +20,7 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/checkPointRecord" element={<CheckPointRecordPage />} />
         </Routes>
+        </div>
       </BrowserRouter>
     </ThemeProvider>
   );
