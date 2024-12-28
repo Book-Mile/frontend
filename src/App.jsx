@@ -11,6 +11,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+      {/*<NavBar />*/}
+      <div className="main-content">
         <Routes>
           <Route path="/" element={<MakingGroupPage />} />
           <Route path="/makingGroup" element={<MakingGroupPage />} />
@@ -22,6 +24,7 @@ function App() {
             element={<AnotherCheckPointRecordPage />}
           />
         </Routes>
+        </div>
       </BrowserRouter>
     </ThemeProvider>
   );
