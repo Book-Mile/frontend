@@ -56,7 +56,7 @@ jobs:
             fi
             git push origin HEAD:${BRANCH_NAME}
           fi
-        working-directory: frontend
+        working-directory: ../../
 
       - name: Upload Artifacts
         if: success()
