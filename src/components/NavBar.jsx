@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import NotifBell from './icons/NotifBell'
 
 const MainContainer = styled.div`
   overflow: hidden;
@@ -58,6 +59,23 @@ const SignUpLink = styled(Link)`
     background-color: #961414;
   }
 `;
+const NotifiContainer = styled.div`
+  display: flex;
+  align-items: center;
+  height: 40px;
+  gap: 24px;
+`;
+
+const ProfileImage = styled.div`
+  width: 40px;
+  height: 40px;
+  background-image: url(images/profile.png);
+  background-size: cover; 
+  background-position: center; 
+  border-radius: 50%; 
+  margin-right: 8px;
+  cursor: pointer;
+`;
 
 export default function NavBar() {
   return (
@@ -68,11 +86,13 @@ export default function NavBar() {
           <LoginText to="/login">로그인</LoginText>
           <SignUpLink to="/signup">회원가입</SignUpLink>
         </LoginContainer>
-      {//로그인 후 사용
-      /*<NotifiContainer>
+              {//로그인 후 사용
+      /*
+        <NotifiContainer>
           <NotifBell/>
           <ProfileImage />
-      </NotifiContainer>*/}
+      </NotifiContainer>
+            */}
       </MainContainer>
     </nav>
   );
