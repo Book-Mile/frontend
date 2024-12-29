@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import MakingGroupPopup from '../popup/makingGroupPopup';
+import MakingGroupPopup from '../popup/MakingGroupPopup'
 import { cardData } from '../../data/cardData';
 import {
   ListBigContainer,
