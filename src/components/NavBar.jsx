@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import NotifBell from './icons/NotifBell';
 import LoginButton from './LGButton/LGButton'
+import ModalButtonOk from './modalButton/ModalButtonOk'
 
 
 const MainContainer = styled.div`
@@ -40,16 +41,20 @@ const ProfileImage = styled.div`
   cursor: pointer;
 `;
 
+
 export default function NavBar() {
   return (
+    <nav className='navbar'>
     <MainContainer>
       <LogoContainer>LOGO</LogoContainer>
       <LoginButton text="로그인" width="7.5rem"/>
+      <ModalButtonOk/>
       {//로그인 후 사용
       /*<NotifiContainer>
           <NotifBell/>
           <ProfileImage />
       </NotifiContainer>*/}
     </MainContainer>
+    </nav>
   );
 }

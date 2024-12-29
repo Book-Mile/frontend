@@ -6,12 +6,13 @@ import { theme } from './theme';
 import { ThemeProvider } from 'styled-components';
 import CheckPointRecordPage from './pages/CheckPointRecordPage';
 import AnotherCheckPointRecordPage from './pages/AnotherCheckPointRecordPage';
+import NavBar from './components/NavBar';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      {/*<NavBar />*/}
+      <NavBar />
       <div className="main-content">
         <Routes>
           <Route path="/" element={<MakingGroupPage />} />
