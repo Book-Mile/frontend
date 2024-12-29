@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+
+import { theme } from './theme';  
+
+import NavBar from './components/NavBar';
 import MakingGroupPage from './pages/MakingGroupPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import { theme } from './theme';  
-import { ThemeProvider } from 'styled-components'; 
 import CheckPointRecordPage from './pages/CheckPointRecordPage';
 import AnotherCheckPointRecordPage from './pages/AnotherCheckPointRecordPage';
-import NavBar from './components/NavBar';
 
 function App() {
   return (
