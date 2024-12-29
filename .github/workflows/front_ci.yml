@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+    node-version: [18.x]
 
     if: >
       github.ref != 'refs/heads/chore/' &&
@@ -41,16 +41,32 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run Prettier and commit changes if any
+      - name: Run Prettier and Commit Changes
         run: |
-          npx prettier --write "src/**/*.{js,jsx,ts,tsx,css}"
-          if [[ $(git status --porcelain) ]]; then
+          # Prettier로 코드 포맷팅
+          yarn prettier --write "src/**/*.{js,jsx,css,scss,md}"
+
+          # 변경 사항이 있는지 확인
+          if [[ `git status --porcelain` ]]; then
+            # Git 사용자 설정
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
+
+            # 변경 사항 커밋
             git add .
-            git commit -m "style: auto-format code using Prettier [skip ci]"
-            git push
+            git commit -m "chore: auto-format code [skip ci]"
+
+            # 현재 브랜치 이름 가져오기
+            if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
+              BRANCH_NAME=${GITHUB_HEAD_REF}
+            else
+              BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
+            fi
+
+            # 변경 사항 푸시
+            git push origin HEAD:${BRANCH_NAME}
           fi
+        working-directory: frontend
 
       - name: Upload Artifacts
         if: success()
