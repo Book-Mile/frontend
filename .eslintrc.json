@@ -1,18 +1,22 @@
-{ 
-    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"], 
-    "parser": "babel-eslint", 
-    "parserOptions": { 
-      "ecmaVersion": 2020, 
-      "sourceType": "module", 
-      "jsx": true 
-    }, 
-    "plugins": ["react", "prettier"], 
-    "env": { 
-      "browser": true, 
-      "es2021": true 
-    }, 
-    "rules": { 
-      "react/prop-types": "off", 
-      "prettier/prettier": "error" 
-    } 
-  } 
+{
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "jsx": true
+  },
+  "plugins": ["react", "prettier"],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "globals": {
+    "structuredClone": "readonly"
+  },
+  "rules": {
+    "react/prop-types": "off",
+    "prettier/prettier": "error",
+    "constructor-super": "error"
+  }
+}
