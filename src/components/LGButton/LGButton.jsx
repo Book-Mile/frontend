@@ -15,12 +15,12 @@ const MainContainer = styled.div`
   gap: 10px;
   position: relative;
   width: ${(props) => props.width || '148px'};
-  height: ${(props) => props.height || '48px'};
+  height: ${(props) => props.height || '40px'};
   margin: 0 auto;
   padding: 10px 10px 10px 10px;
   background-color: ${(props) => props.bgColor || '#FFFFFF'};
   border: 2px solid ${(props) => props.borderColor || props.theme.colors.main};
-  border-radius: 30px;
+  border-radius: ${(props) => props.radius || '30px'};
   box-sizing: border-box;
 
   & * {
@@ -53,6 +53,8 @@ export default function Main({
   onClick,
   textColor,
   borderColor,
+  radius,
+  fontSize,
 }) {
   return (
     <div>
@@ -62,8 +64,9 @@ export default function Main({
         bgColor={bgColor}
         onClick={onClick}
         borderColor={borderColor}
+        radius={radius}
       >
-        <SignIn textSize={textSize} textColor={textColor}>
+        <SignIn textSize={fontSize} textColor={textColor}>
           {text}
         </SignIn>
       </MainContainer>

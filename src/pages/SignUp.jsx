@@ -3,18 +3,16 @@ import styled from 'styled-components';
 
 import LGButton from '../components/LGButton/LGButton';
 
-// import { ReactComponent as Google } from '../assets/snslogo/google.svg';
-import googleLogo from '/src/assets/snslogo/google.svg';
-import kakaoLogo from '/src/assets/snslogo/kakao.svg';
-import naverLogo from '/src/assets/snslogo/naver.svg';
-
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [userid, setUsername] = useState('');
+  const [nickname, setNickname] = useState('');
+
   const [password, setPassword] = useState('');
+  const [passwordconfirm, setPasswordconfirm] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Username:', username);
+    console.log('Username:', userid);
     console.log('Password:', password);
   };
 
@@ -29,18 +27,50 @@ export default function Login() {
   return (
     <MainContainer>
       <Frame>
-        <SignInLogo>회원가입</SignInLogo>
+        <SignInLogo>
+          BookMile의
+          <br />
+          회원이 되고 싶으신가요?
+        </SignInLogo>
         <Frame1>
           <Frame2>
             <Frame3>
               <IdInput>아이디</IdInput>
-              <Rectangle
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="아이디를 입력하세요"
-              />
+              <InputFrame>
+                <Rectangle
+                  type="text"
+                  id="userid"
+                  value={userid}
+                  onChange={(e) => setUsername(e.target.value)}
+                  width="none"
+                />
+                <LGButton
+                  text="중복확인"
+                  width="87px"
+                  height="100%"
+                  radius="10px"
+                  fontSize="14px"
+                ></LGButton>
+              </InputFrame>
+            </Frame3>
+            <Frame3>
+              <IdInput>닉네임</IdInput>
+              <InputFrame>
+                <Rectangle
+                  type="text"
+                  id="nickname"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  width="none"
+                />
+                <LGButton
+                  text="중복확인"
+                  width="87px"
+                  height="100%"
+                  radius="10px"
+                  fontSize="14px"
+                ></LGButton>
+              </InputFrame>
             </Frame3>
             <Frame4>
               <PasswordInput>비밀번호</PasswordInput>
@@ -49,7 +79,15 @@ export default function Login() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="비밀번호를 입력하세요"
+              />
+            </Frame4>
+            <Frame4>
+              <PasswordInput>비밀번호 확인</PasswordInput>
+              <Rectangle5
+                type="password"
+                id="passwordconfirm"
+                value={passwordconfirm}
+                onChange={(e) => setPasswordconfirm(e.target.value)}
               />
             </Frame4>
           </Frame2>
@@ -57,28 +95,10 @@ export default function Login() {
             <LGButton text="Sign in" width="345px" />
           </Frame5>
         </Frame1>
-        <Frame7>
-          <SnsLogin>SNS 계정으로 로그인 하기</SnsLogin>
-          <Frame8>
-            <Frame9>
-              <img src={googleLogo} alt="Google Logo" />
-            </Frame9>
-            <FrameA>
-              <img src={kakaoLogo} alt="Kakao Logo" />
-            </FrameA>
-            <FrameB>
-              <img src={naverLogo} alt="Naver Logo" />
-            </FrameB>
-          </Frame8>
-        </Frame7>
         <Frame6>
           <ForgotPassword onClick={handleForgetPassword}>
-            아직 회원이 아니신가요?{' '}
-            <Register onClick={handleSignUpButton}>회원가입</Register>
-          </ForgotPassword>
-          <ForgotPassword onClick={handleForgetPassword}>
-            비밀번호를 잊어버리셨나요?{' '}
-            <Register onClick={handleSignUpButton}>비밀번호 찾기</Register>
+            이미 회원가입을 하셨나요?{' '}
+            <Register onClick={handleSignUpButton}>로그인</Register>
           </ForgotPassword>
         </Frame6>
       </Frame>
@@ -120,10 +140,9 @@ const SignInLogo = styled.span`
   align-self: stretch;
   height: 52px;
   color: ${(props) => props.theme.colors.main};
-  font-family: 'Noto Sans KR', sans-serif;
   font-size: 24px;
   font-weight: 700;
-  line-height: 52px;
+  line-height: 35px;
   text-align: left;
   white-space: nowrap;
 `;
@@ -140,7 +159,7 @@ const Frame2 = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 30px;
+  gap: 20px;
   width: 345px;
 `;
 
@@ -162,12 +181,22 @@ const IdInput = styled.span`
   text-align: left;
 `;
 
+const InputFrame = styled.span`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+`;
+
 const Rectangle = styled.input`
-  width: 345px;
-  height: 49px;
+  width: ${(props) => props.width || '345px'};
+  height: 40px;
   background: rgba(217, 217, 217, 0);
   border: 1px solid #d9d9d9;
   border-radius: 10px;
+  flex-grow: 1;
+  box-sizing: border-box;
 `;
 
 const Frame4 = styled(Frame3)``;
