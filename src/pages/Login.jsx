@@ -119,8 +119,7 @@ const Frame = styled.div`
 const SignInLogo = styled.span`
   align-self: stretch;
   height: 52px;
-  color: #ab0909;
-  font-family: 'Noto Sans KR', sans-serif;
+  color: ${(props) => props.theme.colors.main};
   font-size: 24px;
   font-weight: 700;
   line-height: 52px;
@@ -156,7 +155,6 @@ const IdInput = styled.span`
   width: 345px;
   height: 29px;
   color: #000000;
-  font-family: 'Noto Sans KR', sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 28.96px;
@@ -197,7 +195,6 @@ const ForgotPassword = styled.span`
   flex-direction: row;
   justify-content: space-between;
 
-  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
@@ -207,13 +204,12 @@ const ForgotPassword = styled.span`
 `;
 
 const Register = styled(ForgotPassword)`
-  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 18px;
 
-  color: #ab0909;
+  color: ${(props) => props.theme.colors.main};
 `;
 
 const Frame7 = styled(Frame1)`

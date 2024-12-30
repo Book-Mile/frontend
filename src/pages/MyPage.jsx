@@ -142,7 +142,7 @@ export default function MyPage() {
                       <LGButton
                         text="변경"
                         width="87px"
-                        height="100%"
+                        height="40px"
                         radius="10px"
                         fontSize="14px"
                       />
@@ -281,7 +281,6 @@ const Type1Right = styled.div`
 const Type1RightFirstLine = styled.div`
   width: 100%;
   flex-grow: 1;
-  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
@@ -332,7 +331,6 @@ const Type2Right = styled.div`
   align-items: center;
   gap: 10px;
 
-  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -347,7 +345,6 @@ const Type2Right = styled.div`
 const Type2RightFirstLine = styled.div`
   width: 100%;
   flex-grow: 1;
-  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
@@ -382,7 +379,6 @@ const SNSFrame = styled.div`
 `;
 
 const SNSidFrame = styled.div`
-  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -413,6 +409,8 @@ const BoxType3 = styled.div`
 
 const Type3SecondLine = styled.div`
   width: 100%;
+  height: 100%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -422,32 +420,38 @@ const Type3SecondLine = styled.div`
 const PasswordLineBox = styled.div`
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
   width: 100%;
-  height: fit-content;
   padding-left: 75px;
 
   box-sizing: border-box;
 `;
 const PasswordLineLeft = styled.div`
-  font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 32px;
   /* identical to box height, or 267% */
   display: flex;
-  align-items: center;
+  align-self: center;
+  justify-content: center;
 
   color: #4e202a;
   width: 69px;
+  height: 100%;
   padding-right: 45px;
 `;
 const PasswordLineMiddle = styled.div`
   flex-grow: 1;
   padding-right: 30px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 `;
 const PasswordLineRight = styled.div`
   height: 100%;
   width: 87px;
   display: flex;
+  justify-content: center;
+  align-self: center;
 `;
