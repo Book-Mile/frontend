@@ -124,6 +124,7 @@ const Frame = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 50px;
+  gap: 50px;
   position: relative;
   width: fit-content;
   padding: 60px 100px;
@@ -133,9 +134,15 @@ const Frame = styled.div`
     0px 207px 124px rgba(138, 138, 138, 0.05),
     0px 92px 92px rgba(138, 138, 138, 0.09),
     0px 23px 51px rgba(138, 138, 138, 0.1);
+  box-shadow:
+    0px 369px 148px rgba(138, 138, 138, 0.01),
+    0px 207px 124px rgba(138, 138, 138, 0.05),
+    0px 92px 92px rgba(138, 138, 138, 0.09),
+    0px 23px 51px rgba(138, 138, 138, 0.1);
   border-radius: 30px;
 `;
 
+const SignInLogo = styled.span`
 const SignInLogo = styled.span`
   align-self: stretch;
   height: 52px;
@@ -156,7 +163,7 @@ const Frame1 = styled.div`
   width: 350px;
 `;
 
-const Frame2 = styled.div`
+const Frame1 = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -172,6 +179,7 @@ const Frame3 = styled.div`
   width: 345px;
 `;
 
+const IdInput = styled.span`
 const IdInput = styled.span`
   width: 345px;
   height: 29px;
@@ -216,7 +224,17 @@ const Frame5 = styled.div`
 
 const Frame6 = styled.div`
   display: flex;
+  align-items: center; /* 세로 정렬 */
+  justify-content: center; /* 가로 정렬 */
+  width: 100%; /* 부모 너비를 차지하도록 설정 */
+`;
+
+const Frame6 = styled.div`
+  display: flex;
   flex-direction: column;
+  gap: 20px;
+  width: 350px;
+  height: 17px;
   gap: 20px;
   width: 350px;
   height: 17px;
@@ -230,6 +248,10 @@ const ForgotPassword = styled.span`
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+
+  color: #565656;
   font-size: 15px;
   line-height: 18px;
 
@@ -248,8 +270,11 @@ const Register = styled(ForgotPassword)`
 
 const Frame7 = styled(Frame1)`
   align-items: center;
+const Frame7 = styled(Frame1)`
+  align-items: center;
   display: flex;
   flex-direction: column;
+  gap: 20px;
   gap: 20px;
 `;
 
@@ -264,17 +289,30 @@ const SnsLogin = styled.span`
 `;
 
 const Frame8 = styled.div`
+const Frame8 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 30px;
+  gap: 30px;
   width: 345px;
+  height: 64px;
   height: 64px;
 `;
 
 const Frame9 = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 14px;
+  border: 2px solid #d9d9d9;
+  border-radius: 50px;
+`;
+
+const FrameA = styled(Frame9)`
+  background: #f7e600;
   justify-content: center;
   width: 30px;
   height: 30px;
@@ -294,8 +332,22 @@ const FrameB = styled(FrameA)`
 const DuckIcon = styled.div`
   width: 100%;
   height: 100%;
+const FrameB = styled(FrameA)`
+  background: #2db400;
 `;
 
+const DuckIcon = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const Vector = styled.div`
+  width: 100%;
+  height: 100%;
+  background: url(../assets/images/7cfbe015-4f3f-419e-9c35-e8b967d3e511.png)
+    no-repeat center;
+  background-size: cover;
+`;
 const Vector = styled.div`
   width: 100%;
   height: 100%;
