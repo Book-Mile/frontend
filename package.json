@@ -9,12 +9,12 @@
     "preview": "vite preview",
     "lint": "eslint 'src/**/*.js'",
     "lint-diff": "eslint $(git diff --name-only --diff-filter=duxb origin/$BASE origin/$HEAD | grep -E '\\.((j|t)sx?)$' | xargs)"
-
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.6",
+    "@svgr/webpack": "^8.1.0",
     "@vitejs/plugin-react": "^4.3.3",
     "axios": "^1.7.7",
     "react": "^18.3.1",
@@ -35,6 +35,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "prettier": "^3.3.3",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "vite-plugin-svgr": "^4.3.0"
   }
 }
