@@ -19,14 +19,10 @@ function App() {
         <NavBar />
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<MakingGroupPage />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
-<<<<<<< HEAD
             <Route path="/signUp" element={<SignUp />} />
-=======
             <Route path="/register" element={<SignUp />} />
->>>>>>> 81d4ab40785cf0b7a88b88d4b80adbd014999a3a
             <Route
               path="/checkPointRecord"
               element={<CheckPointRecordPage />}
