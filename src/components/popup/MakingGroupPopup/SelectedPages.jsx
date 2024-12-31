@@ -8,13 +8,13 @@ import {
   ErrorMessageEmpty,
   ModalContent,
   ModalContainer,
-} from '../../styled_components/popupStyle';
-import LGButton from '../LGButton/LGButton';
+} from '../../../styled_components/popupStyle';
+import LGButton from '../../LGButton/LGButton';
 import RightPopup_two from './RightPopup_two';
-import useModalSelectedGroup from '../../hooks/useModalSelectedGroup';
 import Rightpopup_one from './RightPopup_one';
+import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 
-const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
+const SelectedPages = ({ imgPath, title, content, handleClose }) => {
   const [inputValue, setInputValue] = useState('');
   const {
     selectedGroup,
@@ -55,8 +55,8 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
   return (
     <>
       <PopUpInnerBox1 imgPath={imgPath}>
-        <div class="card__img"></div>
-        <div class="card__info">
+        <div className="card__img"></div>
+        <div className="card__info">
           <CardTitle>{titleWithBreaks}</CardTitle>
           <CardContent>{content}</CardContent>
         </div>
@@ -66,9 +66,13 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="챕터"
+            placeholder="페이지"
             style={{ textAlign: 'right' }}
+            disabled={isNext}
           />
+          {errorMessage && (
+            <ErrorMessageEmpty>{errorMessage}</ErrorMessageEmpty>
+          )}
         </PopUPInput>
         {isNext ? (
           <LGButton
@@ -90,7 +94,6 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
             onClick={() => handleCompleteClick(inputValue)}
           />
         )}
-        {errorMessage && <ErrorMessageEmpty>{errorMessage}</ErrorMessageEmpty>}
       </PopUpInnerBox1>
       <PopUpInnerBox2>
         <ModalContainer>
@@ -121,4 +124,4 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
   );
 };
 
-export default SelectedChapter;
+export default SelectedPages;

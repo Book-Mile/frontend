@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+//전체 적인 팝업 관리
 const useCardSelection = () => {
   const [selectedImgPath, setSelectedImgPath] = useState(null);
   const [selectedTitle, setSelectedTitle] = useState(null);

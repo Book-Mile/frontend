@@ -28,6 +28,7 @@ export const PopupInner = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 3%;
   width: 65%;
   height: 60%;

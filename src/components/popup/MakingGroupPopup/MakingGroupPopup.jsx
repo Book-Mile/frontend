@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { PopupContainer, PopupInner } from '../../styled_components/popupStyle';
+import {
+  PopupContainer,
+  PopupInner,
+} from '../../../styled_components/popupStyle';
 
 import SelectedChapter from './SelectedChapter';
 import SelectedPages from './SelectedPages';
 import SelectedNumber from './SelectedNumber';
 import SelectedMine from './SelectedMine';
+import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 
 const MakingGroupPopup = ({ imgPath, imgNum, title, content, onClose }) => {
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
@@ -56,15 +60,7 @@ const MakingGroupPopup = ({ imgPath, imgNum, title, content, onClose }) => {
     setIsClosing(true); // 닫히는 애니메이션 시작
   };
 
-  useEffect(() => {
-    if (isClosing) {
-      const timer = setTimeout(() => {
-        onClose(); // 애니메이션 완료 후 onClose 호출
-      }, 350); // 애니메이션 지속 시간
-      return () => clearTimeout(timer);
-    }
-  }, [isClosing, onClose]);
-
+  useClosePopupAnimation(isClosing, onClose);
   return (
     <PopupContainer isClosing={isClosing}>
       <PopupInner isClosing={isClosing}>{renderComponent()}</PopupInner>

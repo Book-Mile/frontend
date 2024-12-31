@@ -7,8 +7,9 @@ import NavBar from './components/NavBar';
 import MakingGroupPage from './pages/MakingGroupPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import CheckPointRecordPage from './pages/CheckPointRecordPage';
-import AnotherCheckPointRecordPage from './pages/AnotherCheckPointRecordPage';
+import CheckPointRecordPage from './Dispose/CheckPointRecordPage';
+import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
+import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import MyPage from './pages/MyPage';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<MakingGroupPage />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signUp" element={<SignUp />} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route
@@ -31,6 +33,7 @@ function App() {
               path="/anothercheckPointRecord"
               element={<AnotherCheckPointRecordPage />}
             />
+            <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
           </Routes>
         </div>
       </BrowserRouter>

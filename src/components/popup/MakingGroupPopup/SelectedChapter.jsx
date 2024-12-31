@@ -4,15 +4,17 @@ import {
   CardTitle,
   CardContent,
   PopUpInnerBox2,
+  PopUPInput,
+  ErrorMessageEmpty,
   ModalContent,
   ModalContainer,
-} from '../../styled_components/popupStyle';
-import LGButton from '../LGButton/LGButton';
+} from '../../../styled_components/popupStyle';
+import LGButton from '../../LGButton/LGButton';
 import RightPopup_two from './RightPopup_two';
+import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 import Rightpopup_one from './RightPopup_one';
-import useModalSelectedGroup from '../../hooks/useModalSelectedGroup';
 
-const SelectedMine = ({ imgPath, title, content, handleClose }) => {
+const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
   const [inputValue, setInputValue] = useState('');
   const {
     selectedGroup,
@@ -24,6 +26,10 @@ const SelectedMine = ({ imgPath, title, content, handleClose }) => {
     handleCompleteClick,
   } = useModalSelectedGroup();
 
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
   // 줄바꿈 처리 (일반적으로는 \n을 <br />로 변환)
   const titleWithBreaks = title.split('\n').map((line, index) => (
     <span key={index}>
@@ -31,6 +37,7 @@ const SelectedMine = ({ imgPath, title, content, handleClose }) => {
       <br />
     </span>
   ));
+
   // 예시 데이터
   const groups = [
     {
@@ -53,6 +60,16 @@ const SelectedMine = ({ imgPath, title, content, handleClose }) => {
           <CardTitle>{titleWithBreaks}</CardTitle>
           <CardContent>{content}</CardContent>
         </div>
+        <PopUPInput>
+          <input
+            className="page-input"
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder="챕터"
+            style={{ textAlign: 'right' }}
+          />
+        </PopUPInput>
         {isNext ? (
           <LGButton
             text={'선택완료'}
@@ -73,6 +90,7 @@ const SelectedMine = ({ imgPath, title, content, handleClose }) => {
             onClick={() => handleCompleteClick(inputValue)}
           />
         )}
+        {errorMessage && <ErrorMessageEmpty>{errorMessage}</ErrorMessageEmpty>}
       </PopUpInnerBox1>
       <PopUpInnerBox2>
         <ModalContainer>
@@ -103,4 +121,4 @@ const SelectedMine = ({ imgPath, title, content, handleClose }) => {
   );
 };
 
-export default SelectedMine;
+export default SelectedChapter;
