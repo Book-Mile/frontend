@@ -54,6 +54,12 @@ const ContentFrame = styled.div`
   width: 345px;
 `;
 
+const InputFrame = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
 const InputTitle = styled.span`
   width: 345px;
   height: 29px;
@@ -97,27 +103,31 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
         <PopUpInnerBox1>
           <Title>체크포인트 기록하기</Title>
           <ContentFrame>
-            <InputTitle>현재 페이지수</InputTitle>
-            <Rectangle
-              type="input"
-              id="page"
-              value={page}
-              onChange={(e) => setPage(e.target.value)}
-            />
-            <InputTitle>내용</InputTitle>
-            <Rectangle
-              as="textarea"
-              id="page"
-              value={page}
-              onChange={(e) => setPage(e.target.value)}
-              height="150px"
-              placeholder="130자 이내로 입력해주세요."
-              style={{
-                textAlign: 'left',
-                verticalAlign: 'top',
-                resize: 'none', // 크기 조정 비활성화
-              }}
-            />
+            <InputFrame>
+              <InputTitle>현재 페이지수</InputTitle>
+              <Rectangle
+                type="input"
+                id="page"
+                value={page}
+                onChange={(e) => setPage(e.target.value)}
+              />
+            </InputFrame>
+            <InputFrame>
+              <InputTitle>내용</InputTitle>
+              <Rectangle
+                as="textarea"
+                id="page"
+                value={page}
+                onChange={(e) => setPage(e.target.value)}
+                height="150px"
+                placeholder="130자 이내로 입력해주세요."
+                style={{
+                  textAlign: 'left',
+                  verticalAlign: 'top',
+                  resize: 'none', // 크기 조정 비활성화
+                }}
+              />
+            </InputFrame>
           </ContentFrame>
           <ButtonContainer>
             <ModalButtonCancel width="150px" onClick={handleClose} />
