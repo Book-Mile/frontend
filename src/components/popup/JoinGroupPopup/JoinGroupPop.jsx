@@ -33,7 +33,8 @@ const Title = styled.div`
   line-height: 35px;
   /* identical to box height */
 
-  color: #ab0909;
+  color: ${(props) => props.theme.colors.main};
+  font-style: normal;
 
   /* Inside auto layout */
   flex: none;
