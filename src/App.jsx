@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp';
 import CheckPointRecordPage from './Dispose/CheckPointRecordPage';
 import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
+import MyPage from './pages/MyPage';
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
+            <Route path="/register" element={<SignUp />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/checkPointRecord"
               element={<CheckPointRecordPage />}
