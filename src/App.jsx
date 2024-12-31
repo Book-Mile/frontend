@@ -11,6 +11,7 @@ import CheckPointRecordPage from './Dispose/CheckPointRecordPage';
 import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
+import MyPage from './pages/MyPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/register" element={<SignUp />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/checkPointRecord"
               element={<CheckPointRecordPage />}
