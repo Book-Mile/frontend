@@ -12,6 +12,8 @@ import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
 import MyPage from './pages/MyPage';
+import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
+import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 
 function App() {
   return (
@@ -22,7 +24,6 @@ function App() {
           <Routes>
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signUp" element={<SignUp />} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route
@@ -37,6 +38,11 @@ function App() {
             <Route
               path="/SecessionUserPopup"
               element={<SecessionUserPopup />}
+            />
+            <Route path="/endgroup" element={<EndGroupPopup />} />
+            <Route
+              path="/checkpointrecordpopup"
+              element={<CheckpointRecordPopup />}
             />
           </Routes>
         </div>
