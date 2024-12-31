@@ -16,11 +16,11 @@ const PopUpInnerBox1 = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 40px 60px 40px 60px;
   gap: 50px;
 
-  width: 436px;
-  height: 453px;
+  width: auto;
+  height: auto;
 
   background: #ffffff;
   border-radius: 20px;
