@@ -77,8 +77,8 @@ const JoinGroupPopup = ({ onClose = false }) => {
             참여하시겠습니까? <br /> 방식 : {joinGroupPopupData.subject}
           </Content>
           <ButtonContainer>
-            <ModalButtonOk width="150px" />
             <ModalButtonCancel width="150px" onClick={handleClose} />
+            <ModalButtonOk width="150px" />
           </ButtonContainer>
         </PopUpInnerBox1>
       </PopupInner>
