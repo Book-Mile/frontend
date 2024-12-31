@@ -12,6 +12,7 @@ import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
 import MyPage from './pages/MyPage';
+import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               path="/SecessionUserPopup"
               element={<SecessionUserPopup />}
             />
+            <Route path="/endgroup" element={<EndGroupPopup />} />
           </Routes>
         </div>
       </BrowserRouter>
