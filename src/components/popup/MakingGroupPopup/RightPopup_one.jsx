@@ -14,11 +14,11 @@ import {
   ButtonE,
   Cancel,
   FrameE,
-} from '../../styled_components/popupStyle';
-import makingGroupForm from '../../hooks/makingGroupForm';
+} from '../../../styled_components/popupStyle';
+import makingGroupForm from '../../../hooks/makingGroupForm';
 
 const Rightpopup_one = ({ handleBack, groupMemberNum }) => {
-  const [isIndividual, setIsIndividual] = useState(true); // 개인/단체 구분 상태
+  const [isIndividual, setIsIndividual] = useState(false); // 개인/단체 구분 상태
   const [isPasswordSet, setIsPasswordSet] = useState(true); // 비밀번호 설정 여부
 
   const { groupData, setGroupName, setMaxMembers, setPassword } =
@@ -68,31 +68,35 @@ const Rightpopup_one = ({ handleBack, groupMemberNum }) => {
         </Rightpopup_oneButtonGroup>
 
         {/* 최대 인원 */}
-        <Rightpopup_oneLabel>
-          최대 인원{' '}
-          <Rightpopup_oneWarningIcon>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="10" cy="10" r="7.5" stroke="#FF2525" />
-              <path d="M10 5V11" stroke="#FF2525" />
-              <circle cx="10" cy="14" r="1" fill="#FF2525" />
-            </svg>
-          </Rightpopup_oneWarningIcon>
-        </Rightpopup_oneLabel>
-        <Rightpopup_oneInput
-          type="number"
-          placeholder="최대 인원을 입력하세요"
-          value={groupData.maxMembers || ''} // 상태값을 표시
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10); // 숫자로 변환
-            setMaxMembers(isNaN(value) ? 0 : value); // 숫자가 아니면 0으로 설정
-          }}
-        />
+        {!isIndividual && (
+          <>
+            <Rightpopup_oneLabel>
+              최대 인원{' '}
+              <Rightpopup_oneWarningIcon>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="10" cy="10" r="7.5" stroke="#FF2525" />
+                  <path d="M10 5V11" stroke="#FF2525" />
+                  <circle cx="10" cy="14" r="1" fill="#FF2525" />
+                </svg>
+              </Rightpopup_oneWarningIcon>
+            </Rightpopup_oneLabel>
+            <Rightpopup_oneInput
+              type="number"
+              placeholder="최대 인원을 입력하세요"
+              value={groupData.maxMembers || ''} // 상태값을 표시
+              onChange={(e) => {
+                const value = parseInt(e.target.value, 10); // 숫자로 변환
+                setMaxMembers(isNaN(value) ? 0 : value); // 숫자가 아니면 0으로 설정
+              }}
+            />
+          </>
+        )}
 
         {/* 비밀번호 */}
         <Rightpopup_oneLabel>비밀번호</Rightpopup_oneLabel>
