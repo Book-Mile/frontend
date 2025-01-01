@@ -4,17 +4,15 @@ import {
   CardTitle,
   CardContent,
   PopUpInnerBox2,
-  PopUPInput,
-  ErrorMessageEmpty,
   ModalContent,
   ModalContainer,
-} from '../../styled_components/popupStyle';
-import LGButton from '../LGButton/LGButton';
+} from '../../../styled_components/popupStyle';
+import LGButton from '../../LGButton/LGButton';
 import RightPopup_two from './RightPopup_two';
 import Rightpopup_one from './RightPopup_one';
-import useModalSelectedGroup from '../../hooks/useModalSelectedGroup';
+import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 
-const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
+const SelectedMine = ({ imgPath, title, content, handleClose }) => {
   const [inputValue, setInputValue] = useState('');
   const {
     selectedGroup,
@@ -26,9 +24,6 @@ const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
     handleCompleteClick,
   } = useModalSelectedGroup();
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
   // 줄바꿈 처리 (일반적으로는 \n을 <br />로 변환)
   const titleWithBreaks = title.split('\n').map((line, index) => (
     <span key={index}>
@@ -49,6 +44,7 @@ const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
       members: 12,
     },
   ];
+
   return (
     <>
       <PopUpInnerBox1 imgPath={imgPath}>
@@ -57,19 +53,6 @@ const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
           <CardTitle>{titleWithBreaks}</CardTitle>
           <CardContent>{content}</CardContent>
         </div>
-        <PopUPInput>
-          <input
-            className="page-input"
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder="회"
-            style={{ textAlign: 'right' }}
-          />
-          {errorMessage && (
-            <ErrorMessageEmpty>{errorMessage}</ErrorMessageEmpty>
-          )}
-        </PopUPInput>
         {isNext ? (
           <LGButton
             text={'선택완료'}
@@ -120,4 +103,4 @@ const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
   );
 };
 
-export default SelectedNumber;
+export default SelectedMine;

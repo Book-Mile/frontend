@@ -8,13 +8,13 @@ import {
   ErrorMessageEmpty,
   ModalContent,
   ModalContainer,
-} from '../../styled_components/popupStyle';
-import LGButton from '../LGButton/LGButton';
+} from '../../../styled_components/popupStyle';
+import LGButton from '../../LGButton/LGButton';
 import RightPopup_two from './RightPopup_two';
 import Rightpopup_one from './RightPopup_one';
-import useModalSelectedGroup from '../../hooks/useModalSelectedGroup';
+import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 
-const SelectedPages = ({ imgPath, title, content, handleClose }) => {
+const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
   const [inputValue, setInputValue] = useState('');
   const {
     selectedGroup,
@@ -29,7 +29,6 @@ const SelectedPages = ({ imgPath, title, content, handleClose }) => {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-
   // 줄바꿈 처리 (일반적으로는 \n을 <br />로 변환)
   const titleWithBreaks = title.split('\n').map((line, index) => (
     <span key={index}>
@@ -37,7 +36,6 @@ const SelectedPages = ({ imgPath, title, content, handleClose }) => {
       <br />
     </span>
   ));
-
   // 예시 데이터
   const groups = [
     {
@@ -51,12 +49,11 @@ const SelectedPages = ({ imgPath, title, content, handleClose }) => {
       members: 12,
     },
   ];
-
   return (
     <>
       <PopUpInnerBox1 imgPath={imgPath}>
-        <div className="card__img"></div>
-        <div className="card__info">
+        <div class="card__img"></div>
+        <div class="card__info">
           <CardTitle>{titleWithBreaks}</CardTitle>
           <CardContent>{content}</CardContent>
         </div>
@@ -66,9 +63,8 @@ const SelectedPages = ({ imgPath, title, content, handleClose }) => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="페이지"
+            placeholder="회"
             style={{ textAlign: 'right' }}
-            disabled={isNext}
           />
           {errorMessage && (
             <ErrorMessageEmpty>{errorMessage}</ErrorMessageEmpty>
@@ -124,4 +120,4 @@ const SelectedPages = ({ imgPath, title, content, handleClose }) => {
   );
 };
 
-export default SelectedPages;
+export default SelectedNumber;

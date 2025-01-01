@@ -6,7 +6,7 @@ import {
   GroupCircle,
   GroupName,
   GroupDetails_container,
-} from '../../styled_components/popupStyle';
+} from '../../../styled_components/popupStyle';
 const RightPopup_two = ({ groups, handleGroupClick }) => {
   return (
     <>
