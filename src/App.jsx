@@ -14,6 +14,9 @@ import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionU
 import MyPage from './pages/MyPage';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 
+import SearchResults from './pages/SearchResults'
+
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -21,10 +24,11 @@ function App() {
         <NavBar />
         <div className="main-content">
           <Routes>
+            <Route path='/search' element={<SearchResults/>}/>
+            <Route path="/" element={<MakingGroupPage />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signUp" element={<SignUp />} />
-            <Route path="/register" element={<SignUp />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/checkPointRecord"
