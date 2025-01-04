@@ -13,6 +13,7 @@ import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
 import MyPage from './pages/MyPage';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
+import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 
 import SearchResults from './pages/SearchResults'
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/" element={<MakingGroupPage />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
+
             <Route path="/signup" element={<SignUp />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route
@@ -44,6 +46,10 @@ function App() {
               element={<SecessionUserPopup />}
             />
             <Route path="/endgroup" element={<EndGroupPopup />} />
+            <Route
+              path="/checkpointrecordpopup"
+              element={<CheckpointRecordPopup />}
+            />
           </Routes>
         </div>
       </BrowserRouter>
