@@ -14,7 +14,6 @@ import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionU
 import MyPage from './pages/MyPage';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
-import Loding from './animations/Loding'
 
 import SearchResults from './pages/SearchResults'
 
@@ -50,10 +49,6 @@ function App() {
             <Route
               path="/checkpointrecordpopup"
               element={<CheckpointRecordPopup />}
-            />
-            <Route
-              path="/loding"
-              element={<Loding />}
             />
           </Routes>
         </div>
