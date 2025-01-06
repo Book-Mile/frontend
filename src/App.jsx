@@ -7,11 +7,10 @@ import NavBar from './components/NavBar';
 import MakingGroupPage from './pages/MakingGroupPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import CheckPointRecordPage from './Dispose/CheckPointRecordPage';
-import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
+import CheckPointRecordPage from './pages/CheckPointRecordPage';
+//import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
-import MyPage from './pages/MyPage';
 
 function App() {
   return (
@@ -20,18 +19,14 @@ function App() {
         <NavBar />
         <div className="main-content">
           <Routes>
+            <Route path="/" element={<MakingGroupPage />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/register" element={<SignUp />} />
-            <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/checkPointRecord"
               element={<CheckPointRecordPage />}
-            />
-            <Route
-              path="/anothercheckPointRecord"
-              element={<AnotherCheckPointRecordPage />}
             />
             <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
             <Route

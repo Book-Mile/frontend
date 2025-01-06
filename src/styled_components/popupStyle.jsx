@@ -18,7 +18,7 @@ export const PopupContainer = styled.div`
   bottom: 0;
   right: 0;
   background-color: rgba(46, 46, 46, 0.8);
-  z-index: 2;
+  z-index: 200;
   /* 블러 효과 추가 */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px); /* 사파리 호환성 */
