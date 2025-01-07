@@ -8,18 +8,19 @@ import styled from 'styled-components';
 import LGButton from '../../LGButton/LGButton';
 
 const PopUpInnerBox1 = styled.div`
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 40px;
+  justify-content: center;
+  padding: 60px 40px 60px 40px;
   gap: 40px;
 
   width: 40%;
-  height: 90%;
+  height: 100%;
 
   background: #ffffff;
   border-radius: 20px;
+
   .input_secession {
     box-sizing: border-box;
 
@@ -36,7 +37,7 @@ const Title = styled.div`
   font-family: ${(props) => props.theme.font.main};
   font-style: normal;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 32px;
   line-height: 35px;
   /* identical to box height */
 
@@ -51,10 +52,12 @@ const Content = styled.div`
   font-family: ${(props) => props.theme.font.main};
   font-size: 1rem;
   line-height: 35px;
-  color: black;
+  color: #4e202a;
+
   .red {
     color: ${(props) => props.theme.colors.main};
   }
+
   .red-bold {
     color: ${(props) => props.theme.colors.main};
     font-weight: 700;
@@ -79,8 +82,8 @@ const Circle = styled.div`
   padding: 20px;
   gap: 10px;
 
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
 
   background-color: ${(props) => props.theme.colors.sub};
   border-radius: 50px;
@@ -90,6 +93,22 @@ const Circle = styled.div`
   order: 0;
   flex-grow: 0;
 `;
+
+const InputBox = styled.div`
+  Input {
+    height: 40px;
+    width: 372px;
+    border: 1px solid #bbbbbb;
+    border-radius: 10px;
+    padding-left: 10px;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 32px;
+  }
+`;
+
 const SecessionUserPopup = ({ onClose = false }) => {
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const [inputValue, setInputValue] = useState(''); // input 값 관리
@@ -130,16 +149,18 @@ const SecessionUserPopup = ({ onClose = false }) => {
           <Content>
             계정 삭제 완료 시{' '}
             <span className="red">데이터가 삭제되며 복구할 수 없습니다.</span>
-            <br /> 위 내용에 동의하실 경우 입력창 내에 <br />
-            <span className="red-bold">‘탈퇴하겠습니다’</span> 글자를
+            <br /> 위 내용에 동의하실 경우 <br />
+            입력창 내에 <span className="red-bold">‘탈퇴하겠습니다’</span> 를
             입력해주세요.
           </Content>
-          <input
-            className="input_secession"
-            placeholder="탈퇴하겠습니다"
-            value={inputValue} // input 값 설정
-            onChange={handleInputChange} // input 값 변경 핸들러 추가
-          ></input>
+          <InputBox>
+            <input
+              placeholder="탈퇴하겠습니다"
+              value={inputValue} // input 값 설정
+              onChange={handleInputChange} // input 값 변경 핸들러 추가
+            ></input>
+          </InputBox>
+
           <ButtonContainer>
             <LGButton
               width="160px"
@@ -147,6 +168,8 @@ const SecessionUserPopup = ({ onClose = false }) => {
               bgColor={'#FFF0F0'}
               text={'취소'}
               onClick={handleClose}
+              fontSize="16px"
+              fontWeight={'700'}
             />
             <LGButton
               width="160px"
@@ -155,6 +178,8 @@ const SecessionUserPopup = ({ onClose = false }) => {
               borderColor={inputValue === '탈퇴하겠습니다' ? '' : '#626262'}
               bgColor={inputValue === '탈퇴하겠습니다' ? '#FFF0F0' : '#E8E8E8'} // 조건부 색상 변경
               text={'회원탈퇴'}
+              fontSize="16px"
+              fontWeight={'700'}
             />
           </ButtonContainer>
         </PopUpInnerBox1>

@@ -26,6 +26,7 @@ const MainContainer = styled.div`
   & * {
     box-sizing: border-box;
   }
+
   cursor: pointer;
 
   input,
@@ -41,7 +42,7 @@ const SignIn = styled.span`
   color: ${(props) => props.textColor || '#ab0909'};
   font-family: 'Noto Sans KR', sans-serif;
   font-size: ${(props) => props.textSize || '20px'};
-  font-weight: 400;
+  font-weight: ${(props) => props.fontWeight || '400'};
 `;
 
 export default function Main({
@@ -49,7 +50,7 @@ export default function Main({
   width,
   height,
   bgColor,
-  textSize,
+  fontWeight,
   onClick,
   textColor,
   borderColor,
@@ -66,7 +67,11 @@ export default function Main({
         borderColor={borderColor}
         radius={radius}
       >
-        <SignIn textSize={fontSize} textColor={textColor}>
+        <SignIn
+          textSize={fontSize}
+          textColor={textColor}
+          fontWeight={fontWeight}
+        >
           {text}
         </SignIn>
       </MainContainer>
