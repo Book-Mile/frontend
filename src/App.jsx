@@ -15,8 +15,9 @@ import MyPage from './pages/MyPage';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
-import SearchResults from './pages/SearchResults'
+import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
+import SNSManage from './pages/SNSManage.jsx';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
               element={<RegisterCompletePopup />}
             />
             <Route path="/lobby" element={<Lobby />} />
+            <Route path="/SNSManage" element={<SNSManage />} />
           </Routes>
         </div>
       </BrowserRouter>
