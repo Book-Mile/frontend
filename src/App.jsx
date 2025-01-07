@@ -11,6 +11,11 @@ import CheckPointRecordPage from './pages/CheckPointRecordPage';
 //import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
+import MyPage from './pages/MyPage';
+import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
+import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
+import SearchResults from './pages/SearchResults';
+import Lobby from './pages/Lobby';
 
 function App() {
   return (
@@ -19,11 +24,13 @@ function App() {
         <NavBar />
         <div className="main-content">
           <Routes>
+            <Route path="/search" element={<SearchResults />} />
             <Route path="/" element={<MakingGroupPage />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signUp" element={<SignUp />} />
-            <Route path="/register" element={<SignUp />} />
+
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route
               path="/checkPointRecord"
               element={<CheckPointRecordPage />}
@@ -33,6 +40,12 @@ function App() {
               path="/SecessionUserPopup"
               element={<SecessionUserPopup />}
             />
+            <Route path="/endgroup" element={<EndGroupPopup />} />
+            <Route
+              path="/checkpointrecordpopup"
+              element={<CheckpointRecordPopup />}
+            />
+            <Route path="/lobby" element={<Lobby />} />
           </Routes>
         </div>
       </BrowserRouter>
