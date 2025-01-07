@@ -8,6 +8,7 @@ import {
   UserTitle,
   ImgContent,
   RecordContainer,
+  CheckpointDescription,
 } from '../styled_components/CheckPointRecordPageStyle';
 import { scrollToBottom } from '../utils/scrollUtils';
 import { checkPoints } from '../data/checkPoint';
@@ -47,7 +48,7 @@ const CheckPointRecordPage = () => {
 
           {checkPoints.map((item, index) => (
             <BoxContainer className="animate-on-scroll scroll-area" key={index}>
-              <p className="checkpoint-date">{item.date}</p>
+              <p className="checkpoint-date">{item.checkpointdate}</p>
               {item.images && item.images.length > 0 ? ( // Check if images exis
                 <ImgContainer>
                   {item.images.length === 1 ? ( // If only one image
@@ -65,7 +66,11 @@ const CheckPointRecordPage = () => {
                 </ImgContainer>
               ) : null}
               <BoxInnerContainer>
-                <p className="checkpoint-description">{item.description}</p>
+                <CheckpointDescription>
+                  <span className="date">{item.date}</span>
+                  <br />
+                  {item.description}
+                </CheckpointDescription>
               </BoxInnerContainer>
             </BoxContainer>
           ))}
