@@ -22,6 +22,8 @@ export const PopupContainer = styled.div`
   /* 블러 효과 추가 */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px); /* 사파리 호환성 */
+
+  z-index: 1000;
 `;
 
 export const PopupInner = styled.div`
@@ -78,6 +80,7 @@ export const PopUpInnerBox1 = styled.div`
 export const PopUPInput = styled.div`
   width: 80%;
   height: 6%;
+
   .page-input {
     padding: 0 5% 0 0;
     width: 100%;
@@ -85,6 +88,7 @@ export const PopUPInput = styled.div`
     border: 1px solid #565656;
     border-radius: 5px;
   }
+
   margin-bottom: 20%;
 `;
 
@@ -128,6 +132,7 @@ export const PopUpInnerBox2 = styled.div`
   overflow: hidden;
   background: #ffffff;
   border-radius: 20px;
+
   .popup_close {
     position: absolute;
     right: -0.8rem;
@@ -183,9 +188,11 @@ export const GroupItem = styled.div`
 
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+
   &:hover {
     transform: scale(1.1, 1.1);
   }
+
   .GroupContent-container {
     width: 80%;
   }
@@ -207,6 +214,7 @@ export const GroupName = styled.span`
 export const GroupDetails_container = styled.div`
   display: flex;
   gap: 50%;
+
   .span {
     font-size: 16px;
     color: #333;
@@ -265,6 +273,7 @@ export const Rightpopup_oneInput = styled.input`
   border: 1px solid #ccc;
   border-radius: 10px;
   margin-bottom: 10px;
+
   &:focus {
     border-color: ${(props) => props.theme.colors.main};
     outline: none;
@@ -293,9 +302,11 @@ export const Rightpopup_oneToggleButton = styled.button`
     ${(props) => (props.isActive ? props.theme.colors.main : '#ccc')};
   border-radius: 5px;
   cursor: pointer;
+
   &:hover {
     border: 1px solid ${(props) => props.theme.colors.main};
   }
+
   &:first-child {
     margin-right: 10px;
   }
@@ -338,10 +349,13 @@ export const Button = styled.button`
   border: 1px solid ${(props) => props.theme.colors.main};
   overflow: hidden;
   border-radius: 30px;
+
   &:hover {
     border: 1px solid ${(props) => props.theme.colors.main};
   }
+
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+
   &:hover {
     transform: scale(1.1, 1.1);
   }
@@ -367,10 +381,13 @@ export const ButtonE = styled.button`
   border: 1px solid #ccc;
   border-radius: 30px;
   margin-right: 20%;
+
   &:hover {
     border: 1px solid ${(props) => props.theme.colors.main};
   }
+
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+
   &:hover {
     transform: scale(1.1, 1.1);
   }
