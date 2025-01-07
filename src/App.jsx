@@ -7,16 +7,15 @@ import NavBar from './components/NavBar';
 import MakingGroupPage from './pages/MakingGroupPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import CheckPointRecordPage from './Dispose/CheckPointRecordPage';
-import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
+import CheckPointRecordPage from './pages/CheckPointRecordPage';
+//import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
 import MyPage from './pages/MyPage';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
-import SearchResults from './pages/SearchResults'
+import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
-
 
 function App() {
   return (
@@ -25,7 +24,7 @@ function App() {
         <NavBar />
         <div className="main-content">
           <Routes>
-            <Route path='/search' element={<SearchResults/>}/>
+            <Route path="/search" element={<SearchResults />} />
             <Route path="/" element={<MakingGroupPage />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
@@ -35,10 +34,6 @@ function App() {
             <Route
               path="/checkPointRecord"
               element={<CheckPointRecordPage />}
-            />
-            <Route
-              path="/anothercheckPointRecord"
-              element={<AnotherCheckPointRecordPage />}
             />
             <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
             <Route
@@ -50,10 +45,7 @@ function App() {
               path="/checkpointrecordpopup"
               element={<CheckpointRecordPopup />}
             />
-            <Route
-              path="/lobby"
-              element={<Lobby/>}
-            />
+            <Route path="/lobby" element={<Lobby />} />
           </Routes>
         </div>
       </BrowserRouter>
