@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import {
+  PopupContainer,
+  PopupInner,
+} from '../../src/styled_components/popupStyle.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
+import useClosePopupAnimation from '../hooks/useClosePopupAnimation.jsx';
 
-export default function Login() {
+export default function Login({ onClose = false }) {
   const [userid, setUsername] = useState('');
   const [nickname, setNickname] = useState('');
 
@@ -25,84 +30,86 @@ export default function Login() {
   };
 
   return (
-    <MainContainer>
-      <Frame>
-        <SignInLogo>
-          BookMile의
-          <br />
-          회원이 되고 싶으신가요?
-        </SignInLogo>
-        <Frame1>
-          <Frame2>
-            <Frame3>
-              <IdInput>아이디</IdInput>
-              <InputFrame>
-                <Rectangle
-                  type="text"
-                  id="userid"
-                  value={userid}
-                  onChange={(e) => setUsername(e.target.value)}
-                  width="none"
+    <PopupContainer>
+      <MainContainer>
+        <Frame>
+          <SignInLogo>
+            BookMille의
+            <br />
+            회원이 되고 싶으신가요?
+          </SignInLogo>
+          <Frame1>
+            <Frame2>
+              <Frame3>
+                <IdInput>아이디</IdInput>
+                <InputFrame>
+                  <Rectangle
+                    type="text"
+                    id="userid"
+                    value={userid}
+                    onChange={(e) => setUsername(e.target.value)}
+                    width="none"
+                  />
+                  <LGButton
+                    text="중복확인"
+                    width="87px"
+                    height="100%"
+                    radius="10px"
+                    fontSize="14px"
+                  ></LGButton>
+                </InputFrame>
+              </Frame3>
+              <Frame3>
+                <IdInput>닉네임</IdInput>
+                <InputFrame>
+                  <Rectangle
+                    type="text"
+                    id="nickname"
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    width="none"
+                  />
+                  <LGButton
+                    text="중복확인"
+                    width="87px"
+                    height="100%"
+                    radius="10px"
+                    fontSize="14px"
+                  ></LGButton>
+                </InputFrame>
+              </Frame3>
+              <Frame4>
+                <PasswordInput>비밀번호</PasswordInput>
+                <Rectangle5
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
-                <LGButton
-                  text="중복확인"
-                  width="87px"
-                  height="100%"
-                  radius="10px"
-                  fontSize="14px"
-                ></LGButton>
-              </InputFrame>
-            </Frame3>
-            <Frame3>
-              <IdInput>닉네임</IdInput>
-              <InputFrame>
-                <Rectangle
-                  type="text"
-                  id="nickname"
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  width="none"
+              </Frame4>
+              <Frame4>
+                <PasswordInput>비밀번호 확인</PasswordInput>
+                <Rectangle5
+                  type="password"
+                  id="passwordconfirm"
+                  value={passwordconfirm}
+                  onChange={(e) => setPasswordconfirm(e.target.value)}
                 />
-                <LGButton
-                  text="중복확인"
-                  width="87px"
-                  height="100%"
-                  radius="10px"
-                  fontSize="14px"
-                ></LGButton>
-              </InputFrame>
-            </Frame3>
-            <Frame4>
-              <PasswordInput>비밀번호</PasswordInput>
-              <Rectangle5
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Frame4>
-            <Frame4>
-              <PasswordInput>비밀번호 확인</PasswordInput>
-              <Rectangle5
-                type="password"
-                id="passwordconfirm"
-                value={passwordconfirm}
-                onChange={(e) => setPasswordconfirm(e.target.value)}
-              />
-            </Frame4>
-          </Frame2>
-          <Frame5>
-            <LGButton text="Sign in" width="345px" />
-          </Frame5>
-        </Frame1>
-        <Frame6>
-          <ForgotPassword onClick={handleForgetPassword}>
-            이미 회원가입을 하셨나요?{' '}
-            <Register onClick={handleSignUpButton}>로그인</Register>
-          </ForgotPassword>
-        </Frame6>
-      </Frame>
-    </MainContainer>
+              </Frame4>
+            </Frame2>
+            <Frame5>
+              <LGButton text="Sign in" width="345px" />
+            </Frame5>
+          </Frame1>
+          <Frame6>
+            <ForgotPassword onClick={handleForgetPassword}>
+              이미 회원가입을 하셨나요?{' '}
+              <Register onClick={handleSignUpButton}>로그인</Register>
+            </ForgotPassword>
+          </Frame6>
+        </Frame>
+      </MainContainer>
+    </PopupContainer>
   );
 }
 
@@ -116,17 +123,16 @@ const MainContainer = styled.div`
   width: 100vw;
   height: 100vh;
   margin: 0 auto;
-  background: #fafafa;
 `;
 
 const Frame = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 50px;
+  gap: 40px;
   position: relative;
   width: fit-content;
-  padding: 60px 100px;
+  padding: 60px 80px;
   background: #ffffff;
   box-shadow:
     0px 369px 148px rgba(138, 138, 138, 0.01),
@@ -134,6 +140,7 @@ const Frame = styled.div`
     0px 92px 92px rgba(138, 138, 138, 0.09),
     0px 23px 51px rgba(138, 138, 138, 0.1);
   border-radius: 30px;
+  z-index: 1000;
 `;
 
 const SignInLogo = styled.span`
@@ -159,7 +166,7 @@ const Frame2 = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
+  gap: 10px;
   width: 345px;
 `;
 
