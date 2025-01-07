@@ -51,7 +51,6 @@ const Rating = ({ rating, totalStars }) => {
 
   return (
     <RatingContainer>
-      <div>평점: </div>
       {[...Array(fullStars)].map((_, index) => (
         <Star key={index} filled="full" />
       ))}

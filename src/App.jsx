@@ -16,6 +16,7 @@ import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import SearchResults from './pages/SearchResults'
 import Lobby from './pages/Lobby';
+import Detail from './pages/Detail'
 
 
 function App() {
@@ -53,6 +54,10 @@ function App() {
             <Route
               path="/lobby"
               element={<Lobby/>}
+            />
+            <Route
+              path="/detail"
+              element={<Detail/>}
             />
           </Routes>
         </div>
