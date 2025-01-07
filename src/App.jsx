@@ -8,14 +8,14 @@ import MakingGroupPage from './pages/MakingGroupPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import CheckPointRecordPage from './pages/CheckPointRecordPage';
-//import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
+// import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
 import MyPage from './pages/MyPage';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
-import SearchResults from './pages/SearchResults'
+import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
 
 function App() {
@@ -36,6 +36,10 @@ function App() {
               path="/checkPointRecord"
               element={<CheckPointRecordPage />}
             />
+            {/*<Route*/}
+            {/*  path="/anothercheckPointRecord"*/}
+            {/*  element={<AnotherCheckPointRecordPage />}*/}
+            {/*/>*/}
             <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
             <Route
               path="/SecessionUserPopup"
