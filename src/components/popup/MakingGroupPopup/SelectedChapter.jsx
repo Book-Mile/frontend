@@ -16,7 +16,7 @@ import Rightpopup_one from './RightPopup_one';
 import { RightPopup_oneRequestList } from '../../../api/Popup/RightPopup_oneRequestList';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
 
-const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
+const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
   const [inputValue, setInputValue] = useState('');
   const [apiErrorMsg, setApiErrorMsg] = useState('');
   const {
@@ -69,7 +69,7 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
   //   }); // 분리된 fetchGroups 함수 호출
   // }, []);
   // if (error) {
-  //   throw error; // 렌더링 시 에러 발생
+  //   throw apiErrorMsg; // 렌더링 시 에러 발생
   // }
 
   // 줄바꿈 처리 (일반적으로는 \n을 <br />로 변환)
@@ -99,6 +99,9 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
             placeholder="챕터"
             style={{ textAlign: 'right' }}
           />
+          {errorMessage && (
+            <ErrorMessageEmpty>{errorMessage}</ErrorMessageEmpty>
+          )}
         </PopUPInput>
         {isNext ? (
           <LGButton
@@ -120,7 +123,6 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
             onClick={() => handleCompleteClick(inputValue)}
           />
         )}
-        {errorMessage && <ErrorMessageEmpty>{errorMessage}</ErrorMessageEmpty>}
       </PopUpInnerBox1>
       <PopUpInnerBox2>
         <ModalContainer>
@@ -132,6 +134,7 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
               <Rightpopup_one
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
+                subject={subject}
               />
             ) : (
               <RightPopup_two

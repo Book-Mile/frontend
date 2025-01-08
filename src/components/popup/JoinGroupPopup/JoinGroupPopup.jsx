@@ -7,7 +7,7 @@ import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
-import { handleOkClick } from '../../../api/Popup/JoinGroupPopupApi';
+import { handleOkClick } from '../../../api/Popup/JoinGroupPopupSubmit';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
 
 const PopUpInnerBox1 = styled.div`

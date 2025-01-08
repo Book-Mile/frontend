@@ -16,7 +16,7 @@ import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 import { RightPopup_oneRequestList } from '../../../api/Popup/RightPopup_oneRequestList';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
 
-const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
+const SelectedNumber = ({ imgPath, title, content, handleClose, subject }) => {
   const [inputValue, setInputValue] = useState('');
   const {
     selectedGroup,
@@ -69,7 +69,7 @@ const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
   //   }); // 분리된 fetchGroups 함수 호출
   // }, []);
   // if (error) {
-  //   throw error; // 렌더링 시 에러 발생
+  //   throw apiErrorMsg; // 렌더링 시 에러 발생
   // }
 
   const handleInputChange = (e) => {
@@ -135,6 +135,7 @@ const SelectedNumber = ({ imgPath, title, content, handleClose }) => {
               <Rightpopup_one
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
+                subject={subject}
               />
             ) : (
               <RightPopup_two

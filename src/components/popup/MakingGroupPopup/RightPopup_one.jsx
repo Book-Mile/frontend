@@ -6,7 +6,6 @@ import {
   Rightpopup_oneButtonGroup,
   Rightpopup_oneToggleButton,
   Rightpopup_oneWarningIcon,
-  Rightpopup_onePasswordInputWrapper,
   Rightpopup_oneContinaer,
   FrameD,
   Button,
@@ -14,20 +13,69 @@ import {
   ButtonE,
   Cancel,
   FrameE,
+  ErrorMessageEmpty,
 } from '../../../styled_components/popupStyle';
 import makingGroupForm from '../../../hooks/makingGroupForm';
+import { handleMakingGroupSubmit } from '../../../api/Popup/MakingGroupPopupSubmit';
+import { useErrorHandling } from '../../../hooks/useErrorHandling';
 
-const Rightpopup_one = ({ handleBack, groupMemberNum }) => {
+const Rightpopup_one = ({ handleBack, groupMemberNum, subject }) => {
   const [isIndividual, setIsIndividual] = useState(false); // 개인/단체 구분 상태
   const [isPasswordSet, setIsPasswordSet] = useState(true); // 비밀번호 설정 여부
+  const [titleErrorMessage, setTitleErrorMessage] = useState(''); // 에러 메시지 상태
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState(''); // 에러 메시지 상태
+  const [memberErrorMessage, setMemberErrorMessage] = useState('');
+  const { error, handleError } = useErrorHandling();
 
   const { groupData, setGroupName, setMaxMembers, setPassword } =
     makingGroupForm();
 
   // 그룹 데이터 확인 핸들러
   const handleConfirm = () => {
-    console.log('그룹 데이터:', groupData);
+    let errorCheck = 0;
+    if (!groupData.groupName) {
+      setTitleErrorMessage('그룹명을 입력하세요.');
+      errorCheck = 1;
+    }
+
+    if (isPasswordSet && !groupData.password) {
+      setPasswordErrorMessage('비밀번호를 입력하세요.');
+      errorCheck = 1;
+    }
+
+    if (!isIndividual && !groupData.maxMembers) {
+      setMemberErrorMessage('인원 수를 입력하세요.');
+      errorCheck = 1;
+    }
+
+    if (
+      !isIndividual &&
+      (groupData.maxMembers < 2 || groupData.maxMembers > 30)
+    ) {
+      setMemberErrorMessage('인원 수를 2~30명 사이로 해주세요.');
+      errorCheck = 1;
+    }
+
+    if (errorCheck == 1) {
+      return;
+    }
+
+    setTitleErrorMessage(''); // 에러 메시지 초기화
+    setPasswordErrorMessage('');
+    setMemberErrorMessage('');
+    handleMakingGroupSubmit(
+      subject,
+      groupData.groupName,
+      groupData.maxMembers,
+      groupData.password,
+    ).catch((err) => {
+      handleError(err);
+    });
   };
+
+  if (error) {
+    throw error; // 렌더링 시 에러 발생
+  }
 
   // useEffect로 초기값 설정
   useEffect(() => {
@@ -49,19 +97,28 @@ const Rightpopup_one = ({ handleBack, groupMemberNum }) => {
           placeholder="그룹명을 입력하세요"
           onChange={(e) => setGroupName(e.target.value)}
         />
+        {/* 에러 메시지 출력 */}
+        {titleErrorMessage && (
+          <ErrorMessageEmpty>{titleErrorMessage}</ErrorMessageEmpty>
+        )}
 
         {/* 구분 */}
         <Rightpopup_oneLabel>구분</Rightpopup_oneLabel>
         <Rightpopup_oneButtonGroup>
           <Rightpopup_oneToggleButton
             isActive={isIndividual}
-            onClick={() => setIsIndividual(true)}
+            onClick={() => {
+              setIsIndividual(true);
+              setMaxMembers('');
+            }}
           >
             개인
           </Rightpopup_oneToggleButton>
           <Rightpopup_oneToggleButton
             isActive={!isIndividual}
-            onClick={() => setIsIndividual(false)}
+            onClick={
+              () => setIsIndividual(false) // '단체'로 상태 설정
+            }
           >
             단체
           </Rightpopup_oneToggleButton>
@@ -90,11 +147,15 @@ const Rightpopup_one = ({ handleBack, groupMemberNum }) => {
               type="number"
               placeholder="최대 인원을 입력하세요"
               value={groupData.maxMembers || ''} // 상태값을 표시
+              min="2" // 최소값
+              max="30" // 최대값
               onChange={(e) => {
                 const value = parseInt(e.target.value, 10); // 숫자로 변환
                 setMaxMembers(isNaN(value) ? 0 : value); // 숫자가 아니면 0으로 설정
               }}
             />
+            {/* 에러 메시지 출력 */}
+            <ErrorMessageEmpty>{memberErrorMessage}</ErrorMessageEmpty>
           </>
         )}
 
@@ -109,7 +170,10 @@ const Rightpopup_one = ({ handleBack, groupMemberNum }) => {
           </Rightpopup_oneToggleButton>
           <Rightpopup_oneToggleButton
             isActive={!isPasswordSet}
-            onClick={() => setIsPasswordSet(false)}
+            onClick={() => {
+              setIsPasswordSet(false);
+              setPassword('');
+            }}
           >
             안함
           </Rightpopup_oneToggleButton>
@@ -119,13 +183,13 @@ const Rightpopup_one = ({ handleBack, groupMemberNum }) => {
         {isPasswordSet && (
           <>
             <Rightpopup_oneLabel>비밀번호 설정</Rightpopup_oneLabel>
-            <Rightpopup_onePasswordInputWrapper>
-              <Rightpopup_oneInput
-                type="password"
-                placeholder="비밀번호를 입력하세요"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Rightpopup_onePasswordInputWrapper>
+            <Rightpopup_oneInput
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {/* 에러 메시지 출력 */}
+            <ErrorMessageEmpty>{passwordErrorMessage}</ErrorMessageEmpty>
           </>
         )}
       </Rightpopup_oneContinaer>

@@ -222,7 +222,7 @@ export const GroupOverflowContainer = styled.div`
 export const Rightpopup_oneContinaer = styled.div`
   margin-top: 3%; /* 하단 여백을 버튼 높이만큼 확보 */
   height: 80%;
-  width: 50%;
+  width: 55%;
   margin-left: auto;
   margin-right: auto;
   overflow: auto;
@@ -245,7 +245,7 @@ export const Rightpopup_oneLabel = styled.label`
   /* 그룹명 */
   width: 120px;
   height: 23px;
-  margin-top: 1%;
+  margin-top: 3%;
   font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 500;
@@ -260,13 +260,11 @@ export const Rightpopup_oneLabel = styled.label`
 // 입력 필드 스타일
 export const Rightpopup_oneInput = styled.input`
   width: 90%;
-  margin: auto;
   height: 40px;
   font-size: 14px;
   padding-left: 10px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  margin-bottom: 10px;
   &:focus {
     border-color: ${(props) => props.theme.colors.main};
     outline: none;
@@ -307,12 +305,6 @@ export const Rightpopup_oneWarningIcon = styled.span`
   display: flex;
   align-items: center;
   margin-left: 2%;
-`;
-
-// 비밀번호 입력 필드 Wrapper
-export const Rightpopup_onePasswordInputWrapper = styled.div`
-  width: 90%;
-  margin: auto;
 `;
 
 export const FrameD = styled.div`
@@ -388,7 +380,6 @@ export const Cancel = styled.span`
 `;
 
 export const ErrorMessageEmpty = styled.div`
-  margin-top: 1%;
   display: flex;
   color: ${(props) => props.theme.colors.main};
   font-family: ${(props) => props.theme.font.main};
