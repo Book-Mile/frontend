@@ -50,6 +50,26 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
       meetings: 15,
       members: 12,
     },
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
   ];
 
   return (

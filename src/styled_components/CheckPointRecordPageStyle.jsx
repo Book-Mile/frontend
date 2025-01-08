@@ -11,18 +11,22 @@ const CheckPointRecordPageContainer = styled.div`
 `;
 
 const BoxInnerContainer = styled.div`
-  .checkpoint-description {
-    margin: 0;
-
-    font-family: ${(props) => props.theme.font.main};
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 27px;
-
-    color: #000000;
-  }
   flex: 1;
+`;
+const CheckpointDescription = styled.div`
+  margin: 0;
+
+  font-family: ${(props) => props.theme.font.main};
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 27px;
+
+  color: #000000;
+  .date {
+    font-weight: 600;
+    font-size: 18px;
+  }
 `;
 
 const UserTitle = styled.div`
@@ -177,4 +181,5 @@ export {
   Button,
   ButtonContainer,
   CardsWrapper,
+  CheckpointDescription,
 };

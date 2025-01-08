@@ -220,19 +220,20 @@ export const GroupDetails_container = styled.div`
     color: #333;
   }
 `;
+export const GroupOverflowContainer = styled.div`
+  overflow: auto;
+  height: 100%;
+`;
 
 //rightpopup one 스타일
 
 export const Rightpopup_oneContinaer = styled.div`
-  position: relative; /* 버튼 위치 고정을 위한 기준 */
-  padding-top: 3%; /* 하단 여백을 버튼 높이만큼 확보 */
-  height: auto;
-  display: flex;
+  margin-top: 3%; /* 하단 여백을 버튼 높이만큼 확보 */
+  height: 80%;
   width: 50%;
   margin-left: auto;
   margin-right: auto;
-  justify-content: center;
-  flex-direction: column;
+  overflow: auto;
 `;
 // 타이틀 스타일
 export const Rightpopup_oneTitle = styled.div`
@@ -266,7 +267,8 @@ export const Rightpopup_oneLabel = styled.label`
 
 // 입력 필드 스타일
 export const Rightpopup_oneInput = styled.input`
-  width: 100%;
+  width: 90%;
+  margin: auto;
   height: 40px;
   font-size: 14px;
   padding-left: 10px;
@@ -283,7 +285,6 @@ export const Rightpopup_oneInput = styled.input`
 // 버튼 그룹 스타일
 export const Rightpopup_oneButtonGroup = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-between;
   margin-bottom: 10px;
   padding-left: 10px;
@@ -321,12 +322,12 @@ export const Rightpopup_oneWarningIcon = styled.span`
 
 // 비밀번호 입력 필드 Wrapper
 export const Rightpopup_onePasswordInputWrapper = styled.div`
-  position: relative;
-  width: 100%;
+  width: 90%;
+  margin: auto;
 `;
 
 export const FrameD = styled.div`
-  position: absolute; /* 부모 컨테이너를 기준으로 위치 고정 */
+  position: fixed; /* 부모 컨테이너를 기준으로 위치 고정 */
   bottom: 10px; /* 하단에서 10px */
   width: 100%; /* 버튼 그룹이 컨테이너의 너비를 가득 채움 */
   display: flex;
@@ -423,6 +424,7 @@ export const ModalContent = styled.div`
     animation: ${({ isNext }) => (isNext ? slideOutLeft : slideOutRight)} 0.3s
       ease-in-out forwards;
   }
+  //overflow: auto;
 `;
 
 // 컨테이너 스타일
