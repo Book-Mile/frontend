@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   PopUpInnerBox1,
   CardTitle,
@@ -13,9 +13,12 @@ import LGButton from '../../LGButton/LGButton';
 import RightPopup_two from './RightPopup_two';
 import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 import Rightpopup_one from './RightPopup_one';
+import { RightPopup_oneRequestList } from '../../../api/Popup/RightPopup_oneRequestList';
+import { useErrorHandling } from '../../../hooks/useErrorHandling';
 
 const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
   const [inputValue, setInputValue] = useState('');
+  const [apiErrorMsg, setApiErrorMsg] = useState('');
   const {
     selectedGroup,
     errorMessage,
@@ -25,10 +28,49 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
     handleBack,
     handleCompleteClick,
   } = useModalSelectedGroup();
+  // 예시 데이터
+  const [groups, setGroups] = useState([
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
+  ]);
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  const { error, handleError } = useErrorHandling();
+  // useEffect(() => {
+  //   RightPopup_oneRequestList(setGroups, setApiErrorMsg,subject).catch((err) => {
+  //     handleError(err);
+  //   }); // 분리된 fetchGroups 함수 호출
+  // }, []);
+  // if (error) {
+  //   throw error; // 렌더링 시 에러 발생
+  // }
 
   // 줄바꿈 처리 (일반적으로는 \n을 <br />로 변환)
   const titleWithBreaks = title.split('\n').map((line, index) => (
@@ -37,41 +79,9 @@ const SelectedChapter = ({ imgPath, title, content, handleClose }) => {
       <br />
     </span>
   ));
-
-  // 예시 데이터
-  const groups = [
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-  ];
-
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
   return (
     <>
       <PopUpInnerBox1 imgPath={imgPath}>

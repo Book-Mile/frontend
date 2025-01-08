@@ -13,6 +13,8 @@ import LGButton from '../../LGButton/LGButton';
 import RightPopup_two from './RightPopup_two';
 import Rightpopup_one from './RightPopup_one';
 import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
+import { RightPopup_oneRequestList } from '../../../api/Popup/RightPopup_oneRequestList';
+import { useErrorHandling } from '../../../hooks/useErrorHandling';
 
 const SelectedPages = ({ imgPath, title, content, handleClose }) => {
   const [inputValue, setInputValue] = useState('');
@@ -26,6 +28,50 @@ const SelectedPages = ({ imgPath, title, content, handleClose }) => {
     handleCompleteClick,
   } = useModalSelectedGroup();
 
+  // 예시 데이터
+  const [groups, setGroups] = useState([
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
+    {
+      name: '횟수정하자 그룹',
+      meetings: 18,
+      members: 10,
+    },
+    {
+      name: '다시하자 그룹',
+      meetings: 15,
+      members: 12,
+    },
+  ]);
+
+  const { error, handleError } = useErrorHandling();
+  // useEffect(() => {
+  //   RightPopup_oneRequestList(setGroups, setApiErrorMsg,subject).catch((err) => {
+  //     handleError(err);
+  //   }); // 분리된 fetchGroups 함수 호출
+  // }, []);
+  // if (error) {
+  //   throw error; // 렌더링 시 에러 발생
+  // }
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -37,41 +83,6 @@ const SelectedPages = ({ imgPath, title, content, handleClose }) => {
       <br />
     </span>
   ));
-
-  // 예시 데이터
-  const groups = [
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-  ];
-
   return (
     <>
       <PopUpInnerBox1 imgPath={imgPath}>
