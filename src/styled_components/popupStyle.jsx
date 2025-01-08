@@ -22,6 +22,8 @@ export const PopupContainer = styled.div`
   /* 블러 효과 추가 */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px); /* 사파리 호환성 */
+
+  z-index: 1000;
 `;
 
 export const PopupInner = styled.div`
@@ -78,6 +80,7 @@ export const PopUpInnerBox1 = styled.div`
 export const PopUPInput = styled.div`
   width: 80%;
   height: 6%;
+
   .page-input {
     padding: 0 5% 0 0;
     width: 100%;
@@ -85,6 +88,7 @@ export const PopUPInput = styled.div`
     border: 1px solid #565656;
     border-radius: 5px;
   }
+
   margin-bottom: 20%;
 `;
 
@@ -128,6 +132,7 @@ export const PopUpInnerBox2 = styled.div`
   overflow: hidden;
   background: #ffffff;
   border-radius: 20px;
+
   .popup_close {
     position: absolute;
     right: -0.8rem;
@@ -183,9 +188,11 @@ export const GroupItem = styled.div`
 
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+
   &:hover {
     transform: scale(1.1, 1.1);
   }
+
   .GroupContent-container {
     width: 80%;
   }
@@ -207,24 +214,26 @@ export const GroupName = styled.span`
 export const GroupDetails_container = styled.div`
   display: flex;
   gap: 50%;
+
   .span {
     font-size: 16px;
     color: #333;
   }
 `;
+export const GroupOverflowContainer = styled.div`
+  overflow: auto;
+  height: 100%;
+`;
 
 //rightpopup one 스타일
 
 export const Rightpopup_oneContinaer = styled.div`
-  position: relative; /* 버튼 위치 고정을 위한 기준 */
-  padding-top: 3%; /* 하단 여백을 버튼 높이만큼 확보 */
-  height: auto;
-  display: flex;
+  margin-top: 3%; /* 하단 여백을 버튼 높이만큼 확보 */
+  height: 80%;
   width: 50%;
   margin-left: auto;
   margin-right: auto;
-  justify-content: center;
-  flex-direction: column;
+  overflow: auto;
 `;
 // 타이틀 스타일
 export const Rightpopup_oneTitle = styled.div`
@@ -258,13 +267,15 @@ export const Rightpopup_oneLabel = styled.label`
 
 // 입력 필드 스타일
 export const Rightpopup_oneInput = styled.input`
-  width: 100%;
+  width: 90%;
+  margin: auto;
   height: 40px;
   font-size: 14px;
   padding-left: 10px;
   border: 1px solid #ccc;
   border-radius: 10px;
   margin-bottom: 10px;
+
   &:focus {
     border-color: ${(props) => props.theme.colors.main};
     outline: none;
@@ -274,7 +285,6 @@ export const Rightpopup_oneInput = styled.input`
 // 버튼 그룹 스타일
 export const Rightpopup_oneButtonGroup = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-between;
   margin-bottom: 10px;
   padding-left: 10px;
@@ -293,9 +303,11 @@ export const Rightpopup_oneToggleButton = styled.button`
     ${(props) => (props.isActive ? props.theme.colors.main : '#ccc')};
   border-radius: 5px;
   cursor: pointer;
+
   &:hover {
     border: 1px solid ${(props) => props.theme.colors.main};
   }
+
   &:first-child {
     margin-right: 10px;
   }
@@ -310,12 +322,12 @@ export const Rightpopup_oneWarningIcon = styled.span`
 
 // 비밀번호 입력 필드 Wrapper
 export const Rightpopup_onePasswordInputWrapper = styled.div`
-  position: relative;
-  width: 100%;
+  width: 90%;
+  margin: auto;
 `;
 
 export const FrameD = styled.div`
-  position: absolute; /* 부모 컨테이너를 기준으로 위치 고정 */
+  position: fixed; /* 부모 컨테이너를 기준으로 위치 고정 */
   bottom: 10px; /* 하단에서 10px */
   width: 100%; /* 버튼 그룹이 컨테이너의 너비를 가득 채움 */
   display: flex;
@@ -338,10 +350,13 @@ export const Button = styled.button`
   border: 1px solid ${(props) => props.theme.colors.main};
   overflow: hidden;
   border-radius: 30px;
+
   &:hover {
     border: 1px solid ${(props) => props.theme.colors.main};
   }
+
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+
   &:hover {
     transform: scale(1.1, 1.1);
   }
@@ -367,10 +382,13 @@ export const ButtonE = styled.button`
   border: 1px solid #ccc;
   border-radius: 30px;
   margin-right: 20%;
+
   &:hover {
     border: 1px solid ${(props) => props.theme.colors.main};
   }
+
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+
   &:hover {
     transform: scale(1.1, 1.1);
   }
@@ -406,6 +424,7 @@ export const ModalContent = styled.div`
     animation: ${({ isNext }) => (isNext ? slideOutLeft : slideOutRight)} 0.3s
       ease-in-out forwards;
   }
+  //overflow: auto;
 `;
 
 // 컨테이너 스타일
