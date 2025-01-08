@@ -6,7 +6,7 @@ import {
 import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 
-import Ok from '../../../assets/assets/ok.svg';
+import Ok from '../../../assets/Alert/ok.svg';
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;

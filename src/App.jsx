@@ -17,6 +17,7 @@ import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/Chec
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
 import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
+import SNSManage from './pages/SNSManage.jsx';
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
                 path="/checkPointRecord"
                 element={<CheckPointRecordPage />}
               />
+              {/*<Route*/}
+              {/*  path="/anothercheckPointRecord"*/}
+              {/*  element={<AnotherCheckPointRecordPage />}*/}
+              {/*/>*/}
               <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
               <Route
                 path="/SecessionUserPopup"
@@ -47,7 +52,12 @@ function App() {
                 path="/checkpointrecordpopup"
                 element={<CheckpointRecordPopup />}
               />
+              <Route
+                path="/registercompletepopup"
+                element={<RegisterCompletePopup />}
+              />
               <Route path="/lobby" element={<Lobby />} />
+              <Route path="/SNSManage" element={<SNSManage />} />
             </Routes>
           </div>
         </BrowserRouter>
