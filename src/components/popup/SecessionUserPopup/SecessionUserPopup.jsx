@@ -8,13 +8,30 @@ import styled from 'styled-components';
 import LGButton from '../../LGButton/LGButton';
 
 const PopUpInnerBox1 = styled.div`
-  width: 55%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px 60px 40px;
+  gap: 40px;
+
+  width: 40%;
+  height: 100%;
+
   background: #ffffff;
   height: 100%;
   border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  .input_secession {
+    box-sizing: border-box;
+
+    width: 372px;
+    height: 50px;
+
+    border: 1px solid #bbbbbb;
+    border-radius: 10px;
+  }
+
 `;
 const Title = styled.div`
   /* 그룹 정보 */
@@ -22,7 +39,7 @@ const Title = styled.div`
   font-family: ${(props) => props.theme.font.main};
   font-style: normal;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 32px;
   line-height: 35px;
   /* identical to box height */
 
@@ -37,10 +54,12 @@ const Content = styled.div`
   font-family: ${(props) => props.theme.font.main};
   font-size: 1rem;
   line-height: 35px;
-  color: black;
+  color: #4e202a;
+
   .red {
     color: ${(props) => props.theme.colors.main};
   }
+
   .red-bold {
     color: ${(props) => props.theme.colors.main};
     font-weight: 700;
@@ -65,8 +84,8 @@ const Circle = styled.div`
   padding: 20px;
   gap: 10px;
 
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
 
   background-color: ${(props) => props.theme.colors.sub};
   border-radius: 50px;
@@ -77,24 +96,19 @@ const Circle = styled.div`
   flex-grow: 0;
 `;
 
-const PopUpContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  align-items: center;
-  margin-top: 7%;
-  height: 90%;
-  width: 90%;
-  gap: 40px;
-
-  .input_secession {
-    box-sizing: border-box;
-
-    width: 80%;
-    height: 50px;
+const InputBox = styled.div`
+  Input {
+    height: 40px;
+    width: 372px;
     border: 1px solid #bbbbbb;
     border-radius: 10px;
-    flex-shrink: 0;
+    padding-left: 10px;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 32px;
+
   }
 `;
 
@@ -168,8 +182,46 @@ const SecessionUserPopup = ({ onClose = false }) => {
                 } // 조건부 색상 변경
                 text={'회원탈퇴'}
               />
-            </ButtonContainer>
-          </PopUpContent>
+            </svg>
+          </Circle>
+          <Title>계정 삭제 요청</Title>
+          <Content>
+            계정 삭제 완료 시{' '}
+            <span className="red">데이터가 삭제되며 복구할 수 없습니다.</span>
+            <br /> 위 내용에 동의하실 경우 <br />
+            입력창 내에 <span className="red-bold">‘탈퇴하겠습니다’</span> 를
+            입력해주세요.
+          </Content>
+          <InputBox>
+            <input
+              placeholder="탈퇴하겠습니다"
+              value={inputValue} // input 값 설정
+              onChange={handleInputChange} // input 값 변경 핸들러 추가
+            ></input>
+          </InputBox>
+
+          <ButtonContainer>
+            <LGButton
+              width="160px"
+              height={'45px'}
+              bgColor={'#FFF0F0'}
+              text={'취소'}
+              onClick={handleClose}
+              fontSize="16px"
+              fontWeight={'700'}
+            />
+            <LGButton
+              width="160px"
+              height={'45px'}
+              textColor={inputValue === '탈퇴하겠습니다' ? '' : '#626262'}
+              borderColor={inputValue === '탈퇴하겠습니다' ? '' : '#626262'}
+              bgColor={inputValue === '탈퇴하겠습니다' ? '#FFF0F0' : '#E8E8E8'} // 조건부 색상 변경
+              text={'회원탈퇴'}
+              fontSize="16px"
+              fontWeight={'700'}
+            />
+          </ButtonContainer>
+
         </PopUpInnerBox1>
       </PopupInner>
     </PopupContainer>
