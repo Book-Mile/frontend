@@ -6,8 +6,8 @@ import LGButton from '../components/LGButton/LGButton';
 import googleLogo from '/src/assets/snslogo/google.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
 import naverLogo from '/src/assets/snslogo/naver.svg';
-import ToggleOn from '/src/assets/assets/ToggleOn.svg';
-import ToggleOff from '/src/assets/assets/ToggleOff.svg';
+import ToggleOn from '/src/assets/Toggle/ToggleOn.svg';
+import ToggleOff from '/src/assets/Toggle/ToggleOff.svg';
 
 export default function SNSManage() {
   const [toggle1, setToggle1] = useState(true);
@@ -120,12 +120,10 @@ export default function SNSManage() {
           ) : (
             <LGButton
               text="확인"
-              bgColor="#FFF0F0;"
+              bgColor="#FFF0F0"
               fontSize="16px"
               height="40px"
               radius="30px"
-              textColor="#AB0909"
-              borderColor="#AB0909"
             />
           )}
         </DownFrame>
@@ -186,7 +184,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
 
-  color: #ab0909;
+  color: ${(props) => props.theme.colors.main};
 `;
 const ContentFrame = styled.div`
   display: flex;

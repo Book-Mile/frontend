@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
 
-import Warning from '../../../assets/assets/warning.svg';
+import Warning from '../../../assets/Alert/warning.svg';
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
