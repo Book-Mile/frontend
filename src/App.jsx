@@ -62,7 +62,7 @@ function App() {
             />
                         <Route
               path="/lobby"
-              element={<Detail/>}
+              element={<Lobby/>}
             />
           </Routes>
         </div>
