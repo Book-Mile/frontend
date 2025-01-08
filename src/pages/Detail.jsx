@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Rating from "../components/search/Rating";
 import ModalButton from '../components/modalButton/ModalButtonOk';
+import ActivityCard from '../components/group/ActivityCard'
 
 const Container = styled.main`
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -190,6 +193,10 @@ const Detail = () => {
           <ModalButton />
         </StyledBookInfo>
       </BookDetailWrapper>
+      <div className="margin-top:280px">
+      <div className="font-weight:700 ">모집중인 그룹</div>
+      <ActivityCard/>
+      </div>
     </Container>
   );
 };
