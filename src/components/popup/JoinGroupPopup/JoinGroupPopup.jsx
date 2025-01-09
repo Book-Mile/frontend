@@ -92,8 +92,8 @@ const JoinGroupPopup = ({
             <br /> 방식 : {subject}
           </Content>
           <ButtonContainer>
-            <ModalButtonCancel width="150px" onClick={handleClose} />
-            <ModalButtonOk onClick={onOkClick} width="150px" />
+            <ModalButtonCancel width="140px" onClick={handleClose} />
+            <ModalButtonOk onClick={onOkClick} width="140px" />
           </ButtonContainer>
         </PopUpInnerBox1>
       </PopupInner>

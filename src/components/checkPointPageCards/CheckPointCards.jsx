@@ -4,6 +4,7 @@ import {
   Card,
   ButtonContainer,
   CardsWrapper,
+  CheckPointCardsContainer,
 } from '../../styled_components/CheckPointRecordPageStyle';
 
 const CheckPointCards = ({ images, handleCardClick }) => {
@@ -37,7 +38,10 @@ const CheckPointCards = ({ images, handleCardClick }) => {
 
   return (
     <>
-      <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <CheckPointCardsContainer
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <ButtonContainer>
           <Button
             className="prev"
@@ -65,7 +69,7 @@ const CheckPointCards = ({ images, handleCardClick }) => {
             />
           ))}
         </CardsWrapper>
-      </div>
+      </CheckPointCardsContainer>
     </>
   );
 };
