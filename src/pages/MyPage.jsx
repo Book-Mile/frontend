@@ -1,457 +1,179 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import styled from 'styled-components';
 
-import LGButton from '../components/LGButton/LGButton';
+import ProgressBookList from '../components/ProgressBookList.jsx';
+import PendingBookList from '../components/PendingBookList.jsx';
+import EndedBookList from '../components/EndedBookList.jsx';
+import Edit from '/src/assets/MyInfoAssets/edit.svg';
 
-import profileAsset from '/src/assets/mypageAssets/Profile.svg';
-import emailAsset from '/src/assets/mypageAssets/email.svg';
-import passwordAsset from '/src/assets/mypageAssets/password.svg';
-import snsAsset from '/src/assets/mypageAssets/sns.svg';
-import kakaoLogo from '/src/assets/snslogo/kakao.svg';
+export default function EditMyInfo() {
+  const [nickname, setNickname] = useState('무서운 토끼');
+  const [email, setEmail] = useState('email@gmail.com');
+  const [tab, setTab] = useState(1);
 
-export default function MyPage() {
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [snsId, setSnsId] = useState('email@kakao.com');
+  const handleTabChange = (tab) => {
+    setTab(tab);
+  };
 
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const navigate = useNavigate();
+  const handleUserEditBtn = () => {
+    navigate('/EditMyInfo');
   };
 
   return (
-    <MainContainer>
-      <OuterFrame>
-        <UpperFrame>
-          <BoxFrame>
-            <BoxType1>
-              <Type1Left>
-                <img
-                  src={profileAsset}
-                  alt="profileAsset"
-                  width="66px"
-                  height="66px"
-                />
-              </Type1Left>
-              <Type1Right>
-                <Type1RightFirstLine>닉네임</Type1RightFirstLine>
-                <Type1RightSecondLine>
-                  <Rectangle
-                    type="text"
-                    id="nickname"
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
-                    placeholder="닉네임을 입력하세요"
-                  />
-                  <LGButton
-                    text="중복확인"
-                    width="87px"
-                    height="100%"
-                    radius="10px"
-                    fontSize="14px"
-                  />
-                </Type1RightSecondLine>
-              </Type1Right>
-            </BoxType1>
-          </BoxFrame>
-          <BoxFrame>
-            <BoxType1>
-              <Type1Left>
-                <img
-                  src={emailAsset}
-                  alt="emailasset"
-                  width="50px"
-                  height="50px"
-                />
-              </Type1Left>
-              <Type1Right>
-                <Type1RightFirstLine>이메일 아이디</Type1RightFirstLine>
-                <Type1RightSecondLine>
-                  <Rectangle
-                    type="text"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="exmple@gmail.com"
-                  />
-                  <LGButton
-                    text="인증하기"
-                    width="87px"
-                    height="100%"
-                    radius="10px"
-                    fontSize="14px"
-                  />
-                </Type1RightSecondLine>
-              </Type1Right>
-            </BoxType1>
-          </BoxFrame>
-
-          <BoxFrame>
-            <BoxType3>
-              <BoxType1>
-                <Type1Left>
+    <>
+      <MainContainer>
+        <OuterFrame>
+          <UpperFrame>
+            <UserFrame>
+              <UserFrameLeft>
+                <img src={'/src/assets/profile.png'} />
+              </UserFrameLeft>
+              <UserFrameRight>
+                <NickName>
+                  {nickname}
                   <img
-                    src={passwordAsset}
-                    alt="passwordAsset"
-                    width="50px"
-                    height="50px"
+                    src={Edit}
+                    onClick={handleUserEditBtn}
+                    style={{ cursor: 'pointer' }}
                   />
-                </Type1Left>
-                <Type1Right>
-                  <Type1RightFirstLine>비밀번호 변경</Type1RightFirstLine>
-                </Type1Right>
-              </BoxType1>
-              <Type3SecondLine>
-                <Type3SecondLine>
-                  <PasswordLineBox>
-                    <PasswordLineLeft>현재 비밀번호</PasswordLineLeft>
-                    <PasswordLineMiddle>
-                      <Rectangle
-                        type="text"
-                        id="username"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </PasswordLineMiddle>
-                    <PasswordLineRight></PasswordLineRight>
-                  </PasswordLineBox>
-                  <PasswordLineBox>
-                    <PasswordLineLeft>변경 비밀번호</PasswordLineLeft>
-                    <PasswordLineMiddle>
-                      <Rectangle
-                        type="text"
-                        id="username"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </PasswordLineMiddle>
-                    <PasswordLineRight></PasswordLineRight>
-                  </PasswordLineBox>
-                  <PasswordLineBox>
-                    <PasswordLineLeft>비밀번호 확인</PasswordLineLeft>
-                    <PasswordLineMiddle>
-                      <Rectangle
-                        type="text"
-                        id="username"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </PasswordLineMiddle>
-                    <PasswordLineRight>
-                      <LGButton
-                        text="변경"
-                        width="87px"
-                        height="40px"
-                        radius="10px"
-                        fontSize="14px"
-                      />
-                    </PasswordLineRight>
-                  </PasswordLineBox>
-                </Type3SecondLine>
-              </Type3SecondLine>
-            </BoxType3>
-          </BoxFrame>
-          <BoxFrame>
-            <BoxType2>
-              <Type2Left>
-                <img src={snsAsset} alt="snsAsset" width="50px" height="50px" />
-              </Type2Left>
-              <Type2Middle>
-                <Type2RightFirstLine>SNS 연동</Type2RightFirstLine>
-                <Type2RightSecondLine>
-                  <SNSFrame>
-                    <img
-                      src={kakaoLogo}
-                      alt="Kakao Logo"
-                      width="100%"
-                      height="100%"
-                    />
-                  </SNSFrame>
-                  <SNSidFrame>{snsId}</SNSidFrame>
-                </Type2RightSecondLine>
-              </Type2Middle>
-              <Type2Right>연동하기 &gt;</Type2Right>
-            </BoxType2>
-          </BoxFrame>
-          <BoxFrame>
-            <BoxType2>
-              <Type2Left>
-                {' '}
-                <img src={snsAsset} alt="snsAsset" width="50px" height="50px" />
-              </Type2Left>
-              <Type2Middle>
-                <Type2RightFirstLine>회원탈퇴</Type2RightFirstLine>
-              </Type2Middle>
-              <Type2Right>탈퇴하기 &gt;</Type2Right>
-            </BoxType2>
-          </BoxFrame>
-        </UpperFrame>
-        <DownFrame>
-          <LGButton
-            text="완료"
-            bgColor="#FFF0F0"
-            fontSize="16px"
-            height="40px"
-            radius="30px"
-          />
-        </DownFrame>
-      </OuterFrame>
-    </MainContainer>
+                </NickName>
+                <Email>{email}</Email>
+              </UserFrameRight>
+            </UserFrame>
+          </UpperFrame>
+          <DownFrame>
+            <TabFrame>
+              <TabBtn
+                onClick={() => handleTabChange(1)}
+                color={tab === 1 ? '#AB0909' : '#9C9C9C'}
+              >
+                현재 진행 중인 리스트
+              </TabBtn>
+              <TabBtn
+                onClick={() => handleTabChange(2)}
+                color={tab === 2 ? '#AB0909' : '#9C9C9C'}
+              >
+                시작 대기중인 리스트
+              </TabBtn>
+              <TabBtn
+                onClick={() => handleTabChange(3)}
+                color={tab === 3 ? '#AB0909' : '#9C9C9C'}
+              >
+                종료된 리스트
+              </TabBtn>
+            </TabFrame>
+            <ContentFrame>
+              {tab === 1 ? (
+                <ProgressBookList />
+              ) : tab === 2 ? (
+                <PendingBookList />
+              ) : tab === 3 ? (
+                <EndedBookList />
+              ) : (
+                <></>
+              )}
+            </ContentFrame>
+          </DownFrame>
+        </OuterFrame>
+      </MainContainer>
+    </>
   );
 }
 
 const MainContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
-  position: relative;
+  justify-content: flex-start;
+
   width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  background: #fafafa;
+  height: 100%; /* 부모 요소의 100% 높이를 차지 */
+  gap: 30px; /* 요소 간 간격 */
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: auto; /* 필요한 경우만 스크롤 */
 `;
 
 const OuterFrame = styled.div`
-  width: 630px;
+  width: 70%;
   height: 100%;
   display: flex;
   flex-direction: column;
-
-  padding-top: 100px;
-
-  gap: 50px;
+  gap: 20px;
+  padding-top: 20px;
 `;
 
 const UpperFrame = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   width: 100%;
-  flex-grow: 1;
+  flex: 1;
 `;
 
-const DownFrame = styled.div`
-  width: 100%;
-  height: 40px;
-`;
-
-const BoxFrame = styled.div`
+const UserFrame = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 20px 40px 20px 32px;
-  gap: 22px;
-
-  width: 100%;
+  gap: 30px;
+`;
+const UserFrameLeft = styled.div`
+  width: fit-content;
   height: fit-content;
-
-  background: #ffffff;
-  border: 1px solid #d9d9d9;
-  box-sizing: border-box;
 `;
-
-const BoxType1 = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  gap: 22px;
-`;
-const Type1Left = styled.div`
-  width: 66px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const Type1Right = styled.div`
-  flex-grow: 1;
-  height: 100%;
+const UserFrameRight = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 10px;
 `;
-
-const Type1RightFirstLine = styled.div`
-  width: 100%;
-  flex-grow: 1;
+const NickName = styled.div`
   font-style: normal;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 24px;
   line-height: 32px;
-  /* identical to box height, or 200% */
+  /* identical to box height, or 133% */
   display: flex;
   align-items: center;
 
   color: #4e202a;
-`;
-const Type1RightSecondLine = styled.div`
-  width: 100%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-`;
-
-const BoxType2 = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  gap: 22px;
-`;
-const Type2Left = styled.div`
-  width: 66px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const Type2Middle = styled.div`
-  flex-grow: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
   gap: 10px;
 `;
-const Type2Right = styled.div`
-  width: 100px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 32px;
-  /* identical to box height, or 200% */
-  display: flex;
-  align-items: center;
-
-  color: #4e202a;
-`;
-
-const Type2RightFirstLine = styled.div`
-  width: 100%;
-  flex-grow: 1;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 32px;
-  /* identical to box height, or 200% */
-  display: flex;
-  align-items: center;
-
-  color: #4e202a;
-`;
-const Type2RightSecondLine = styled.div`
-  width: 100%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-`;
-const SNSFrame = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-
-  width: 30px;
-  height: 30px;
-
-  background: #f7e600;
-  border: 2px solid #f4f4f4;
-  border-radius: 50px;
-`;
-
-const SNSidFrame = styled.div`
+const Email = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 32px;
-  /* identical to box height, or 229% */
-  display: flex;
-  align-items: center;
+  line-height: 17px;
 
-  color: #4e202a;
-`;
-const Rectangle = styled.input`
-  width: 100%;
-  height: 40px;
-  background: rgba(217, 217, 217, 0);
-  border: 1px solid #d9d9d9;
-  border-radius: 10px;
+  color: #565656;
 `;
 
-const BoxType3 = styled.div`
+const DownFrame = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  height: 100%;
-  gap: 10px;
+  flex: 5;
+  gap: 20px;
 `;
 
-const Type3SecondLine = styled.div`
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-left: 10px;
-`;
-
-const PasswordLineBox = styled.div`
+const TabFrame = styled.div`
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
-  width: 100%;
-  padding-left: 75px;
-
-  box-sizing: border-box;
+  gap: 40px;
 `;
-const PasswordLineLeft = styled.div`
+const TabBtn = styled.div`
   font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 32px;
-  /* identical to box height, or 267% */
-  display: flex;
-  align-self: center;
-  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 26px;
+  /* identical to box height */
 
-  color: #4e202a;
-  width: 69px;
-  height: 100%;
-  padding-right: 45px;
+  color: ${(props) => props.color || '#ab0909'};
+  cursor: pointer;
 `;
-const PasswordLineMiddle = styled.div`
-  flex-grow: 1;
-  padding-right: 30px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-`;
-const PasswordLineRight = styled.div`
-  height: 100%;
-  width: 87px;
-  display: flex;
-  justify-content: center;
-  align-self: center;
-`;
+
+const ContentFrame = styled.div`
+    display: flex;
+    flex-direction: column
+    gap: 20px;`;
