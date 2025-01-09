@@ -56,11 +56,13 @@ const BoxContainer = styled.div`
 `;
 
 const ImgContainer = styled.div`
+  height: 100%;
   width: 400px; /* 너비를 고정 */
   flex-shrink: 0; /* 고정 너비를 유지하여 줄어들지 않도록 설정 */
   display: flex;
   flex-direction: column;
   text-align: start;
+  margin-top: 50%;
 `;
 
 const CheckPointCardsContainer = styled.div``;
@@ -110,9 +112,9 @@ const RecordContainer = styled.div`
   }
 
   .scroll-area {
-    margin-top: 50vh;
-    scroll-snap-align: end; /* 스크롤 위치 맞춤 */
-    scroll-margin: -200px 0px;
+    height: 90%;
+    scroll-snap-align: center; /* 스크롤 위치 맞춤 */
+    align-items: center;
   }
 `;
 
