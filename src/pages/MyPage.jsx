@@ -48,19 +48,19 @@ export default function EditMyInfo() {
             <TabFrame>
               <TabBtn
                 onClick={() => handleTabChange(1)}
-                color={tab === 1 ? '#AB0909' : '#9C9C9C'}
+                color={!(tab === 1) ? '#9C9C9C' : ''}
               >
                 현재 진행 중인 리스트
               </TabBtn>
               <TabBtn
                 onClick={() => handleTabChange(2)}
-                color={tab === 2 ? '#AB0909' : '#9C9C9C'}
+                color={!(tab === 2) ? '#9C9C9C' : ''}
               >
                 시작 대기중인 리스트
               </TabBtn>
               <TabBtn
                 onClick={() => handleTabChange(3)}
-                color={tab === 3 ? '#AB0909' : '#9C9C9C'}
+                color={!(tab === 3) ? '#9C9C9C' : ''}
               >
                 종료된 리스트
               </TabBtn>
@@ -169,7 +169,7 @@ const TabBtn = styled.div`
   line-height: 26px;
   /* identical to box height */
 
-  color: ${(props) => props.color || '#ab0909'};
+  color: ${(props) => props.color || props.theme.colors.main};
   cursor: pointer;
 `;
 
