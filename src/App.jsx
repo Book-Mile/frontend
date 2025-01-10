@@ -15,7 +15,6 @@ import EditMyInfo from './pages/EditMyInfo.jsx';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
-<<<<<<< Updated upstream
 import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
 import SNSManage from './pages/SNSManage.jsx';
@@ -36,78 +35,39 @@ function App() {
                 <Route path="/makingGroup" element={<MakingGroupPage />} />
                 <Route path="/login" element={<Login />} />
 
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/mypage" element={<MyPage />} />
-              <Route
-                path="/checkPointRecord"
-                element={<CheckPointRecordPage />}
-              />
-              {/*<Route*/}
-              {/*  path="/anothercheckPointRecord"*/}
-              {/*  element={<AnotherCheckPointRecordPage />}*/}
-              {/*/>*/}
-              <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
-              <Route
-                path="/SecessionUserPopup"
-                element={<SecessionUserPopup />}
-              />
-              <Route path="/endgroup" element={<EndGroupPopup />} />
-              <Route
-                path="/checkpointrecordpopup"
-                element={<CheckpointRecordPopup />}
-              />
-              <Route
-                path="/registercompletepopup"
-                element={<RegisterCompletePopup />}
-              />
-              <Route path="/lobby" element={<Lobby />} />
-              <Route path="/SNSManage" element={<SNSManage />} />
-              <Route path="/RatingPopup" element={<RatingPopup />} />
-            </Routes>
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/mypage" element={<MyPage />} />
+                <Route
+                  path="/checkPointRecord"
+                  element={<CheckPointRecordPage />}
+                />
+                {/*<Route*/}
+                {/*  path="/anothercheckPointRecord"*/}
+                {/*  element={<AnotherCheckPointRecordPage />}*/}
+                {/*/>*/}
+                <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
+                <Route
+                  path="/SecessionUserPopup"
+                  element={<SecessionUserPopup />}
+                />
+                <Route path="/endgroup" element={<EndGroupPopup />} />
+                <Route
+                  path="/checkpointrecordpopup"
+                  element={<CheckpointRecordPopup />}
+                />
+                <Route
+                  path="/registercompletepopup"
+                  element={<RegisterCompletePopup />}
+                />
+                <Route path="/lobby" element={<Lobby />} />
+                <Route path="/SNSManage" element={<SNSManage />} />
+                <Route path="/RatingPopup" element={<RatingPopup />} />
+              </Routes>
+            </div>
           </div>
         </BrowserRouter>
       </ThemeProvider>
     </ErrorBoundary>
-=======
-
-function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <NavBar />
-        <div className="main-content">
-          <Routes>
-            <Route path="/makingGroup" element={<MakingGroupPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<SignUp />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route
-              path="/checkPointRecord"
-              element={<CheckPointRecordPage />}
-            />
-            <Route
-              path="/anothercheckPointRecord"
-              element={<AnotherCheckPointRecordPage />}
-            />
-            <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
-            <Route
-              path="/SecessionUserPopup"
-              element={<SecessionUserPopup />}
-            />
-            <Route path="/endgroup" element={<EndGroupPopup />} />
-            <Route
-              path="/checkpointrecordpopup"
-              element={<CheckpointRecordPopup />}
-            />
-            <Route
-              path="/registercompletepopup"
-              element={<RegisterCompletePopup />}
-            />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
->>>>>>> Stashed changes
   );
 }
 
