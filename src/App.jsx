@@ -37,6 +37,7 @@ function App() {
 
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/mypage" element={<MyPage />} />
+                <Route path="/editmyinfo" element={<EditMyInfo />} />
                 <Route
                   path="/checkPointRecord"
                   element={<CheckPointRecordPage />}
