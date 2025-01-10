@@ -6,7 +6,11 @@ import {
 import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 
+<<<<<<< Updated upstream
 import Ok from '../../../assets/Alert/ok.svg';
+=======
+import Ok from '../../../assets/assets/ok.svg';
+>>>>>>> Stashed changes
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
@@ -21,9 +25,12 @@ const PopUpInnerBox1 = styled.div`
 
   background: #ffffff;
   border-radius: 20px;
+<<<<<<< Updated upstream
   position: relative;
 
   z-index: 10;
+=======
+>>>>>>> Stashed changes
 `;
 const Title = styled.div`
   /* 그룹 정보 */
@@ -44,6 +51,7 @@ const Title = styled.div`
   flex-grow: 0;
 `;
 
+<<<<<<< Updated upstream
 const BackRectangle = styled.div`
   display: flex;
   padding: 39px 53px;
@@ -82,10 +90,19 @@ const RegisterCompletePopup = ({ onClose = false }) => {
       }
     }, 1000);
   });
+=======
+const RegisterCompletePopup = ({ onClose = false }) => {
+  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
+
+  const handleClose = () => {
+    setIsClosing(true); // 닫히는 애니메이션 시작
+  };
+>>>>>>> Stashed changes
 
   useClosePopupAnimation(isClosing, onClose);
 
   return (
+<<<<<<< Updated upstream
     <div>
       <PopupContainer isClosing={isClosing}>
         <PopupInner isClosing={isClosing}>
@@ -100,6 +117,16 @@ const RegisterCompletePopup = ({ onClose = false }) => {
         </PopupInner>
       </PopupContainer>
     </div>
+=======
+    <PopupContainer isClosing={isClosing}>
+      <PopupInner isClosing={isClosing}>
+        <PopUpInnerBox1>
+          <img src={Ok} alt="WarningIco" width="200px" height="200px" />
+          <Title>저장 완료!</Title>
+        </PopUpInnerBox1>
+      </PopupInner>
+    </PopupContainer>
+>>>>>>> Stashed changes
   );
 };
 
