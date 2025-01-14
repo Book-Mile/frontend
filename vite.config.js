@@ -9,6 +9,9 @@ export default defineConfig({
       exportAsDefault: false, // ReactComponent 사용 가능하도록 설정
     }),
   ],
+  optimizeDeps: {
+    include: ['react-error-boundary'], // 명시적으로 포함
+  },
   server: {
     port: 3000,
   },

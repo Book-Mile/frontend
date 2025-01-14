@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   PopupContainer,
   PopupInner,
@@ -7,7 +7,8 @@ import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
-import { joinGroupPopupData } from '../../../data/joinGroupPopupData';
+import { handleOkClick } from '../../../api/Popup/JoinGroupPopupSubmit';
+import { useErrorHandling } from '../../../hooks/useErrorHandling';
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
@@ -58,13 +59,27 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const JoinGroupPopup = ({ onClose = false }) => {
+const JoinGroupPopup = ({
+  title = '그룹명',
+  subject = '페이지',
+  onClose = false,
+}) => {
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
+
+  const { error, handleError } = useErrorHandling();
+
+  const onOkClick = () => {
+    handleOkClick(title, subject).catch((err) => {
+      handleError(err);
+    });
+  };
+  if (error) {
+    throw error; // 렌더링 시 에러 발생
+  }
 
   const handleClose = () => {
     setIsClosing(true); // 닫히는 애니메이션 시작
   };
-
   useClosePopupAnimation(isClosing, onClose);
 
   return (
@@ -73,12 +88,12 @@ const JoinGroupPopup = ({ onClose = false }) => {
         <PopUpInnerBox1>
           <Title>그룹 정보</Title>
           <Content>
-            <span className="book-title">"{joinGroupPopupData.title}"</span>에
-            참여하시겠습니까? <br /> 방식 : {joinGroupPopupData.subject}
+            <span className="book-title">"{title}"</span>에 참여하시겠습니까?{' '}
+            <br /> 방식 : {subject}
           </Content>
           <ButtonContainer>
-            <ModalButtonCancel width="150px" onClick={handleClose} />
-            <ModalButtonOk width="150px" />
+            <ModalButtonCancel width="140px" onClick={handleClose} />
+            <ModalButtonOk onClick={onOkClick} width="140px" />
           </ButtonContainer>
         </PopUpInnerBox1>
       </PopupInner>

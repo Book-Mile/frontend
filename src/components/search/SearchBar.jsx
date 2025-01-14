@@ -93,7 +93,7 @@ const SearchBar = () => {
       <SearchBarContainer>
         <Input
           type="text"
-          placeholder="검색어를 입력하세요..."
+          placeholder="노벨 문학상 한강작가 ‘소년이 온다’"
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}  // 엔터키 이벤트 추가

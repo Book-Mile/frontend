@@ -11,6 +11,7 @@ const useModalSelectedGroup = () => {
     handleTransition();
     setSelectedGroup(group);
     setInputValue(group.meetings || null); // inputValue는 훅 외부에서 관리
+    setErrorMessage();
   };
 
   const handleBack = (setInputValue) => {

@@ -22,6 +22,7 @@ const MakingGroupPopup = ({ imgPath, imgNum, title, content, onClose }) => {
             title={title}
             content={content}
             handleClose={handleClose}
+            subject="Page"
           />
         );
       case 2:
@@ -31,6 +32,7 @@ const MakingGroupPopup = ({ imgPath, imgNum, title, content, onClose }) => {
             title={title}
             content={content}
             handleClose={handleClose}
+            subject="Chapter"
           />
         );
       case 3:
@@ -40,6 +42,7 @@ const MakingGroupPopup = ({ imgPath, imgNum, title, content, onClose }) => {
             title={title}
             content={content}
             handleClose={handleClose}
+            subject="Number"
           />
         );
       case 4:
@@ -49,6 +52,7 @@ const MakingGroupPopup = ({ imgPath, imgNum, title, content, onClose }) => {
             title={title}
             content={content}
             handleClose={handleClose}
+            subject="Custom"
           />
         );
       default:

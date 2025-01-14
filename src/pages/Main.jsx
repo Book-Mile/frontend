@@ -109,7 +109,7 @@ const Letter = styled(MainTitle)`
 
 
 
-const App = () => {
+const Main = () => {
   return (
     <>
     <MainWrapper>
@@ -217,4 +217,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Main;
