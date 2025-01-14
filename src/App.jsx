@@ -17,6 +17,7 @@ import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/Chec
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
 import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
+import Main from './pages/Main'
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/search" element={<SearchResults />} />
-            <Route path="/" element={<MakingGroupPage />} />
+            <Route path="/" element={<Main />} />
             <Route path="/makingGroup" element={<MakingGroupPage />} />
             <Route path="/login" element={<Login />} />
 
