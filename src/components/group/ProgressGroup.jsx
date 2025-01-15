@@ -6,7 +6,7 @@ const CardContainer = styled.section`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 530px;
+  width: 500px;
   position: relative;
   overflow: hidden;
   gap: 14px;
@@ -18,7 +18,7 @@ const CardContainer = styled.section`
 
 const Title = styled.h2`
   margin: 0;
-  width: 440px;
+  width: 400px;
   font-size: 1.125rem;
   font-weight: 500;
   text-align: left;
