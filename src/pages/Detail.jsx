@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Rating from "../components/search/Rating";
-import ModalButton from '../components/modalButton/ModalButtonOk';
+import ModalButton from '../components/modalButton/ModalCustomButton';
 import ActivityCard from '../components/group/ActivityCard';
 import ProgressGroup from '../components/group/ProgressGroup';
 
 const Container = styled.main`
+  width: 1156px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 13.61%;
+  margin: 0 auto;
   top: 160px;
   position: relative;
 `;
@@ -96,10 +97,24 @@ const Description = styled.div`
   color: ${props => props.theme.colors.body};
   margin-bottom: 10px;
   line-height: 1.6;
-  height: ${props => (props.isExpanded ? "auto" : "70px")};
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${props => (props.isExpanded ? 'unset' : 3)};
   overflow: hidden;
   position: relative;
+  cursor: pointer; 
 `;
+
+const Ellipsis = styled.span`
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: white;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
 
 const MoreButton = styled.button`
   background: none;
@@ -108,7 +123,10 @@ const MoreButton = styled.button`
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
+  text-align: left;
+  margin-top: 5px;
 `;
+
 
 const GroupWrapper = styled.section`
   margin: 280px 0;
@@ -141,6 +159,10 @@ const ActivityList = styled.div`
 
 const Detail = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleButtonClick = () => {
+    window.location.href = '/makingGroup';
+  };
 
   const bookData = {
     title: "젊은 베르테르의 슬픔",
@@ -227,6 +249,7 @@ const Detail = () => {
         <StyledBookInfo>
           <Title>{bookData.title}</Title>
 
+
           {/* 저자, 출판사, ISBN 등 정보 */}
           <InfoSection>
             <InfoRow>
@@ -262,15 +285,14 @@ const Detail = () => {
 
           {/* 설명 */}
           <DescriptionWrapper>
-            <Description isExpanded={isExpanded}>
+            <Description isExpanded={isExpanded} onClick={toggleDescription}>
               {bookData.description}
+              {!isExpanded && <Ellipsis onClick={toggleDescription}>...</Ellipsis>} 
             </Description>
-            <MoreButton onClick={toggleDescription}>
-              {isExpanded ? "간략히 보기" : "더보기"}
-            </MoreButton>
           </DescriptionWrapper>
-
-          <ModalButton />
+          <ModalButton onClick={handleButtonClick} width="168px" height="46px">
+            새로 생성하기
+          </ModalButton>
         </StyledBookInfo>
       </BookDetailWrapper>
 
