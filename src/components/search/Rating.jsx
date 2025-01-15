@@ -5,7 +5,7 @@ const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-  font-size: 14px;
+  font-size: ${props => props.fontSize || '14px'};
   font-weight: 400;
   color: #565656;
 `;
@@ -16,22 +16,21 @@ const StarContainer = styled.div`
 `;
 
 const Star = styled.div`
-  width: 14px;
-  height: 14px;
+  width: ${props => props.size || '14px'};
+  height: ${props => props.size || '14px'};
   position: relative;
   background: ${props => {
-    // 채워진 정도에 따라 다르게 설정
     const quarter = props.filled;
     if (quarter === 1) {
-      return props.theme.colors.main; // 꽉 찬 별
+      return props.theme.colors.main;
     } else if (quarter === 0.75) {
-      return `linear-gradient(90deg, ${props.theme.colors.main} 75%, #D3D3D3 25%)`; // 75% 채운 별
+      return `linear-gradient(90deg, ${props.theme.colors.main} 75%, #D3D3D3 25%)`;
     } else if (quarter === 0.5) {
-      return `linear-gradient(90deg, ${props.theme.colors.main} 50%, #D3D3D3 50%)`; // 반 별
+      return `linear-gradient(90deg, ${props.theme.colors.main} 50%, #D3D3D3 50%)`;
     } else if (quarter === 0.25) {
-      return `linear-gradient(90deg, ${props.theme.colors.main} 25%, #D3D3D3 75%)`; // 25% 채운 별
+      return `linear-gradient(90deg, ${props.theme.colors.main} 25%, #D3D3D3 75%)`;
     } else {
-      return '#D3D3D3'; // 비어있는 별
+      return '#D3D3D3';
     }
   }};
   border-radius: 50%;
@@ -51,40 +50,36 @@ const Star = styled.div`
 
 const RatingNumber = styled.div`
   color: ${props => props.theme.colors.main};
-  font-size: 14px;
+  font-size: ${props => props.fontSize || '14px'};
   font-weight: 900;
 `;
 
-const Rating = ({ rating, totalStars = 5 }) => {
-  // 5점 만점에 맞춰서 반영
-  const fullStars = Math.floor(rating); // 정수 부분 (꽉 찬 별)
-  const decimal = rating - fullStars; // 소수점 부분
-  const quarterStars = Math.floor(decimal * 4); // 소수점에 따른 0.25, 0.5, 0.75 구하기
+const Rating = ({ rating, totalStars = 5, starSize, fontSize }) => {
+  const fullStars = Math.floor(rating);
+  const decimal = rating - fullStars;
+  const quarterStars = Math.floor(decimal * 4);
   const stars = [];
 
-  // 꽉 찬 별
   for (let i = 0; i < fullStars; i++) {
-    stars.push(1); // 꽉 찬 별
+    stars.push(1);
   }
 
-  // 세분화된 별 처리 (0.25, 0.5, 0.75 채운 별)
-  if (quarterStars === 1) stars.push(0.25); // 0.25 채운 별
-  else if (quarterStars === 2) stars.push(0.5); // 0.5 채운 별
-  else if (quarterStars === 3) stars.push(0.75); // 0.75 채운 별
+  if (quarterStars === 1) stars.push(0.25);
+  else if (quarterStars === 2) stars.push(0.5);
+  else if (quarterStars === 3) stars.push(0.75);
 
-  // 빈 별 처리
   while (stars.length < totalStars) {
-    stars.push(0); // 빈 별
+    stars.push(0);
   }
 
   return (
-    <RatingContainer>
+    <RatingContainer fontSize={fontSize}>
       <StarContainer>
-      {stars.map((star, index) => (
-        <Star key={index} filled={star} />
-      ))}
+        {stars.map((star, index) => (
+          <Star key={index} filled={star} size={starSize} />
+        ))}
       </StarContainer>
-      <RatingNumber>{rating.toFixed(1)}</RatingNumber>
+      <RatingNumber fontSize={fontSize}>{rating.toFixed(1)}</RatingNumber>
     </RatingContainer>
   );
 };

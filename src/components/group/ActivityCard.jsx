@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BookLabel from '../../components/search/BookLabel';
-import ModalButton from '../modalButton/ModalButtonOk';
+import ModalButton from '../modalButton/ModalCustomButton';
 
 const Container = styled.article`
   width: 23.92%;
@@ -99,26 +99,25 @@ import ChapterIcon from '../../assets/label/chapter.svg?react';
 import CountIcon from '../../assets/label/count.svg?react';
 
 function ActivityCard({ completed = false, activity }) {
-  const [activityData, setActivityData] = useState([]);
   const [completedMembers, setCompletedMembers] = useState(0); 
   const [totalMembers, setTotalMembers] = useState(30);
 
   useEffect(() => {
     // 예시 API 응답 (실제 API 호출로 대체 필요)
     const fetchedData = {
-      labels: [
-        { type: 'page', value: 100 },
-        { type: 'chapter', value: 12 } 
-      ],
       totalMembers: 30, 
       completedMembers: 12 
     };
 
-    setActivityData(fetchedData.labels);
-    setTotalMembers(fetchedData.totalMembers);
     setCompletedMembers(fetchedData.completedMembers);
+    setTotalMembers(fetchedData.totalMembers);
   }, []);
 
+  const handleButtonClick = () => {
+    window.location.href = '/makingGroup';
+  };
+
+  // 아이콘을 매핑하기 위한 객체
   const iconMap = {
     page: <PageIcon />,
     speed: <SpeedIcon />,
@@ -126,12 +125,29 @@ function ActivityCard({ completed = false, activity }) {
     chapter: <ChapterIcon />
   };
 
+  // 텍스트를 매핑하기 위한 객체
   const textMap = {
     page: '페이지',
     speed: '속도',
     count: '횟수',
     chapter: '챕터'
   };
+
+  // activity.pageInfo에 따라 동적으로 처리
+  const determineTypeAndText = (pageInfo) => {
+    if (pageInfo.includes('페이지')) {
+      return { type: 'page', text: pageInfo };
+    } else if (pageInfo.includes('속도')) {
+      return { type: 'speed', text: pageInfo };
+    } else if (pageInfo.includes('횟수')) {
+      return { type: 'count', text: pageInfo };
+    } else if (pageInfo.includes('챕터')) {
+      return { type: 'chapter', text: pageInfo };
+    }
+    return { type: 'page', text: pageInfo };  // 기본값
+  };
+
+  const { type, text } = determineTypeAndText(activity.pageInfo);
 
   return (
     <Container completed={completed}>
@@ -154,15 +170,17 @@ function ActivityCard({ completed = false, activity }) {
           </InfoContainer>
           <LabelContainer>
             <BookLabel
-              text={`${activity.pageInfo}`}
-              icon={<PageIcon />}
+              text={text}
+              icon={iconMap[type]} // 동적으로 아이콘을 렌더링
             />
           </LabelContainer>
         </GapContainer>
       </SectionWithGap>
       {!completed && (
         <ButtonContainer>
-          <ModalButton />
+          <ModalButton onClick={handleButtonClick} width="168px" height="44px" fontWeight="500">
+            참여하기
+          </ModalButton>
         </ButtonContainer>
       )}
     </Container>

@@ -4,6 +4,7 @@ import Rating from "../components/search/Rating";
 import ModalButton from '../components/modalButton/ModalCustomButton';
 import ActivityCard from '../components/group/ActivityCard';
 import ProgressGroup from '../components/group/ProgressGroup';
+import ReviewCard from '../components/search/ReviewCard'
 
 const Container = styled.main`
   width: 1156px;
@@ -113,9 +114,21 @@ const Ellipsis = styled.span`
   padding-left: 10px;
   cursor: pointer;
 `;
+const PreviewRanking = styled.div`
+  margin-top: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
+
+const RatingRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 
 const GroupWrapper = styled.section`
-  margin: 280px 0;
+  margin: 120px 0;
 `;
 
 const GroupSection = styled.section`
@@ -177,7 +190,7 @@ const Detail = () => {
     },
     {
       groupName: "책과 함께하는 나의 여정",
-      pageInfo: "30페이지 씩",
+      pageInfo: "30횟수",
       membersCount: "8명"
     }
   ]);
@@ -210,7 +223,7 @@ const Detail = () => {
     },
     {
       groupName: "완료된 그룹 B",
-      pageInfo: "30페이지",
+      pageInfo: "나만의 속도",
       membersCount: "5명"
     },
     {
@@ -274,7 +287,7 @@ const Detail = () => {
             </InfoRow>
           </InfoSection>
 
-          {/* 설명 */}
+          {/* 더보기 설명 */}
           <DescriptionWrapper>
             <Description isExpanded={isExpanded} onClick={toggleDescription}>
               {bookData.description}
@@ -286,6 +299,28 @@ const Detail = () => {
           </ModalButton>
         </StyledBookInfo>
       </BookDetailWrapper>
+
+      {/*미리보기 리뷰*/}
+      <PreviewRanking>
+        <RatingRow>
+        <GroupTitle>BookMile 리뷰</GroupTitle>
+        <span>더보기</span>
+        </RatingRow>
+        <RatingRow>
+          <ReviewCard 
+            rating={4}
+            name="똑똑한황구30" 
+            date="25.01.15" 
+            review="진심 좋음... 그냥 왜 명작이라고 하는지 알 것 같은 기분"
+          />
+          <ReviewCard 
+            rating={3}
+            name="똑똑한황구312" 
+            date="24.12.22" 
+            review="팀원들이 별로였음ㄹㅇ 근데 책 내용은 좋았음"
+          />
+        </RatingRow>
+      </PreviewRanking>
 
       <GroupWrapper>
         {/* 모집중인 그룹 */}
