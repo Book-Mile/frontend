@@ -19,6 +19,7 @@ import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
 import SNSManage from './pages/SNSManage.jsx';
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
+import BookProgress from './pages/BookProgress.jsx'
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
               <Route path="/lobby" element={<Lobby />} />
               <Route path="/SNSManage" element={<SNSManage />} />
               <Route path="/RatingPopup" element={<RatingPopup />} />
+              <Route path='/bookprogress' element={<BookProgress/>}/>
             </Routes>
           </div>
         </BrowserRouter>
