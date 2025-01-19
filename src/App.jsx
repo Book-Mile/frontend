@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-
+import { ErrorBoundary } from 'react-error-boundary';
 import { theme } from './theme';
+import ErrorFallback from './utils/ErrorFallback';
 
 import NavBar from './components/NavBar';
 import MakingGroupPage from './pages/MakingGroupPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import CheckPointRecordPage from './pages/CheckPointRecordPage';
-// import AnotherCheckPointRecordPage from './Dispose/AnotherCheckPointRecordPage';
-import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPop';
+import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPopup';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
-import MyPage from './pages/MyPage';
+import EditMyInfo from './pages/EditMyInfo.jsx';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
@@ -19,18 +19,23 @@ import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
 import Detail from './pages/Detail'
 
+import SNSManage from './pages/SNSManage.jsx';
+import MyPage from './pages/MyPage.jsx';
+import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <NavBar />
-        <div className="main-content">
-          <Routes>
-            <Route path="/search" element={<SearchResults />} />
-            <Route path="/" element={<MakingGroupPage />} />
-            <Route path="/makingGroup" element={<MakingGroupPage />} />
-            <Route path="/login" element={<Login />} />
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <div className="app-container">
+            <NavBar />
+            <div className="main-content">
+              <Routes>
+                <Route path="/search" element={<SearchResults />} />
+                <Route path="/" element={<Login />} />
+                <Route path="/makingGroup" element={<MakingGroupPage />} />
+                <Route path="/login" element={<Login />} />
 
             <Route path="/signup" element={<SignUp />} />
             <Route path="/mypage" element={<MyPage />} />
@@ -68,6 +73,7 @@ function App() {
         </div>
       </BrowserRouter>
     </ThemeProvider>
+
   );
 }
 

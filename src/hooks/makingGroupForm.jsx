@@ -3,7 +3,7 @@ import { useState } from 'react';
 const makingGroupForm = () => {
   // 상태값 정의
   const [groupName, setGroupName] = useState(''); // 그룹명 상태
-  const [maxMembers, setMaxMembers] = useState(0); // 최대 인원 상태
+  const [maxMembers, setMaxMembers] = useState(2); // 최대 인원 상태
   const [password, setPassword] = useState(''); // 비밀번호 상태
 
   // 상태값을 반환

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import useIntersectionObserver from '../hooks/useInterserctionObserver';
 import {
   CheckPointRecordPageContainer,
@@ -14,11 +14,26 @@ import { scrollToBottom } from '../utils/scrollUtils';
 import { checkPoints } from '../data/checkPoint';
 import CheckPointCards from '../components/checkPointPageCards/CheckPointCards';
 import ImagePopup from '../components/popup/ImgPopup/ImgPopup';
+import { CheckPointRecordRequest } from '../api/Pages/CheckPointRecordRequest';
+import { useErrorHandling } from '../hooks/useErrorHandling';
 
 const CheckPointRecordPage = () => {
+  //api에서 받아올 것들
   const [user, setUser] = useState('무진장세일');
   const [bookTitle, setBookTitle] = useState('젊은 베르테르의 슬픔');
   const [popupImage, setPopupImage] = useState(null); // To manage the popup image
+  const [apiErrorMsg, setApiErrorMsg] = useState('');
+  const [data, setData] = useState(checkPoints);
+
+  const { error, handleError } = useErrorHandling();
+  // useEffect(() => {
+  //   CheckPointRecordRequest(setData, setApiErrorMsg).catch((err) => {
+  //     handleError(err);
+  //   }); // 분리된 fetchGroups 함수 호출
+  // }, []);
+  // if (error) {
+  //   throw apiErrorMsg; // 렌더링 시 에러 발생
+  // }
 
   const containerRef = useRef(null);
   useIntersectionObserver('.animate-on-scroll', 'appear');
@@ -46,7 +61,7 @@ const CheckPointRecordPage = () => {
             </div>
           </UserTitle>
 
-          {checkPoints.map((item, index) => (
+          {data.map((item, index) => (
             <BoxContainer className="animate-on-scroll scroll-area" key={index}>
               <p className="checkpoint-date">{item.checkpointdate}</p>
               {item.images && item.images.length > 0 ? ( // Check if images exis
