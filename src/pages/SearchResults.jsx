@@ -158,7 +158,10 @@ const SearchResults = () => {
                   <span>저자: 한강</span>
                   <span>출판사 : 창비</span>
                   <div>출간일: 2022년 03월</div>
-                  <Rating rating={rating} totalStars={totalStars} />
+                  <LabelContainer>
+                    <div>평점:</div>
+                    <Rating rating={rating} totalStars={totalStars} />
+                  </LabelContainer>
                 </BookSubtitle>
                 <LabelContainer>
                   <BookLabel text="국내도서" />

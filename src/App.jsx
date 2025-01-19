@@ -11,13 +11,16 @@ import SignUp from './pages/SignUp';
 import CheckPointRecordPage from './pages/CheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPopup';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
-import MyPage from './pages/MyPage';
+import EditMyInfo from './pages/EditMyInfo.jsx';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
 import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
+import Detail from './pages/Detail'
+
 import SNSManage from './pages/SNSManage.jsx';
+import MyPage from './pages/MyPage.jsx';
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
 import Main from './pages/Main.jsx'
 
@@ -26,46 +29,52 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <NavBar />
-          <div className="main-content">
-            <Routes>
-              <Route path="/search" element={<SearchResults />} />
-              <Route path="/" element={<Main />} />
-              <Route path="/makingGroup" element={<MakingGroupPage />} />
-              <Route path="/login" element={<Login />} />
+          <div className="app-container">
+            <NavBar />
+            <div className="main-content">
+              <Routes>
+                <Route path="/search" element={<SearchResults />} />
+                <Route path="/" element={<Login />} />
+                <Route path="/makingGroup" element={<MakingGroupPage />} />
+                <Route path="/login" element={<Login />} />
 
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/mypage" element={<MyPage />} />
-              <Route
-                path="/checkPointRecord"
-                element={<CheckPointRecordPage />}
-              />
-              {/*<Route*/}
-              {/*  path="/anothercheckPointRecord"*/}
-              {/*  element={<AnotherCheckPointRecordPage />}*/}
-              {/*/>*/}
-              <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
-              <Route
-                path="/SecessionUserPopup"
-                element={<SecessionUserPopup />}
-              />
-              <Route path="/endgroup" element={<EndGroupPopup />} />
-              <Route
-                path="/checkpointrecordpopup"
-                element={<CheckpointRecordPopup />}
-              />
-              <Route
-                path="/registercompletepopup"
-                element={<RegisterCompletePopup />}
-              />
-              <Route path="/lobby" element={<Lobby />} />
-              <Route path="/SNSManage" element={<SNSManage />} />
-              <Route path="/RatingPopup" element={<RatingPopup />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </ThemeProvider>
-    </ErrorBoundary>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route
+              path="/checkPointRecord"
+              element={<CheckPointRecordPage />}
+            />
+            {/*<Route*/}
+            {/*  path="/anothercheckPointRecord"*/}
+            {/*  element={<AnotherCheckPointRecordPage />}*/}
+            {/*/>*/}
+            <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
+            <Route
+              path="/SecessionUserPopup"
+              element={<SecessionUserPopup />}
+            />
+            <Route path="/endgroup" element={<EndGroupPopup />} />
+            <Route
+              path="/checkpointrecordpopup"
+              element={<CheckpointRecordPopup />}
+            />
+            <Route
+              path="/registercompletepopup"
+              element={<RegisterCompletePopup />}
+            />
+            <Route
+              path="/detail"
+              element={<Detail/>}
+            />
+                        <Route
+              path="/lobby"
+              element={<Lobby/>}
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
+
   );
 }
 
