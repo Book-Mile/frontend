@@ -22,6 +22,7 @@ import Detail from './pages/Detail'
 import SNSManage from './pages/SNSManage.jsx';
 import MyPage from './pages/MyPage.jsx';
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
+import Main from './pages/Main.jsx'
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
             <div className="main-content">
               <Routes>
                 <Route path="/search" element={<SearchResults />} />
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Main />} />
                 <Route path="/makingGroup" element={<MakingGroupPage />} />
                 <Route path="/login" element={<Login />} />
 
