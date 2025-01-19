@@ -34,7 +34,7 @@ function App() {
             <div className="main-content">
               <Routes>
                 <Route path="/search" element={<SearchResults />} />
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Main />} />
                 <Route path="/makingGroup" element={<MakingGroupPage />} />
                 <Route path="/login" element={<Login />} />
 
