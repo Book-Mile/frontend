@@ -17,6 +17,8 @@ import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/Chec
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
 import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
+import Detail from './pages/Detail'
+
 import SNSManage from './pages/SNSManage.jsx';
 import MyPage from './pages/MyPage.jsx';
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
@@ -35,40 +37,43 @@ function App() {
                 <Route path="/makingGroup" element={<MakingGroupPage />} />
                 <Route path="/login" element={<Login />} />
 
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/mypage" element={<MyPage />} />
-                <Route path="/editmyinfo" element={<EditMyInfo />} />
-                <Route
-                  path="/checkPointRecord"
-                  element={<CheckPointRecordPage />}
-                />
-                {/*<Route*/}
-                {/*  path="/anothercheckPointRecord"*/}
-                {/*  element={<AnotherCheckPointRecordPage />}*/}
-                {/*/>*/}
-                <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
-                <Route
-                  path="/SecessionUserPopup"
-                  element={<SecessionUserPopup />}
-                />
-                <Route path="/endgroup" element={<EndGroupPopup />} />
-                <Route
-                  path="/checkpointrecordpopup"
-                  element={<CheckpointRecordPopup />}
-                />
-                <Route
-                  path="/registercompletepopup"
-                  element={<RegisterCompletePopup />}
-                />
-                <Route path="/lobby" element={<Lobby />} />
-                <Route path="/SNSManage" element={<SNSManage />} />
-                <Route path="/RatingPopup" element={<RatingPopup />} />
-              </Routes>
-            </div>
-          </div>
-        </BrowserRouter>
-      </ThemeProvider>
-    </ErrorBoundary>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route
+              path="/checkPointRecord"
+              element={<CheckPointRecordPage />}
+            />
+            {/*<Route*/}
+            {/*  path="/anothercheckPointRecord"*/}
+            {/*  element={<AnotherCheckPointRecordPage />}*/}
+            {/*/>*/}
+            <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
+            <Route
+              path="/SecessionUserPopup"
+              element={<SecessionUserPopup />}
+            />
+            <Route path="/endgroup" element={<EndGroupPopup />} />
+            <Route
+              path="/checkpointrecordpopup"
+              element={<CheckpointRecordPopup />}
+            />
+            <Route
+              path="/registercompletepopup"
+              element={<RegisterCompletePopup />}
+            />
+            <Route
+              path="/detail"
+              element={<Detail/>}
+            />
+                        <Route
+              path="/lobby"
+              element={<Lobby/>}
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
+
   );
 }
 
