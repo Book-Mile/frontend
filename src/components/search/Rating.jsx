@@ -4,21 +4,31 @@ import styled from 'styled-components';
 const RatingContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 14px;
+  gap: 14px;
+  font-size: ${props => props.fontSize || '14px'};
   font-weight: 400;
   color: #565656;
 `;
 
+const StarContainer = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
 const Star = styled.div`
-  width: 14px;
-  height: 14px;
+  width: ${props => props.size || '14px'};
+  height: ${props => props.size || '14px'};
   position: relative;
   background: ${props => {
-    if (props.filled === 'full') {
+    const quarter = props.filled;
+    if (quarter === 1) {
       return props.theme.colors.main;
-    } else if (props.filled === 'half') {
+    } else if (quarter === 0.75) {
+      return `linear-gradient(90deg, ${props.theme.colors.main} 75%, #D3D3D3 25%)`;
+    } else if (quarter === 0.5) {
       return `linear-gradient(90deg, ${props.theme.colors.main} 50%, #D3D3D3 50%)`;
+    } else if (quarter === 0.25) {
+      return `linear-gradient(90deg, ${props.theme.colors.main} 25%, #D3D3D3 75%)`;
     } else {
       return '#D3D3D3';
     }
@@ -40,28 +50,36 @@ const Star = styled.div`
 
 const RatingNumber = styled.div`
   color: ${props => props.theme.colors.main};
-  font-size: 14px;
+  font-size: ${props => props.fontSize || '14px'};
   font-weight: 900;
 `;
 
-const Rating = ({ rating, totalStars }) => {
-  const fullStars = Math.floor(rating / 2);
-  const halfStars = rating % 2 >= 1 ? 1 : 0;
-  const emptyStars = totalStars - fullStars - halfStars;
+const Rating = ({ rating, totalStars = 5, starSize, fontSize }) => {
+  const fullStars = Math.floor(rating);
+  const decimal = rating - fullStars;
+  const quarterStars = Math.floor(decimal * 4);
+  const stars = [];
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(1);
+  }
+
+  if (quarterStars === 1) stars.push(0.25);
+  else if (quarterStars === 2) stars.push(0.5);
+  else if (quarterStars === 3) stars.push(0.75);
+
+  while (stars.length < totalStars) {
+    stars.push(0);
+  }
 
   return (
-    <RatingContainer>
-      <div>평점: </div>
-      {[...Array(fullStars)].map((_, index) => (
-        <Star key={index} filled="full" />
-      ))}
-      {[...Array(halfStars)].map((_, index) => (
-        <Star key={fullStars + index} filled="half" />
-      ))}
-      {[...Array(emptyStars)].map((_, index) => (
-        <Star key={fullStars + halfStars + index} filled="empty" />
-      ))}
-      <RatingNumber>{rating}</RatingNumber>
+    <RatingContainer fontSize={fontSize}>
+      <StarContainer>
+        {stars.map((star, index) => (
+          <Star key={index} filled={star} size={starSize} />
+        ))}
+      </StarContainer>
+      <RatingNumber fontSize={fontSize}>{rating.toFixed(1)}</RatingNumber>
     </RatingContainer>
   );
 };

@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { slideInLeft } from '../animations/animations';
 
 const CheckPointRecordPageContainer = styled.div`
-  height: 100vh; /* 전체 화면 높이 */
+  height: 100%; /* 전체 화면 높이 */
 
   scrollbar-width: none; /* Firefox */
+
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
   }
@@ -23,6 +24,7 @@ const CheckpointDescription = styled.div`
   line-height: 27px;
 
   color: #000000;
+
   .date {
     font-weight: 600;
     font-size: 18px;
@@ -41,6 +43,7 @@ const UserTitle = styled.div`
   justify-content: center;
   margin-top: 8%;
   color: black;
+
   .user {
     color: ${(props) => props.theme.colors.main};
   }
@@ -78,15 +81,17 @@ const ImgContent = styled.img`
 `;
 
 const RecordContainer = styled.div`
-  height: 100vh;
+  height: 100%;
   overflow-y: scroll; /* 스크롤 가능하도록 설정 */
   scroll-snap-type: y mandatory;
 
   /* 스크롤바 숨기기 */
   scrollbar-width: none; /* Firefox */
+
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
   }
+
   .appear {
     animation: ${slideInLeft} 0.8s ease forwards;
   }
@@ -149,6 +154,7 @@ const Button = styled.a`
   cursor: pointer;
   transition: all 0.2s ease;
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+
   &:hover {
     transform: scale(1.3);
   }

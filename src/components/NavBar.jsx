@@ -29,23 +29,23 @@ const LoginContainer = styled.div`
 `;
 
 const LoginText = styled(Link)`
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
   font-size: 16px;
-  cursor: pointer; 
+  cursor: pointer;
   background: transparent;
   border: none;
   padding: 8px 16px;
   text-decoration: none;
   padding: 10px 30px;
-  border-radius: 30px; 
+  border-radius: 30px;
 
   &:hover {
-    background-color: #f0f0f0; 
+    background-color: #f0f0f0;
   }
 `;
 
 const SignUpLink = styled(Link)`
-  background-color: ${props => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.main};
   color: white;
   border-radius: 30px;
   padding: 8px 16px;
@@ -61,18 +61,20 @@ const SignUpLink = styled(Link)`
 
 export default function NavBar() {
   return (
-    <nav className='navbar'>
+    <nav className="navbar">
       <MainContainer>
-        <LogoContainer to='/'>LOGO</LogoContainer>
+        <LogoContainer to="/">LOGO</LogoContainer>
         <LoginContainer>
           <LoginText to="/login">로그인</LoginText>
           <SignUpLink to="/signup">회원가입</SignUpLink>
         </LoginContainer>
-      {//로그인 후 사용
-      /*<NotifiContainer>
-          <NotifBell/>
-          <ProfileImage />
-      </NotifiContainer>*/}
+        {
+          //로그인 후 사용
+          /*<NotifiContainer>
+              <NotifBell/>
+              <ProfileImage />
+          </NotifiContainer>*/
+        }
       </MainContainer>
     </nav>
   );
