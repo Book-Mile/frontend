@@ -17,7 +17,7 @@ const LoadingContainer = styled.div`
 const LoadingIcon = styled.div`
   width: 80px;
   height: 80px;
-  background: url("../../public/images/1481.png") no-repeat center center;
+  background: url("../../public/images/loding.png") no-repeat center center;
   background-size: contain;
 `;
 

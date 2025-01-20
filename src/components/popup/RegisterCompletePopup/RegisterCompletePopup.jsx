@@ -71,6 +71,9 @@ const PopUpInnerBox2 = styled.div`
 const RegisterCompletePopup = ({ onClose = false }) => {
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const [seconds, setSeconds] = useState(2);
+  const handleClose = () => {
+    setIsClosing(true); // 닫히는 애니메이션 시작
+  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
