@@ -3,18 +3,24 @@ import styled from 'styled-components';
 
 import LGButton from '../components/LGButton/LGButton';
 
-import profileAsset from '/src/assets/EditMyInfoAssets/Profile.svg';
-import emailAsset from '/src/assets/EditMyInfoAssets/email.svg';
-import passwordAsset from '/src/assets/EditMyInfoAssets/password.svg';
-import snsAsset from '/src/assets/EditMyInfoAssets/sns.svg';
+import profileAsset from '/src/assets/mypageAssets/Profile.svg';
+import emailAsset from '/src/assets/mypageAssets/email.svg';
+import passwordAsset from '/src/assets/mypageAssets/password.svg';
+import snsAsset from '/src/assets/mypageAssets/sns.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
+import { useNavigate } from 'react-router-dom';
 
-export default function EditMyInfo() {
+export default function MyPage() {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [snsId, setSnsId] = useState('email@kakao.com');
+  const [isLinkedSNS, setIsLinkedSNS] = useState(false);
 
-  const [password, setPassword] = useState('');
+  const [curpassword, setCurpassword] = useState('');
+  const [changePassword, setChangePassword] = useState('');
+  const [changePasswordConfirm, setChangePasswordConfirm] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -102,16 +108,18 @@ export default function EditMyInfo() {
                   <Type1RightFirstLine>비밀번호 변경</Type1RightFirstLine>
                 </Type1Right>
               </BoxType1>
-              <Type3SecondLine>
+              {isLinkedSNS ? (
+                <div>SNS가 연동된 경우 비밀번호를 설정할 수 없습니다.</div>
+              ) : (
                 <Type3SecondLine>
                   <PasswordLineBox>
                     <PasswordLineLeft>현재 비밀번호</PasswordLineLeft>
                     <PasswordLineMiddle>
                       <Rectangle
-                        type="text"
-                        id="username"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type="password"
+                        id="curpassword"
+                        value={curpassword}
+                        onChange={(e) => setCurpassword(e.target.value)}
                       />
                     </PasswordLineMiddle>
                     <PasswordLineRight></PasswordLineRight>
@@ -120,10 +128,10 @@ export default function EditMyInfo() {
                     <PasswordLineLeft>변경 비밀번호</PasswordLineLeft>
                     <PasswordLineMiddle>
                       <Rectangle
-                        type="text"
-                        id="username"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type="password"
+                        id="changePassword"
+                        value={changePassword}
+                        onChange={(e) => setChangePassword(e.target.value)}
                       />
                     </PasswordLineMiddle>
                     <PasswordLineRight></PasswordLineRight>
@@ -132,10 +140,12 @@ export default function EditMyInfo() {
                     <PasswordLineLeft>비밀번호 확인</PasswordLineLeft>
                     <PasswordLineMiddle>
                       <Rectangle
-                        type="text"
-                        id="username"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type="password"
+                        id="changePasswordConfirm"
+                        value={changePasswordConfirm}
+                        onChange={(e) =>
+                          setChangePasswordConfirm(e.target.value)
+                        }
                       />
                     </PasswordLineMiddle>
                     <PasswordLineRight>
@@ -149,7 +159,7 @@ export default function EditMyInfo() {
                     </PasswordLineRight>
                   </PasswordLineBox>
                 </Type3SecondLine>
-              </Type3SecondLine>
+              )}
             </BoxType3>
           </BoxFrame>
           <BoxFrame>
@@ -171,7 +181,13 @@ export default function EditMyInfo() {
                   <SNSidFrame>{snsId}</SNSidFrame>
                 </Type2RightSecondLine>
               </Type2Middle>
-              <Type2Right>연동하기 &gt;</Type2Right>
+              <Type2Right
+                onClick={() => {
+                  navigate('/snsmanage');
+                }}
+              >
+                연동하기 &gt;
+              </Type2Right>
             </BoxType2>
           </BoxFrame>
           <BoxFrame>
@@ -183,7 +199,13 @@ export default function EditMyInfo() {
               <Type2Middle>
                 <Type2RightFirstLine>회원탈퇴</Type2RightFirstLine>
               </Type2Middle>
-              <Type2Right>탈퇴하기 &gt;</Type2Right>
+              <Type2Right
+                onClick={() => {
+                  navigate('/SecessionUserPopup');
+                }}
+              >
+                탈퇴하기 &gt;
+              </Type2Right>
             </BoxType2>
           </BoxFrame>
         </UpperFrame>
@@ -340,6 +362,8 @@ const Type2Right = styled.div`
   align-items: center;
 
   color: #4e202a;
+
+  cursor: pointer;
 `;
 
 const Type2RightFirstLine = styled.div`
@@ -414,7 +438,7 @@ const Type3SecondLine = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-left: 10px;
+  padding-left: 30px;
 `;
 
 const PasswordLineBox = styled.div`
