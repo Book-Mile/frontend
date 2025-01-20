@@ -5,8 +5,8 @@ import Img3 from '../assets/images/makingGroup3.png';
 import Img4 from '../assets/images/makingGroup4.png';
 
 const PageContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,7 +14,7 @@ const PageContainer = styled.div`
 const Background = styled.div`
   position: absolute; /* 배치 조정을 위해 사용 */
   width: 100%;
-  height: 100%;
+  height: 90%;
   filter: blur(80px); /* 블러 효과 추가 */
   background: radial-gradient(ellipse, red 0%, transparent 50%);
   z-index: -1; /* 뒤로 보내기 */
@@ -56,10 +56,12 @@ const ListContainer = styled.div`
 
   background: #ffffff;
   border-radius: 20px;
+
   &:hover {
     box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
     transform: scale(1.1, 1.1);
   }
+
   .card__img {
     background-image: ${({ imgNum }) => {
       switch (imgNum) {
@@ -85,6 +87,7 @@ const ListContainer = styled.div`
     background-position: center;
     background-repeat: no-repeat;
   }
+
   .card__info {
     background-color: #fff;
     border-bottom-left-radius: 12px;

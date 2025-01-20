@@ -7,9 +7,13 @@ import {
 
 import LGButton from '../components/LGButton/LGButton';
 import useClosePopupAnimation from '../hooks/useClosePopupAnimation.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login({ onClose = false }) {
-  const [userid, setUsername] = useState('');
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [isSented, setIsSented] = useState(false);
+  const [authNum, setAuthNum] = useState('');
   const [nickname, setNickname] = useState('');
 
   const [password, setPassword] = useState('');
@@ -17,16 +21,40 @@ export default function Login({ onClose = false }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Username:', userid);
+    console.log('Email:', email);
     console.log('Password:', password);
+    alert('회원가입이 정상적으로 되었습니다.');
   };
 
-  const handleSignUpButton = () => {
-    alert('회원가입 버튼 눌림');
+  const handleLoginButton = () => {
+    navigate('/login');
   };
 
-  const handleForgetPassword = () => {
-    alert('비밀번호 찾기 버튼 눌림');
+  function isValidEmail(email) {
+    // 이메일 형식 검증을 위한 정규식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  const handleSendAuthBtn = () => {
+    if (isValidEmail(email)) {
+      console.log('유효한 이메일 형식입니다.');
+      setIsSented(true);
+    } else {
+      alert('유효하지 않은 이메일 형식입니다.');
+    }
+  };
+
+  const checkAuthNum = () => {
+    if (authNum.length === 6) {
+      alert('인증되었습니다.');
+    } else {
+      alert('인증번호는 6자리입니다.');
+    }
+  };
+
+  const checkNickname = () => {
+    alert('사용할 수 있는 닉네임입니다.');
   };
 
   return (
@@ -41,24 +69,48 @@ export default function Login({ onClose = false }) {
           <Frame1>
             <Frame2>
               <Frame3>
-                <IdInput>아이디</IdInput>
+                <IdInput>이메일</IdInput>
                 <InputFrame>
                   <Rectangle
                     type="text"
-                    id="userid"
-                    value={userid}
-                    onChange={(e) => setUsername(e.target.value)}
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     width="none"
                   />
                   <LGButton
-                    text="중복확인"
+                    text="인증번호 전송"
                     width="87px"
                     height="100%"
                     radius="10px"
                     fontSize="14px"
+                    func={handleSendAuthBtn}
                   ></LGButton>
                 </InputFrame>
               </Frame3>
+              {isSented && (
+                <Frame3>
+                  <IdInput>인증번호</IdInput>
+                  <InputFrame>
+                    <Rectangle
+                      type="text"
+                      id="authNum"
+                      value={authNum}
+                      onChange={(e) => setAuthNum(e.target.value)}
+                      width="none"
+                    />
+                    <LGButton
+                      text="확인"
+                      width="87px"
+                      height="100%"
+                      radius="10px"
+                      fontSize="14px"
+                      func={checkAuthNum}
+                    ></LGButton>
+                  </InputFrame>
+                </Frame3>
+              )}
+
               <Frame3>
                 <IdInput>닉네임</IdInput>
                 <InputFrame>
@@ -75,6 +127,7 @@ export default function Login({ onClose = false }) {
                     height="100%"
                     radius="10px"
                     fontSize="14px"
+                    func={checkNickname}
                   ></LGButton>
                 </InputFrame>
               </Frame3>
@@ -98,13 +151,13 @@ export default function Login({ onClose = false }) {
               </Frame4>
             </Frame2>
             <Frame5>
-              <LGButton text="Sign in" width="345px" />
+              <LGButton text="Sign Up" width="345px" func={handleSubmit} />
             </Frame5>
           </Frame1>
           <Frame6>
-            <ForgotPassword onClick={handleForgetPassword}>
+            <ForgotPassword>
               이미 회원가입을 하셨나요?{' '}
-              <Register onClick={handleSignUpButton}>로그인</Register>
+              <SmallButton onClick={handleLoginButton}>로그인</SmallButton>
             </ForgotPassword>
           </Frame6>
         </Frame>
@@ -240,38 +293,15 @@ const ForgotPassword = styled.span`
   color: #565656;
 `;
 
-const Register = styled(ForgotPassword)`
+const SmallButton = styled(ForgotPassword)`
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 18px;
 
   color: ${(props) => props.theme.colors.main};
-`;
 
-const Frame7 = styled(Frame1)`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const SnsLogin = styled.span`
-  width: 248px;
-  height: 19px;
-  color: #565656;
-  font-size: 15px;
-  font-weight: 700;
-  text-align: center;
-`;
-
-const Frame8 = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  width: 345px;
-  height: 64px;
+  cursor: pointer;
 `;
 
 const Frame9 = styled.div`
@@ -283,25 +313,4 @@ const Frame9 = styled.div`
   padding: 14px;
   border: 2px solid #d9d9d9;
   border-radius: 50px;
-`;
-
-const FrameA = styled(Frame9)`
-  background: #f7e600;
-`;
-
-const FrameB = styled(FrameA)`
-  background: #2db400;
-`;
-
-const DuckIcon = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const Vector = styled.div`
-  width: 100%;
-  height: 100%;
-  background: url(../assets/images/7cfbe015-4f3f-419e-9c35-e8b967d3e511.png)
-    no-repeat center;
-  background-size: cover;
 `;

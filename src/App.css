@@ -1,31 +1,31 @@
 body {
-  overflow-x: hidden; 
-  margin: 0; 
-  height: 100vh;
+    overflow-x: hidden;
+    margin: 0;
+    height: 100vh;
 }
 
 /* 전체 컨테이너 스타일 */
 .app-container {
-  position: relative;
-  height: 100vh;
-  width: 100%;
+    position: relative;
+    height: 100vh;
+    width: 100%;
 }
 
 /* NavBar 스타일 */
 .app-container > nav {
-  position: absolute; 
-  top: 0;
-  width: 100%;
-  height: 60px; 
-  z-index: 10;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 10;
 }
 
 /* 페이지 콘텐츠 스타일 */
 .app-container > .page-content {
-  position: relative; 
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  height: calc(100vh - 80px);
-  z-index: 1;
+    position: relative;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+    z-index: 1;
 }
