@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import LGButton from '../components/LGButton/LGButton';
 
-import profileAsset from '/src/assets/mypageAssets/Profile.svg';
-import emailAsset from '/src/assets/mypageAssets/email.svg';
-import passwordAsset from '/src/assets/mypageAssets/password.svg';
-import snsAsset from '/src/assets/mypageAssets/sns.svg';
+import profileAsset from '/src/assets/EditMyInfoAssets/Profile.svg';
+import emailAsset from '/src/assets/EditMyInfoAssets/email.svg';
+import passwordAsset from '/src/assets/EditMyInfoAssets/password.svg';
+import snsAsset from '/src/assets/EditMyInfoAssets/sns.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
 import { useNavigate } from 'react-router-dom';
 
