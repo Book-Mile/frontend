@@ -11,14 +11,18 @@ import SignUp from './pages/SignUp';
 import CheckPointRecordPage from './pages/CheckPointRecordPage';
 import JoinGroupPopup from './components/popup/JoinGroupPopup/JoinGroupPopup';
 import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionUserPopup';
+import EditMyInfo from './pages/EditMyInfo.jsx';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
 import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
+import Detail from './pages/Detail';
+
 import SNSManage from './pages/SNSManage.jsx';
 import MyPage from './pages/MyPage.jsx';
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
+import Main from './pages/Main.jsx';
 
 function App() {
   return (
@@ -30,7 +34,7 @@ function App() {
             <div className="main-content">
               <Routes>
                 <Route path="/search" element={<SearchResults />} />
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Main />} />
                 <Route path="/makingGroup" element={<MakingGroupPage />} />
                 <Route path="/login" element={<Login />} />
 
@@ -59,6 +63,8 @@ function App() {
                   element={<RegisterCompletePopup />}
                 />
                 <Route path="/lobby" element={<Lobby />} />
+                <Route path="/detail" element={<Detail />} />
+                <Route path="/EditMyInfo" element={<EditMyInfo />} />
                 <Route path="/SNSManage" element={<SNSManage />} />
                 <Route path="/RatingPopup" element={<RatingPopup />} />
               </Routes>

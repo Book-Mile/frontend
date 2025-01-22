@@ -5,6 +5,7 @@ const CheckPointRecordPageContainer = styled.div`
   height: 100%; /* 전체 화면 높이 */
 
   scrollbar-width: none; /* Firefox */
+
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
   }
@@ -23,6 +24,7 @@ const CheckpointDescription = styled.div`
   line-height: 27px;
 
   color: #000000;
+
   .date {
     font-weight: 600;
     font-size: 18px;
@@ -41,6 +43,7 @@ const UserTitle = styled.div`
   justify-content: center;
   margin-top: 8%;
   color: black;
+
   .user {
     color: ${(props) => props.theme.colors.main};
   }
@@ -84,6 +87,7 @@ const RecordContainer = styled.div`
 
   /* 스크롤바 숨기기 */
   scrollbar-width: none; /* Firefox */
+
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
   }
@@ -147,6 +151,7 @@ const Button = styled.a`
   cursor: pointer;
   transition: all 0.2s ease;
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+
   &:hover {
     transform: scale(1.3);
   }
