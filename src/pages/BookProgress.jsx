@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import BarChart3D from '../components/Ranking/3d/BarChart3D';
+import BarChart3D from '../components/Ranking/3d/BarChart3D'
 import RankingList from '../components/Ranking/RankingList';
 import WhiteButton from '../components/button/whitebutton';
+import RankingList1 from '../components/Ranking/RankingList1';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -130,15 +131,16 @@ const RankingPage = () => {
           <WhiteButton>시작하기</WhiteButton>
         </ContentWrapper>
       </ImageContainer>
-    <div style={{ display: 'flex', width: '100%', height: '100vh' }}>
-      {/* 왼쪽: 3D Podium */}
+    {/* <div style={{ display: 'flex', width: '100%', height: '100vh' }}>
       <div style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
-        <BarChart3D topThree={rankings.slice(0, 3)} />
+        <BarChart3D/>
       </div>
-      {/* 오른쪽: 순위 리스트 */}
       <div style={{ flex: 1, padding: '20px', backgroundColor: '#ffffff' }}>
         <RankingList rankings={rankings.slice(3)} />
       </div>
+    </div> */}
+    <div>
+      <RankingList1/>
     </div>
     </>
   );
