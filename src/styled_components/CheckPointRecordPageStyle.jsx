@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { slideInLeft } from '../animations/animations';
 
 const CheckPointRecordPageContainer = styled.div`
-  height: 100vh; /* 전체 화면 높이 */
+  height: 100%; /* 전체 화면 높이 */
 
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
@@ -62,7 +62,7 @@ const ImgContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-align: start;
-  margin-top: 50%;
+  margin-top: 32%;
 `;
 
 const CheckPointCardsContainer = styled.div``;
@@ -78,7 +78,7 @@ const ImgContent = styled.img`
 `;
 
 const RecordContainer = styled.div`
-  height: 100vh;
+  height: 100%;
   overflow-y: scroll; /* 스크롤 가능하도록 설정 */
   scroll-snap-type: y mandatory;
 
@@ -87,16 +87,13 @@ const RecordContainer = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
   }
-  .appear {
-    animation: ${slideInLeft} 0.8s ease forwards;
-  }
 
   .animate-on-scroll {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.8s ease; /* 애니메이션 부드럽게 적용 */
   }
-
-  .appear .animate-on-scroll {
+  .appear {
+    animation: ${slideInLeft} 0.8s ease forwards;
     opacity: 1;
   }
 
@@ -113,6 +110,7 @@ const RecordContainer = styled.div`
 
   .scroll-area {
     height: 90%;
+    scroll-margin: 0px 0px 80px 0px;
     scroll-snap-align: center; /* 스크롤 위치 맞춤 */
     align-items: center;
   }
@@ -125,7 +123,7 @@ const Card = styled.img`
   max-height: 306px;
   object-fit: cover; /* 이미지를 잘리지 않고 비율 유지하며 채움 */
   top: ${({ position }) => -290 * position - 50}px;
-  left: ${({ position }) => position * 3}px;
+  left: ${({ position }) => position * 5}px;
   z-index: ${({ position }) => 50 - position};
   border-radius: 40px; /* 둥근 모서리 */
   box-shadow:
