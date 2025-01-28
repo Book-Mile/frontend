@@ -10,12 +10,9 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['react-error-boundary'], // 명시적으로 포함
+    include: ['react-error-boundary', '@react-spring/web'], // 명시적으로 포함
   },
   server: {
     port: 3000,
   },
-  optimizeDeps: {
-    include: ['@react-spring/web']
-  }
 });

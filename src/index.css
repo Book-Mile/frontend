@@ -1,35 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
-
 body {
-    font-family: 'Noto Sans KR', sans-serif;
-    color: #4E202A;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background-color: #FAFAFA;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #4e202a;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #fafafa;
 }
 
-
 .app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 850px;
+  min-width: 1200px;
 }
 
 .navbar {
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 4;
-
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
 }
 
 .main-content {
-    flex: 1;
-    overflow-y: auto; /* 스크롤이 필요할 경우 */
-
+  flex: 1;
+  overflow-y: auto; /* 스크롤이 필요할 경우 */
 }

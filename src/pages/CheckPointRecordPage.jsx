@@ -16,6 +16,7 @@ import CheckPointCards from '../components/checkPointPageCards/CheckPointCards';
 import ImagePopup from '../components/popup/ImgPopup/ImgPopup';
 import { CheckPointRecordRequest } from '../api/Pages/CheckPointRecordRequest';
 import { useErrorHandling } from '../hooks/useErrorHandling';
+import ScrollBar from '../components/ScrollBar';
 
 const CheckPointRecordPage = () => {
   //api에서 받아올 것들
@@ -35,11 +36,27 @@ const CheckPointRecordPage = () => {
   //   throw apiErrorMsg; // 렌더링 시 에러 발생
   // }
 
+  const [activeTarget, setActiveTarget] = useState(null);
+
+  const handleIntersect = (target) => {
+    setActiveTarget(target); // 관찰된 요소를 상태로 저장
+  };
+
   const containerRef = useRef(null);
-  useIntersectionObserver('.animate-on-scroll', 'appear');
+  useIntersectionObserver(
+    '.animate-on-scroll',
+    'appear',
+    { threshold: 0.5 },
+    handleIntersect,
+  );
 
   const handleScrollToBottom = () => {
-    scrollToBottom(containerRef);
+    if (containerRef.current) {
+      const scrollHeight = containerRef.current.scrollHeight; // 컨테이너의 전체 스크롤 높이
+      const clientHeight = containerRef.current.clientHeight; // 컨테이너의 보이는 높이
+      const scrollPosition = scrollHeight - clientHeight; // 맨 아래로 스크롤할 위치
+      scrollToBottom(containerRef, scrollPosition);
+    }
   };
 
   const handleClosePopup = () => {
@@ -54,7 +71,11 @@ const CheckPointRecordPage = () => {
     <>
       <CheckPointRecordPageContainer>
         <RecordContainer ref={containerRef}>
-          <UserTitle className="scroll-area">
+          <UserTitle
+            className="animate-on-scroll scroll-area"
+            key={0}
+            data-index={0}
+          >
             <div>
               <span className="user">{user}</span> 님의{' '}
               <span className="user">{bookTitle}</span> 기록입니다.
@@ -62,7 +83,11 @@ const CheckPointRecordPage = () => {
           </UserTitle>
 
           {data.map((item, index) => (
-            <BoxContainer className="animate-on-scroll scroll-area" key={index}>
+            <BoxContainer
+              className="animate-on-scroll scroll-area"
+              key={index + 1}
+              data-index={index + 1}
+            >
               <p className="checkpoint-date">{item.checkpointdate}</p>
               {item.images && item.images.length > 0 ? ( // Check if images exis
                 <ImgContainer>
@@ -124,6 +149,11 @@ const CheckPointRecordPage = () => {
           onClose={handleClosePopup}
         />
       )}
+      <ScrollBar
+        data={data?.map((item) => item.checkpointdate) || []}
+        activeTarget={activeTarget}
+        containerRef={containerRef}
+      />
     </>
   );
 };

@@ -25,7 +25,7 @@ export const checkPoints = [
   {
     id: 2,
     date: '2024.10.08',
-    checkpointdate: '155p', // 추가된 더미 데이터
+    checkpointdate: '160p', // 추가된 더미 데이터
     title: 'CHECK POINT 2',
     description:
       '저희는 환경을 위해 노력하고 있으며 음식물 쓰레기 문제 해결을 위해 여러 아이디어를 준비하고 있습니다.',
@@ -34,7 +34,7 @@ export const checkPoints = [
   {
     id: 3,
     date: '2024.10.15',
-    checkpointdate: '155p', // 추가된 더미 데이터
+    checkpointdate: '180p', // 추가된 더미 데이터
     title: 'CHECK POINT 3',
     description:
       '참가자분들의 불편함을 최소화하고 음식물 쓰레기를 보다 효과적으로 처리하기 위해 다양한 방안을 논의 중입니다.',
@@ -43,7 +43,7 @@ export const checkPoints = [
   {
     id: 4,
     date: '2024.10.22',
-    checkpointdate: '155p', // 추가된 더미 데이터
+    checkpointdate: '190p', // 추가된 더미 데이터
     title: 'CHECK POINT 4',
     description:
       '첫 번째 프로토타입 제작을 완료했습니다. 음식물 쓰레기 처리 장치의 기본 구조와 작동 방식을 테스트하고 있습니다.',
@@ -52,7 +52,7 @@ export const checkPoints = [
   {
     id: 5,
     date: '2024.10.29',
-    checkpointdate: '155p', // 추가된 더미 데이터
+    checkpointdate: '250p', // 추가된 더미 데이터
     title: 'CHECK POINT 5',
     description:
       '사용자 피드백을 수집하여 개선점을 파악했습니다. 장치의 크기와 사용 편의성에 대한 의견을 반영하여 설계를 수정하고 있습니다.',
@@ -61,7 +61,7 @@ export const checkPoints = [
   {
     id: 6,
     date: '2024.11.05',
-    checkpointdate: '155p', // 추가된 더미 데이터
+    checkpointdate: '280p', // 추가된 더미 데이터
     title: 'CHECK POINT 6',
     description:
       '개선된 두 번째 프로토타입 제작이 진행 중입니다. 더 컴팩트한 사이즈와 향상된 처리 능력을 목표로 하고 있습니다.',
@@ -70,7 +70,7 @@ export const checkPoints = [
   {
     id: 7,
     date: '2024.11.12',
-    checkpointdate: '155p', // 추가된 더미 데이터
+    checkpointdate: '300p', // 추가된 더미 데이터
     title: 'CHECK POINT 7',
     description:
       '현장 테스트를 위한 준비를 마쳤습니다. 실제 캠핑장에서의 성능 검증을 위한 계획을 수립했습니다.',
@@ -79,7 +79,7 @@ export const checkPoints = [
   {
     id: 8,
     date: '2024.11.19',
-    checkpointdate: '155p', // 추가된 더미 데이터
+    checkpointdate: '305p', // 추가된 더미 데이터
     title: 'CHECK POINT 8',
     description:
       '첫 현장 테스트를 성공적으로 완료했습니다. 예상보다 높은 처리 효율을 보여주었으며, 사용자들의 반응도 긍정적이었습니다.',
