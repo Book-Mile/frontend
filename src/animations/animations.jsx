@@ -3,7 +3,7 @@ import { keyframes } from 'styled-components';
 // 페이지 전환 애니메이션
 export const slideInLeft = keyframes`
   from {
-    transform: translateX(-100%);
+    transform: translateX(-15%);
     opacity: 0;
   }
   to {

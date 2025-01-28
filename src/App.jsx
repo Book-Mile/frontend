@@ -62,8 +62,8 @@ function App() {
                   path="/registercompletepopup"
                   element={<RegisterCompletePopup />}
                 />
-                <Route path="/detail" element={<Detail />} />
                 <Route path="/lobby" element={<Lobby />} />
+                <Route path="/detail" element={<Detail />} />
                 <Route path="/EditMyInfo" element={<EditMyInfo />} />
                 <Route path="/SNSManage" element={<SNSManage />} />
                 <Route path="/RatingPopup" element={<RatingPopup />} />

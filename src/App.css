@@ -1,14 +1,16 @@
 body {
-    overflow-x: hidden;
-    margin: 0;
-    height: 100vh;
+
+  overflow-x: hidden;
+  position: relative;
+  margin: 0px;
 }
 
 /* 전체 컨테이너 스타일 */
 .app-container {
-    position: relative;
-    height: 100vh;
-    width: 100%;
+
+  height: 100vh;
+  min-height: 850px;
+  min-width: 1200px;
 }
 
 /* NavBar 스타일 */
@@ -18,6 +20,7 @@ body {
     width: 100%;
     height: 60px;
     z-index: 10;
+
 }
 
 /* 페이지 콘텐츠 스타일 */
@@ -28,4 +31,5 @@ body {
     overflow-y: auto;
     height: calc(100vh - 80px);
     z-index: 1;
+
 }

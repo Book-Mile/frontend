@@ -12,13 +12,13 @@ export const PopupContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  min-height: 900px;
+  min-width: 1200px;
   bottom: 0;
-  right: 0;
   background-color: rgba(46, 46, 46, 0.8);
-  z-index: 100;
   /* 블러 효과 추가 */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px); /* 사파리 호환성 */
@@ -32,7 +32,7 @@ export const PopupInner = styled.div`
   align-items: center;
   justify-content: center;
   gap: 3%;
-  width: 65%;
+  width: 900px;
   height: 60%;
   transform: translateY(100%);
   animation: ${(props) =>
@@ -48,13 +48,12 @@ export const PopupInner = styled.div`
 export const PopUpInnerBox1 = styled.div`
   padding: 1rem;
   padding-bottom: 3%;
-  width: 38%;
+  width: 400px;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   gap: 1%;
   display: flex;
-  height: 100%;
+  height: 550px;
   overflow: hidden;
   background: #ffffff;
   border-radius: 20px;
@@ -100,9 +99,6 @@ export const CardTitle = styled.div`
   line-height: 35px;
   color: #111111;
   font-family: 'Noto Sans KR';
-  @media (max-width: 1200px) {
-    font-size: 1rem;
-  }
 `;
 export const CardContent = styled.div`
   font-style: normal;
@@ -115,16 +111,13 @@ export const CardContent = styled.div`
   color: #565656;
   margin-top: 15%;
   font-family: 'Inter';
-  @media (max-width: 1200px) {
-    font-size: 0.6rem;
-  }
 `;
 
 export const PopUpInnerBox2 = styled.div`
   padding: 1rem;
   padding-bottom: 3%;
-  width: 100%;
-  height: 100%;
+  width: 800px;
+  height: 550px;
   flex-direction: column;
   align-items: start;
   gap: 3%;
