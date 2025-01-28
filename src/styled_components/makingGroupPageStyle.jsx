@@ -13,6 +13,7 @@ const PageContainer = styled.div`
 `;
 const Background = styled.div`
   position: absolute; /* 배치 조정을 위해 사용 */
+
   width: 90%;
   height: 90%;
   filter: blur(80px); /* 블러 효과 추가 */
@@ -49,10 +50,12 @@ const ListContainer = styled.div`
 
   background: #ffffff;
   border-radius: 20px;
+
   &:hover {
     box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
     transform: scale(1.1, 1.1);
   }
+
   @media (max-width: 1200px) {
     justify-content: center;
   }
@@ -79,6 +82,7 @@ const ListContainer = styled.div`
     background-position: center;
     background-repeat: no-repeat;
   }
+
   .card__info {
     background-color: #fff;
     border-bottom-left-radius: 12px;
