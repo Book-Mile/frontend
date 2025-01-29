@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import useUserStore from '../../src/store/store.js';
+import { validatePassword } from '../utils/publicFunctions.js';
 
 import LGButton from '../components/LGButton/LGButton';
 
@@ -9,21 +11,88 @@ import passwordAsset from '/src/assets/EditMyInfoAssets/password.svg';
 import snsAsset from '/src/assets/EditMyInfoAssets/sns.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
 import { useNavigate } from 'react-router-dom';
+import {
+  getSocialInfo,
+  getUserInfo,
+  checkNicknameExists,
+  emailRequest,
+  checkEmailVerification,
+  changePassword,
+  changeNicknameEmail,
+} from '/src/api/Pages/EditMyInfoRequest.jsx';
 
 export default function MyPage() {
+  const { name, setName } = useUserStore();
+
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
+  const [image, setImage] = useState('');
   const [snsId, setSnsId] = useState('email@kakao.com');
   const [isLinkedSNS, setIsLinkedSNS] = useState(false);
+  const [isSented, setIsSented] = useState(false);
+  const [authNum, setAuthNum] = useState('');
+  const [isAuthed, setIsAuthed] = useState(false);
 
-  const [curpassword, setCurpassword] = useState('');
-  const [changePassword, setChangePassword] = useState('');
-  const [changePasswordConfirm, setChangePasswordConfirm] = useState('');
+  const [originPassword, setOriginPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    getUserInfo(setEmail, setNickname, setImage);
+    getSocialInfo(); //일단은 정보 받아오기만 하고, 화면 연동은 나중에..
+  }, []);
+
+  const onClickCheckNickname = () => {
+    if (nickname.length >= 2) {
+      checkNicknameExists(nickname);
+    } else {
+      alert('닉네임은 최소 2글자 이상이어야 합니다.');
+    }
+  };
+
+  function isValidEmail(email) {
+    // 이메일 형식 검증을 위한 정규식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  const handleSendAuthBtn = () => {
+    if (isValidEmail(email)) {
+      console.log('유효한 이메일 형식입니다.');
+      emailRequest(email);
+      setIsSented(true);
+    } else {
+      alert('유효하지 않은 이메일 형식입니다.');
+    }
+  };
+
+  const checkAuthNum = () => {
+    if (authNum.length === 6) {
+      checkEmailVerification(email, authNum, setIsAuthed);
+    } else {
+      alert('인증번호는 6자리입니다.');
+    }
+  };
+
+  const handleChangePassword = () => {
+    if (originPassword && newPassword && checkPassword) {
+      if (validatePassword(newPassword)) {
+        changePassword(originPassword, newPassword, checkPassword);
+      } else {
+        alert(
+          '비밀번호는 8~16자의 영문 대소문자, 숫자, 특수문자로 이루어져야 합니다.',
+        );
+      }
+    } else {
+      alert('비밀번호를 입력하세요.');
+    }
+  };
+
+  //하단 완료 버튼 눌렀을 시 동작할 함수
+  const handleSubmit = () => {
+    changeNicknameEmail(nickname, email, setName, navigate);
   };
 
   return (
@@ -34,7 +103,7 @@ export default function MyPage() {
             <BoxType1>
               <Type1Left>
                 <img
-                  src={profileAsset}
+                  src={image}
                   alt="profileAsset"
                   width="66px"
                   height="66px"
@@ -56,6 +125,7 @@ export default function MyPage() {
                     height="100%"
                     radius="10px"
                     fontSize="14px"
+                    func={onClickCheckNickname}
                   />
                 </Type1RightSecondLine>
               </Type1Right>
@@ -82,13 +152,33 @@ export default function MyPage() {
                     placeholder="exmple@gmail.com"
                   />
                   <LGButton
-                    text="인증하기"
+                    text="인증번호 전송"
                     width="87px"
                     height="100%"
                     radius="10px"
                     fontSize="14px"
+                    func={handleSendAuthBtn}
                   />
                 </Type1RightSecondLine>
+                {isSented && (
+                  <Type1RightSecondLine>
+                    인증번호 입력
+                    <Rectangle
+                      type="text"
+                      id="authNum"
+                      value={authNum}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <LGButton
+                      text="인증하기"
+                      width="87px"
+                      height="100%"
+                      radius="10px"
+                      fontSize="14px"
+                      func={checkAuthNum}
+                    />
+                  </Type1RightSecondLine>
+                )}
               </Type1Right>
             </BoxType1>
           </BoxFrame>
@@ -117,9 +207,9 @@ export default function MyPage() {
                     <PasswordLineMiddle>
                       <Rectangle
                         type="password"
-                        id="curpassword"
-                        value={curpassword}
-                        onChange={(e) => setCurpassword(e.target.value)}
+                        id="originPassword"
+                        value={originPassword}
+                        onChange={(e) => setOriginPassword(e.target.value)}
                       />
                     </PasswordLineMiddle>
                     <PasswordLineRight></PasswordLineRight>
@@ -129,9 +219,9 @@ export default function MyPage() {
                     <PasswordLineMiddle>
                       <Rectangle
                         type="password"
-                        id="changePassword"
-                        value={changePassword}
-                        onChange={(e) => setChangePassword(e.target.value)}
+                        id="newPassword"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
                       />
                     </PasswordLineMiddle>
                     <PasswordLineRight></PasswordLineRight>
@@ -141,11 +231,9 @@ export default function MyPage() {
                     <PasswordLineMiddle>
                       <Rectangle
                         type="password"
-                        id="changePasswordConfirm"
-                        value={changePasswordConfirm}
-                        onChange={(e) =>
-                          setChangePasswordConfirm(e.target.value)
-                        }
+                        id="checkPassword"
+                        value={checkPassword}
+                        onChange={(e) => setCheckPassword(e.target.value)}
                       />
                     </PasswordLineMiddle>
                     <PasswordLineRight>
@@ -155,6 +243,7 @@ export default function MyPage() {
                         height="40px"
                         radius="10px"
                         fontSize="14px"
+                        func={handleChangePassword}
                       />
                     </PasswordLineRight>
                   </PasswordLineBox>
@@ -216,6 +305,7 @@ export default function MyPage() {
             fontSize="16px"
             height="40px"
             radius="30px"
+            func={handleSubmit}
           />
         </DownFrame>
       </OuterFrame>
@@ -315,10 +405,18 @@ const Type1RightFirstLine = styled.div`
 `;
 const Type1RightSecondLine = styled.div`
   width: 100%;
+
   flex-grow: 1;
   display: flex;
   flex-direction: row;
   gap: 20px;
+
+  align-items: center;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 32px;
 `;
 
 const BoxType2 = styled.div`
@@ -414,7 +512,7 @@ const SNSidFrame = styled.div`
   color: #4e202a;
 `;
 const Rectangle = styled.input`
-  width: 100%;
+  flex: 1;
   height: 40px;
   background: rgba(217, 217, 217, 0);
   border: 1px solid #d9d9d9;

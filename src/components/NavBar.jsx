@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import useUserStore from '../../src/store/store.js';
+import { handleLogout } from '/src/utils/publicFunctions.js';
 
 const MainContainer = styled.div`
   overflow: hidden;
@@ -63,11 +64,6 @@ const SignUpLink = styled(Link)`
 export default function NavBar() {
   const { name, setName } = useUserStore();
 
-  const handleLogout = () => {
-    setName(null);
-    sessionStorage.removeItem('userData');
-  };
-
   return (
     <nav className="navbar">
       <MainContainer>
@@ -82,7 +78,12 @@ export default function NavBar() {
           ) : (
             <>
               {name} 님{' '}
-              <span onClick={handleLogout} style={{ cursor: 'pointer' }}>
+              <span
+                onClick={() => {
+                  handleLogout(setName);
+                }}
+                style={{ cursor: 'pointer' }}
+              >
                 로그아웃
               </span>
             </>
