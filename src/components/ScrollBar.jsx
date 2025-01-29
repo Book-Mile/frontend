@@ -26,9 +26,9 @@ const ScrollBar = styled.div`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
     /* 텍스트에 따라 width 자동 조정 */
-    display: inline-block;
-    min-width: 50px; /* 최소 너비 */
-    max-width: 300px; /* 최대 너비 */
+    display: block;
+    min-width: 10px; /* 최소 너비 */
+    max-width: 200px; /* 최대 너비 */
     width: auto; /* 텍스트 길이에 맞게 width 자동 조정 */
     text-align: center; /* 텍스트 정렬 */
   }

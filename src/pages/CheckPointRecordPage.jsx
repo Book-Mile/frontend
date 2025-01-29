@@ -18,7 +18,7 @@ import { CheckPointRecordRequest } from '../api/Pages/CheckPointRecordRequest';
 import { useErrorHandling } from '../hooks/useErrorHandling';
 import ScrollBar from '../components/ScrollBar';
 
-const CheckPointRecordPage = () => {
+const CheckPointRecordPage = ({ subject = 'CUSTOM' }) => {
   //api에서 받아올 것들
   const [user, setUser] = useState('무진장세일');
   const [bookTitle, setBookTitle] = useState('젊은 베르테르의 슬픔');
@@ -88,18 +88,18 @@ const CheckPointRecordPage = () => {
               key={index + 1}
               data-index={index + 1}
             >
-              <p className="checkpoint-date">{item.checkpointdate}</p>
-              {item.images && item.images.length > 0 ? ( // Check if images exis
+              <p className="checkpoint-date">{item.currentPage}</p>
+              {item.imageUrls && item.imageUrls.length > 0 ? ( // Check if images exis
                 <ImgContainer>
-                  {item.images.length === 1 ? ( // If only one image
+                  {item.imageUrls.length === 1 ? ( // If only one image
                     <ImgContent
-                      src={item.images[0]}
+                      src={item.imageUrls[0]}
                       alt="Checkpoint image"
-                      onClick={() => handleCardClick(item.images[0])} // Open popup
+                      onClick={() => handleCardClick(item.imageUrls[0])} // Open popup
                     />
                   ) : (
                     <CheckPointCards
-                      images={item.images}
+                      images={item.imageUrls}
                       handleCardClick={handleCardClick}
                     />
                   )}
@@ -107,9 +107,15 @@ const CheckPointRecordPage = () => {
               ) : null}
               <BoxInnerContainer>
                 <CheckpointDescription>
-                  <span className="date">{item.date}</span>
-                  <br />
-                  {item.description}
+                  {subject != 'CUSTOM' && (
+                    <>
+                      <span className="date">
+                        {new Date(item.createdAt).toISOString().slice(0, 10)}
+                      </span>
+                      <br />
+                    </>
+                  )}
+                  {item.text}
                 </CheckpointDescription>
               </BoxInnerContainer>
             </BoxContainer>
@@ -150,7 +156,7 @@ const CheckPointRecordPage = () => {
         />
       )}
       <ScrollBar
-        data={data?.map((item) => item.checkpointdate) || []}
+        data={data?.map((item) => item.currentPage) || []}
         activeTarget={activeTarget}
         containerRef={containerRef}
       />

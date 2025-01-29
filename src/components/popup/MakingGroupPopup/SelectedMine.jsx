@@ -23,7 +23,7 @@ const SelectedMine = ({ imgPath, title, content, handleClose, subject }) => {
     isAnimating,
     handleGroupClick,
     handleBack,
-    handleCompleteClick,
+    handleTransition,
   } = useModalSelectedGroup();
 
   // 예시 데이터
@@ -103,7 +103,7 @@ const SelectedMine = ({ imgPath, title, content, handleClose, subject }) => {
             bgColor={'#FFF0F0'}
             textSize={'15px'}
             height={'37px'}
-            onClick={() => handleCompleteClick(inputValue)}
+            onClick={() => handleTransition()}
           />
         )}
       </PopUpInnerBox1>
@@ -118,6 +118,7 @@ const SelectedMine = ({ imgPath, title, content, handleClose, subject }) => {
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
                 subject={subject}
+                inputValue={inputValue}
               />
             ) : (
               <RightPopup_two
