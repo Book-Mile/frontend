@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { validatePassword } from '../utils/publicFunctions.js';
+
 import {
   registerUser,
   emailRequest,
@@ -22,12 +24,6 @@ export default function SignUp() {
 
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordconfirm] = useState('');
-
-  const validatePassword = (password) => {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
-    return regex.test(password);
-  };
 
   const handleSubmit = () => {
     // event.preventDefault();

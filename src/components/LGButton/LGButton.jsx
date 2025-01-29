@@ -58,7 +58,7 @@ export default function Main({
   fontSize,
 }) {
   return (
-    <div onClick={func}>
+    <div onClick={func} style={{ width: width, height: height }}>
       <MainContainer
         width={width}
         height={height}
