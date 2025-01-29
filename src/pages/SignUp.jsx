@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { registerUser, emailRequest } from '../api/Pages/SignUpRequest.jsx';
+import {
+  registerUser,
+  emailRequest,
+  checkEmailVerification,
+} from '../api/Pages/SignUpRequest.jsx';
 import {
   PopupContainer,
   PopupInner,
 } from '../../src/styled_components/popupStyle.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
-import useClosePopupAnimation from '../hooks/useClosePopupAnimation.jsx';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignUp({ onClose = false }) {
+export default function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [isSented, setIsSented] = useState(false);
   const [authNum, setAuthNum] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [isAuthed, setIsAuthed] = useState(false);
 
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordconfirm] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
-    registerUser(email, password, passwordconfirm, navigate());
+  const handleSubmit = () => {
+    // event.preventDefault();
+    // console.log('Email:', email);
+    // console.log('Password:', password);
+    if (isAuthed) {
+      registerUser(email, password, passwordconfirm, navigate());
+    } else {
+      alert('이메일 인증을 해주세요.');
+    }
     // alert('회원가입이 정상적으로 되었습니다.');
   };
 
@@ -50,14 +57,10 @@ export default function SignUp({ onClose = false }) {
 
   const checkAuthNum = () => {
     if (authNum.length === 6) {
-      alert('인증되었습니다.');
+      checkEmailVerification(email, authNum, setIsAuthed);
     } else {
       alert('인증번호는 6자리입니다.');
     }
-  };
-
-  const checkNickname = () => {
-    alert('사용할 수 있는 닉네임입니다.');
   };
 
   const handleClose = () => {
@@ -120,26 +123,6 @@ export default function SignUp({ onClose = false }) {
                 </Frame3>
               )}
 
-              {/*<Frame3>*/}
-              {/*  <IdInput>닉네임</IdInput>*/}
-              {/*  <InputFrame>*/}
-              {/*    <Rectangle*/}
-              {/*      type="text"*/}
-              {/*      id="nickname"*/}
-              {/*      value={nickname}*/}
-              {/*      onChange={(e) => setNickname(e.target.value)}*/}
-              {/*      width="none"*/}
-              {/*    />*/}
-              {/*    <LGButton*/}
-              {/*      text="중복확인"*/}
-              {/*      width="87px"*/}
-              {/*      height="100%"*/}
-              {/*      radius="10px"*/}
-              {/*      fontSize="14px"*/}
-              {/*      func={checkNickname}*/}
-              {/*    ></LGButton>*/}
-              {/*  </InputFrame>*/}
-              {/*</Frame3>*/}
               <Frame4>
                 <PasswordInput>비밀번호</PasswordInput>
                 <Rectangle5
