@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import useUserStore from '../../src/store/store.js';
+
 import {
   PopupContainer,
   PopupInner,
 } from '../../src/styled_components/popupStyle.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
+import { login } from '../api/Pages/LoginRequest.jsx';
 
 // import { ReactComponent as Google } from '../assets/snslogo/google.svg';
 import googleLogo from '/src/assets/snslogo/google.svg';
@@ -18,12 +21,13 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
+  const { name, setName } = useUserStore();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     console.log('Email:', email);
     console.log('Password:', password);
-    alert('로그인되었습니다.');
+    login(email, password, navigate, name, setName);
+    // alert('로그인되었습니다.');
   };
 
   const handleSignUpButton = () => {
@@ -34,10 +38,15 @@ export default function Login() {
     alert('비밀번호 찾기 버튼 눌림');
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <PopupContainer>
       <MainContainer>
         <Frame>
+          <CloseBtn onClick={handleClose}>닫기</CloseBtn>
           <SignInLogo>BookMille에 로그인</SignInLogo>
           <Frame1>
             <Frame2>
@@ -59,6 +68,12 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="비밀번호를 입력하세요"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      // 엔터 키가 눌리면 실행될 함수 호출
+                      handleSubmit();
+                    }
+                  }}
                 />
               </Frame4>
             </Frame2>
@@ -268,4 +283,16 @@ const FrameA = styled(Frame9)`
 
 const FrameB = styled(FrameA)`
   background: #2db400;
+`;
+
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 10px; /* 위쪽에서 10px */
+  right: 10px; /* 오른쪽에서 10px */
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;
