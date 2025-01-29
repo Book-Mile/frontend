@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { registerUser, emailRequest } from '../api/Pages/SignUpRequest.jsx';
 import {
   PopupContainer,
   PopupInner,
@@ -9,7 +10,7 @@ import LGButton from '../components/LGButton/LGButton';
 import useClosePopupAnimation from '../hooks/useClosePopupAnimation.jsx';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login({ onClose = false }) {
+export default function SignUp({ onClose = false }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [isSented, setIsSented] = useState(false);
@@ -23,7 +24,8 @@ export default function Login({ onClose = false }) {
     event.preventDefault();
     console.log('Email:', email);
     console.log('Password:', password);
-    alert('회원가입이 정상적으로 되었습니다.');
+    registerUser(email, password, passwordconfirm, navigate());
+    // alert('회원가입이 정상적으로 되었습니다.');
   };
 
   const handleLoginButton = () => {
@@ -39,6 +41,7 @@ export default function Login({ onClose = false }) {
   const handleSendAuthBtn = () => {
     if (isValidEmail(email)) {
       console.log('유효한 이메일 형식입니다.');
+      emailRequest(email);
       setIsSented(true);
     } else {
       alert('유효하지 않은 이메일 형식입니다.');
@@ -57,10 +60,16 @@ export default function Login({ onClose = false }) {
     alert('사용할 수 있는 닉네임입니다.');
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <PopupContainer>
       <MainContainer>
         <Frame>
+          <CloseBtn onClick={handleClose}>닫기</CloseBtn>
+
           <SignInLogo>
             BookMille의
             <br />
@@ -111,26 +120,26 @@ export default function Login({ onClose = false }) {
                 </Frame3>
               )}
 
-              <Frame3>
-                <IdInput>닉네임</IdInput>
-                <InputFrame>
-                  <Rectangle
-                    type="text"
-                    id="nickname"
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
-                    width="none"
-                  />
-                  <LGButton
-                    text="중복확인"
-                    width="87px"
-                    height="100%"
-                    radius="10px"
-                    fontSize="14px"
-                    func={checkNickname}
-                  ></LGButton>
-                </InputFrame>
-              </Frame3>
+              {/*<Frame3>*/}
+              {/*  <IdInput>닉네임</IdInput>*/}
+              {/*  <InputFrame>*/}
+              {/*    <Rectangle*/}
+              {/*      type="text"*/}
+              {/*      id="nickname"*/}
+              {/*      value={nickname}*/}
+              {/*      onChange={(e) => setNickname(e.target.value)}*/}
+              {/*      width="none"*/}
+              {/*    />*/}
+              {/*    <LGButton*/}
+              {/*      text="중복확인"*/}
+              {/*      width="87px"*/}
+              {/*      height="100%"*/}
+              {/*      radius="10px"*/}
+              {/*      fontSize="14px"*/}
+              {/*      func={checkNickname}*/}
+              {/*    ></LGButton>*/}
+              {/*  </InputFrame>*/}
+              {/*</Frame3>*/}
               <Frame4>
                 <PasswordInput>비밀번호</PasswordInput>
                 <Rectangle5
@@ -304,13 +313,14 @@ const SmallButton = styled(ForgotPassword)`
   cursor: pointer;
 `;
 
-const Frame9 = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 14px;
-  border: 2px solid #d9d9d9;
-  border-radius: 50px;
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 10px; /* 위쪽에서 10px */
+  right: 10px; /* 오른쪽에서 10px */
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;

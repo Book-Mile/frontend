@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import useUserStore from '../../src/store/store.js';
 
 const MainContainer = styled.div`
   overflow: hidden;
@@ -60,13 +61,32 @@ const SignUpLink = styled(Link)`
 `;
 
 export default function NavBar() {
+  const { name, setName } = useUserStore();
+
+  const handleLogout = () => {
+    setName(null);
+    sessionStorage.removeItem('userData');
+  };
+
   return (
     <nav className="navbar">
       <MainContainer>
         <LogoContainer to="/">LOGO</LogoContainer>
         <LoginContainer>
-          <LoginText to="/login">로그인</LoginText>
-          <SignUpLink to="/signup">회원가입</SignUpLink>
+          {/*임시로 로그인 관리를 위해 컨디셔널 렌더링 해둔 코드입니다*/}
+          {name === null ? (
+            <>
+              <LoginText to="/login">로그인</LoginText>
+              <SignUpLink to="/signup">회원가입</SignUpLink>
+            </>
+          ) : (
+            <>
+              {name} 님{' '}
+              <span onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                로그아웃
+              </span>
+            </>
+          )}
         </LoginContainer>
         {
           //로그인 후 사용
