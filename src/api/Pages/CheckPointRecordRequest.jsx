@@ -1,8 +1,16 @@
 import axios from 'axios';
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주소 불러오기
 
 export const CheckPointRecordRequest = async (setData, setErrorMessage) => {
   try {
-    const response = await axios.get('/api/checkPointRecord'); // 예시 API 호출
+    //추후 수정
+    const token = 123456465798;
+
+    const response = await axios.get(`${BASE_URL}/api/v1/records`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // 여기에 토큰값을 넣어줍니다.
+      },
+    });
     if (response.status === 200) {
       setData(response.data); // 그룹 데이터를 상태에 저장
     } else {

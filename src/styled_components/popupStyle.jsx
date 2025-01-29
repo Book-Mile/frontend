@@ -223,10 +223,10 @@ export const GroupOverflowContainer = styled.div`
 export const Rightpopup_oneContinaer = styled.div`
   margin-top: 3%; /* 하단 여백을 버튼 높이만큼 확보 */
   height: 80%;
-  width: 55%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
   overflow: auto;
+  display: flex;
+  justify-content: center;
 `;
 // 타이틀 스타일
 export const Rightpopup_oneTitle = styled.div`
@@ -278,8 +278,7 @@ export const Rightpopup_oneInput = styled.input`
 export const Rightpopup_oneButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-  padding-left: 10px;
+  width: 100%;
 `;
 
 // 버튼 스타일
@@ -310,6 +309,9 @@ export const Rightpopup_oneWarningIcon = styled.span`
   display: flex;
   align-items: center;
   margin-left: 2%;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export const FrameD = styled.div`
@@ -418,4 +420,35 @@ export const ModalContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+`;
+
+export const Content = styled.div`
+  .custom_textarea {
+    /* Frame 52895 */
+    margin-top: 5%;
+
+    box-sizing: border-box;
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 10px;
+
+    width: 100%;
+    height: 50px;
+
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 350;
+    font-size: 12px;
+    line-height: 14px;
+
+    resize: none; /* 크기 조절 비활성화 */
+    overflow: auto; /* 필요시 스크롤만 허용 */
+  }
 `;
