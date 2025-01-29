@@ -23,12 +23,24 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordconfirm] = useState('');
 
+  const validatePassword = (password) => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
+    return regex.test(password);
+  };
+
   const handleSubmit = () => {
     // event.preventDefault();
     // console.log('Email:', email);
     // console.log('Password:', password);
-    if (isAuthed) {
-      registerUser(email, password, passwordconfirm, navigate());
+    if (!isAuthed) {
+      if (validatePassword(password)) {
+        registerUser(email, password, passwordconfirm, navigate());
+      } else {
+        alert(
+          '비밀번호는 8~16자의 영문 대소문자, 숫자, 특수문자로 이루어져야 합니다.',
+        );
+      }
     } else {
       alert('이메일 인증을 해주세요.');
     }
