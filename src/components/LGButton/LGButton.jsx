@@ -51,19 +51,18 @@ export default function Main({
   height,
   bgColor,
   fontWeight,
-  onClick,
+  func,
   textColor,
   borderColor,
   radius,
   fontSize,
 }) {
   return (
-    <div>
+    <div onClick={func} style={{ width: width, height: height }}>
       <MainContainer
         width={width}
         height={height}
         bgColor={bgColor}
-        onClick={onClick}
         borderColor={borderColor}
         radius={radius}
       >

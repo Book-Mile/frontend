@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import {
   PopupContainer,
   PopupInner,
+  Rightpopup_oneLabel,
+  Rightpopup_oneInput,
+  ErrorMessageEmpty,
 } from '../../../styled_components/popupStyle';
 import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
@@ -9,6 +12,7 @@ import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
 import { handleOkClick } from '../../../api/Popup/JoinGroupPopupSubmit';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
+import makingGroupForm from '../../../hooks/makingGroupForm';
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
@@ -47,6 +51,7 @@ const Content = styled.div`
   font-size: 1rem;
   line-height: 35px;
   color: black;
+  width: 100%;
   .book-title {
     font-weight: 800;
   }
@@ -62,14 +67,30 @@ const ButtonContainer = styled.div`
 const JoinGroupPopup = ({
   title = '그룹명',
   subject = '페이지',
+  password = false,
   onClose = false,
+  id = 1,
 }) => {
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState(''); // 에러 메시지 상태
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
-
   const { error, handleError } = useErrorHandling();
 
-  const onOkClick = () => {
-    handleOkClick(title, subject).catch((err) => {
+  const { groupData, setPassword } = makingGroupForm();
+
+  const handleConfirm = () => {
+    let errorCheck = 0;
+
+    if (password && !groupData.password) {
+      setPasswordErrorMessage('비밀번호를 입력하세요.');
+      errorCheck = 1;
+    }
+
+    if (errorCheck == 1) {
+      return;
+    }
+
+    setPasswordErrorMessage('');
+    handleOkClick(id, groupData.password).catch((err) => {
       handleError(err);
     });
   };
@@ -90,10 +111,32 @@ const JoinGroupPopup = ({
           <Content>
             <span className="book-title">"{title}"</span>에 참여하시겠습니까?{' '}
             <br /> 방식 : {subject}
+            <div style={{ marginBottom: '10%' }} />
+            {/* 비밀번호 설정 */}
+            {password && (
+              <>
+                <Rightpopup_oneLabel>비밀번호</Rightpopup_oneLabel>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '5%',
+                  }}
+                >
+                  <Rightpopup_oneInput
+                    type="password"
+                    placeholder="비밀번호를 입력하세요"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                {/* 에러 메시지 출력 */}
+                <ErrorMessageEmpty>{passwordErrorMessage}</ErrorMessageEmpty>
+              </>
+            )}
           </Content>
           <ButtonContainer>
-            <ModalButtonCancel width="140px" onClick={handleClose} />
-            <ModalButtonOk onClick={onOkClick} width="140px" />
+            <ModalButtonCancel width="120px" onClick={handleClose} />
+            <ModalButtonOk onClick={handleConfirm} width="120px" />
           </ButtonContainer>
         </PopUpInnerBox1>
       </PopupInner>

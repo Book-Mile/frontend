@@ -95,7 +95,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const RatingPopup = ({ onClose = false }) => {
+const RatingPopup = ({ onClose = false, id = 1 }) => {
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const [text, setText] = useState(''); // 현재 입력된 텍스트 상태
   const [rating, setRating] = useState(1); // rating 상태와 setRating 함수 정
@@ -107,7 +107,7 @@ const RatingPopup = ({ onClose = false }) => {
   const { error, handleError } = useErrorHandling();
 
   const onOkClick = () => {
-    RatingPopupSubmit(rating, text).catch((err) => {
+    RatingPopupSubmit(rating, text, id).catch((err) => {
       handleError(err);
     });
   };

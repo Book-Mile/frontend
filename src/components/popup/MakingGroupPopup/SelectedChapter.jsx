@@ -85,8 +85,8 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
   return (
     <>
       <PopUpInnerBox1 imgPath={imgPath}>
-        <div class="card__img"></div>
-        <div class="card__info">
+        <div className="card__img"></div>
+        <div className="card__info">
           <CardTitle>{titleWithBreaks}</CardTitle>
           <CardContent>{content}</CardContent>
         </div>
@@ -135,6 +135,7 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
                 subject={subject}
+                inputValue={inputValue}
               />
             ) : (
               <RightPopup_two

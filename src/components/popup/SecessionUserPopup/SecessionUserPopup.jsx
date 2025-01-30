@@ -6,6 +6,8 @@ import {
 import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 import LGButton from '../../LGButton/LGButton';
+import { useErrorHandling } from '../../../hooks/useErrorHandling';
+import { SecessionUserPopupDelete } from '../../../api/Popup/SecessionUserPopupDelete';
 
 const PopUpInnerBox1 = styled.div`
   display: flex;
@@ -112,10 +114,21 @@ const InputBox = styled.div`
 const SecessionUserPopup = ({ onClose = false }) => {
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const [inputValue, setInputValue] = useState(''); // input 값 관리
-
+  const { error, handleError } = useErrorHandling();
   const handleClose = () => {
     setIsClosing(true); // 닫히는 애니메이션 시작
   };
+
+  const handleSubmit = () => {
+    SecessionUserPopupDelete().catch((err) => {
+      handleError(err);
+    });
+    setIsClosing(true); // 닫히는 애니메이션 시작
+  };
+
+  if (error) {
+    throw error; // 렌더링 시 에러 발생
+  }
 
   // input 값 변경 핸들러 추가
   const handleInputChange = (e) => {
@@ -179,7 +192,13 @@ const SecessionUserPopup = ({ onClose = false }) => {
               bgColor={inputValue === '탈퇴하겠습니다' ? '#FFF0F0' : '#E8E8E8'} // 조건부 색상 변경
               text={'회원탈퇴'}
               fontSize="16px"
+              disabled={inputValue !== '탈퇴하겠습니다'} // 조건부 비활성화
               fontWeight={'700'}
+              onClick={() => {
+                if (inputValue === '탈퇴하겠습니다') {
+                  handleSubmit(); // 회원 탈퇴 함수 호출
+                }
+              }}
             />
           </ButtonContainer>
         </PopUpInnerBox1>

@@ -137,6 +137,7 @@ const SelectedPages = ({ imgPath, title, content, handleClose, subject }) => {
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
                 subject={subject}
+                inputValue={inputValue}
               />
             ) : (
               <RightPopup_two

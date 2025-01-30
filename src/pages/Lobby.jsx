@@ -236,7 +236,7 @@ const Lobby = () => {
   return (
     <>
       <ImageContainer>
-        <Image src="../../public/images/cover.png" />
+        <Image src="../../public/images/cover/dinnerindrawer.png" />
         <GradientOverlay />
         <Close>그룹종료</Close>
         <ContentWrapper>
@@ -254,7 +254,7 @@ const Lobby = () => {
       <MarginContainer>
         <GroupContainer>
           <MemberInfo>
-            <MemberImage src="../../public/images/cover.png" />
+            <MemberImage src="../../public/images/cover/dinnerindrawer.png" />
             <MemberName>김기수</MemberName>
           </MemberInfo>
           <MemberDetails>
@@ -277,7 +277,7 @@ const Lobby = () => {
               <WaitMessageStyled>그룹원이 모두 모일 때까지 기다리고 있어요.</WaitMessageStyled>
           </MembersWrapper>
           <ProgressBarContainer>
-            <GroupedPeople title="구구단을 외우자" imageUrl="../../public/images/cover.png" />
+            <GroupedPeople title="구구단을 외우자" imageUrl="../../public/images/cover/dinnerindrawer.png" />
           </ProgressBarContainer>
         </MembersContainer>
       </MarginContainer>

@@ -49,6 +49,7 @@ const useModalSelectedGroup = () => {
     handleGroupClick,
     handleBack,
     handleCompleteClick,
+    handleTransition,
   };
 };
 

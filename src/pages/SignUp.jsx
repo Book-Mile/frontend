@@ -1,38 +1,86 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { validatePassword } from '../utils/publicFunctions.js';
+
+import {
+  registerUser,
+  emailRequest,
+  checkEmailVerification,
+} from '../api/Pages/SignUpRequest.jsx';
 import {
   PopupContainer,
   PopupInner,
 } from '../../src/styled_components/popupStyle.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
-import useClosePopupAnimation from '../hooks/useClosePopupAnimation.jsx';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login({ onClose = false }) {
-  const [userid, setUsername] = useState('');
-  const [nickname, setNickname] = useState('');
+export default function SignUp() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [isSented, setIsSented] = useState(false);
+  const [authNum, setAuthNum] = useState('');
+  const [isAuthed, setIsAuthed] = useState(false);
 
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordconfirm] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Username:', userid);
-    console.log('Password:', password);
+  const handleSubmit = () => {
+    // event.preventDefault();
+    // console.log('Email:', email);
+    // console.log('Password:', password);
+    if (!isAuthed) {
+      if (validatePassword(password)) {
+        registerUser(email, password, passwordconfirm, navigate());
+      } else {
+        alert(
+          '비밀번호는 8~16자의 영문 대소문자, 숫자, 특수문자로 이루어져야 합니다.',
+        );
+      }
+    } else {
+      alert('이메일 인증을 해주세요.');
+    }
+    // alert('회원가입이 정상적으로 되었습니다.');
   };
 
-  const handleSignUpButton = () => {
-    alert('회원가입 버튼 눌림');
+  const handleLoginButton = () => {
+    navigate('/login');
   };
 
-  const handleForgetPassword = () => {
-    alert('비밀번호 찾기 버튼 눌림');
+  function isValidEmail(email) {
+    // 이메일 형식 검증을 위한 정규식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  const handleSendAuthBtn = () => {
+    if (isValidEmail(email)) {
+      console.log('유효한 이메일 형식입니다.');
+      emailRequest(email);
+      setIsSented(true);
+    } else {
+      alert('유효하지 않은 이메일 형식입니다.');
+    }
+  };
+
+  const checkAuthNum = () => {
+    if (authNum.length === 6) {
+      checkEmailVerification(email, authNum, setIsAuthed);
+    } else {
+      alert('인증번호는 6자리입니다.');
+    }
+  };
+
+  const handleClose = () => {
+    navigate('/');
   };
 
   return (
     <PopupContainer>
       <MainContainer>
         <Frame>
+          <CloseBtn onClick={handleClose}>닫기</CloseBtn>
+
           <SignInLogo>
             BookMille의
             <br />
@@ -41,43 +89,48 @@ export default function Login({ onClose = false }) {
           <Frame1>
             <Frame2>
               <Frame3>
-                <IdInput>아이디</IdInput>
+                <IdInput>이메일</IdInput>
                 <InputFrame>
                   <Rectangle
                     type="text"
-                    id="userid"
-                    value={userid}
-                    onChange={(e) => setUsername(e.target.value)}
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     width="none"
                   />
                   <LGButton
-                    text="중복확인"
+                    text="인증번호 전송"
                     width="87px"
                     height="100%"
                     radius="10px"
                     fontSize="14px"
+                    func={handleSendAuthBtn}
                   ></LGButton>
                 </InputFrame>
               </Frame3>
-              <Frame3>
-                <IdInput>닉네임</IdInput>
-                <InputFrame>
-                  <Rectangle
-                    type="text"
-                    id="nickname"
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
-                    width="none"
-                  />
-                  <LGButton
-                    text="중복확인"
-                    width="87px"
-                    height="100%"
-                    radius="10px"
-                    fontSize="14px"
-                  ></LGButton>
-                </InputFrame>
-              </Frame3>
+              {isSented && (
+                <Frame3>
+                  <IdInput>인증번호</IdInput>
+                  <InputFrame>
+                    <Rectangle
+                      type="text"
+                      id="authNum"
+                      value={authNum}
+                      onChange={(e) => setAuthNum(e.target.value)}
+                      width="none"
+                    />
+                    <LGButton
+                      text="확인"
+                      width="87px"
+                      height="100%"
+                      radius="10px"
+                      fontSize="14px"
+                      func={checkAuthNum}
+                    ></LGButton>
+                  </InputFrame>
+                </Frame3>
+              )}
+
               <Frame4>
                 <PasswordInput>비밀번호</PasswordInput>
                 <Rectangle5
@@ -98,13 +151,13 @@ export default function Login({ onClose = false }) {
               </Frame4>
             </Frame2>
             <Frame5>
-              <LGButton text="Sign in" width="345px" />
+              <LGButton text="Sign Up" width="345px" func={handleSubmit} />
             </Frame5>
           </Frame1>
           <Frame6>
-            <ForgotPassword onClick={handleForgetPassword}>
+            <ForgotPassword>
               이미 회원가입을 하셨나요?{' '}
-              <Register onClick={handleSignUpButton}>로그인</Register>
+              <SmallButton onClick={handleLoginButton}>로그인</SmallButton>
             </ForgotPassword>
           </Frame6>
         </Frame>
@@ -240,68 +293,25 @@ const ForgotPassword = styled.span`
   color: #565656;
 `;
 
-const Register = styled(ForgotPassword)`
+const SmallButton = styled(ForgotPassword)`
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 18px;
 
   color: ${(props) => props.theme.colors.main};
+
+  cursor: pointer;
 `;
 
-const Frame7 = styled(Frame1)`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const SnsLogin = styled.span`
-  width: 248px;
-  height: 19px;
-  color: #565656;
-  font-size: 15px;
-  font-weight: 700;
-  text-align: center;
-`;
-
-const Frame8 = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  width: 345px;
-  height: 64px;
-`;
-
-const Frame9 = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 14px;
-  border: 2px solid #d9d9d9;
-  border-radius: 50px;
-`;
-
-const FrameA = styled(Frame9)`
-  background: #f7e600;
-`;
-
-const FrameB = styled(FrameA)`
-  background: #2db400;
-`;
-
-const DuckIcon = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const Vector = styled.div`
-  width: 100%;
-  height: 100%;
-  background: url(../assets/images/7cfbe015-4f3f-419e-9c35-e8b967d3e511.png)
-    no-repeat center;
-  background-size: cover;
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 10px; /* 위쪽에서 10px */
+  right: 10px; /* 오른쪽에서 10px */
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;

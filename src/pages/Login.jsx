@@ -1,50 +1,63 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import useUserStore from '../../src/store/store.js';
+
 import {
   PopupContainer,
   PopupInner,
 } from '../../src/styled_components/popupStyle.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
+import { login } from '../api/Pages/LoginRequest.jsx';
 
 // import { ReactComponent as Google } from '../assets/snslogo/google.svg';
 import googleLogo from '/src/assets/snslogo/google.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
 import naverLogo from '/src/assets/snslogo/naver.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Username:', username);
+  const navigate = useNavigate();
+  const { name, setName } = useUserStore();
+
+  const handleSubmit = () => {
+    console.log('Email:', email);
     console.log('Password:', password);
+    login(email, password, navigate, name, setName);
+    // alert('로그인되었습니다.');
   };
 
   const handleSignUpButton = () => {
-    alert('회원가입 버튼 눌림');
+    navigate('/signup');
   };
 
   const handleForgetPassword = () => {
     alert('비밀번호 찾기 버튼 눌림');
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <PopupContainer>
       <MainContainer>
         <Frame>
+          <CloseBtn onClick={handleClose}>닫기</CloseBtn>
           <SignInLogo>BookMille에 로그인</SignInLogo>
           <Frame1>
             <Frame2>
               <Frame3>
-                <IdInput>아이디</IdInput>
+                <IdInput>이메일</IdInput>
                 <Rectangle
                   type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="아이디를 입력하세요"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setemail(e.target.value)}
+                  placeholder="이메일을 입력하세요"
                 />
               </Frame3>
               <Frame4>
@@ -55,11 +68,17 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="비밀번호를 입력하세요"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      // 엔터 키가 눌리면 실행될 함수 호출
+                      handleSubmit();
+                    }
+                  }}
                 />
               </Frame4>
             </Frame2>
             <Frame5>
-              <LGButton text="Sign in" width="345px" />
+              <LGButton text="Log in" width="345px" func={handleSubmit} />
             </Frame5>
           </Frame1>
           <Frame7>
@@ -77,13 +96,15 @@ export default function Login() {
             </Frame8>
           </Frame7>
           <Frame6>
-            <ForgotPassword onClick={handleForgetPassword}>
+            <ForgotPassword>
               아직 회원이 아니신가요?{' '}
-              <Register onClick={handleSignUpButton}>회원가입</Register>
+              <SmallButton onClick={handleSignUpButton}>회원가입</SmallButton>
             </ForgotPassword>
-            <ForgotPassword onClick={handleForgetPassword}>
+            <ForgotPassword>
               비밀번호를 잊어버리셨나요?{' '}
-              <Register onClick={handleSignUpButton}>비밀번호 찾기</Register>
+              <SmallButton onClick={handleForgetPassword}>
+                비밀번호 찾기
+              </SmallButton>
             </ForgotPassword>
           </Frame6>
         </Frame>
@@ -208,13 +229,15 @@ const ForgotPassword = styled.span`
   color: #565656;
 `;
 
-const Register = styled(ForgotPassword)`
+const SmallButton = styled(ForgotPassword)`
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 18px;
 
   color: ${(props) => props.theme.colors.main};
+
+  cursor: pointer;
 `;
 
 const Frame7 = styled(Frame1)`
@@ -262,15 +285,14 @@ const FrameB = styled(FrameA)`
   background: #2db400;
 `;
 
-const DuckIcon = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const Vector = styled.div`
-  width: 100%;
-  height: 100%;
-  background: url(../assets/images/7cfbe015-4f3f-419e-9c35-e8b967d3e511.png)
-    no-repeat center;
-  background-size: cover;
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 10px; /* 위쪽에서 10px */
+  right: 10px; /* 오른쪽에서 10px */
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;

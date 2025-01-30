@@ -4,13 +4,15 @@ const useIntersectionObserver = (
   selector,
   className,
   options = { threshold: 0 },
+  onIntersect = () => {}, // 관찰 대상 정보를 전달할 콜백 함수
 ) => {
   useEffect(() => {
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add(className);
-          observer.unobserve(entry.target); // 한번 나타나면 관찰 중지
+          onIntersect(entry.target); // 관찰된 요소 정보를 콜백으로 전달
+          //observer.unobserve(entry.target); // 한 번 나타나면 관찰 중지
         } else {
           entry.target.classList.remove(className);
         }
@@ -18,10 +20,13 @@ const useIntersectionObserver = (
     }, options);
 
     const elements = document.querySelectorAll(selector);
-    elements.forEach((el) => observer.observe(el));
+    elements.forEach((el, index) => {
+      el.dataset.index = index; // 요소에 인덱스 속성 추가
+      observer.observe(el);
+    });
 
     return () => observer.disconnect();
-  }, [selector, className, options]);
+  }, [selector, className, options, onIntersect]);
 };
 
 export default useIntersectionObserver;
