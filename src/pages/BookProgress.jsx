@@ -4,7 +4,8 @@ import BarChart3D from '../components/Ranking/3d/BarChart3D'
 import RankingList from '../components/Ranking/RankingList';
 import WhiteButton from '../components/button/whitebutton';
 import RankingList1 from '../components/Ranking/RankingList1';
-import Memberstory from '../components/Ranking/memberstory';
+import GroupThoughts from '../components/Ranking/GroupThoughts';
+import ImgComment from '../components/Ranking/ImgComment';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -100,18 +101,20 @@ const GroupInfo = styled.div`
   gap: 10px;
 `;
 
+const CommentWrapper = styled.div`
+  margin: 0 auto;
+  width: 1156px;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+`;
+
+const ImgCommentWrapper= styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
 const RankingPage = () => {
-  const rankings = [
-    { id: 1, name: 'Alice', score: 94, profileImage: 'https://via.placeholder.com/50' },
-    { id: 2, name: 'Bob', score: 87, profileImage: 'https://via.placeholder.com/50' },
-    { id: 3, name: 'Charlie', score: 82, profileImage: 'https://via.placeholder.com/50' },
-    { id: 4, name: 'David', score: 78 },
-    { id: 5, name: 'Eve', score: 75 },
-    { id: 6, name: 'Frank', score: 70 },
-  ];
-
-
-
   return (
     <>
       <ImageContainer>
@@ -143,9 +146,22 @@ const RankingPage = () => {
         <RankingList rankings={rankings.slice(3)} />
       </div>
     </div> */}
-    <div>
       <RankingList1/>
-    </div>
+    <CommentWrapper>
+      <GroupThoughts/>
+      <ImgCommentWrapper>
+        <ImgComment 
+          nickname="우리이기 이전에" 
+          comment="너무 공감갔던 글귀들" 
+          imageSrc="../../public/images/cover/dinnerindrawer.png" 
+        />
+        <ImgComment 
+          nickname="미친운체개발자" 
+          comment="스스로를 닦달하지 말고, 매사에 너무 심각하지 말고, 너무 고민하지 말고, 그냥 재미있게 살았으면 좋겠다." 
+          imageSrc="../../public/images/cover/dinnerindrawer.png" 
+        />
+      </ImgCommentWrapper>
+    </CommentWrapper>
     </>
   );
 };
