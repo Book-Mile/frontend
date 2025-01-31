@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import ModalButton from '../components/modalButton/ModalButtonOk';
+import { useNavigate } from 'react-router-dom';
+import ModalButton from '../components/modalButton/ModalCustomButton';
 import BookLabel from '../components/search/BookLabel';
 import SearchBar from '../components/search/SearchBar';
 import Rating from '../components/search/Rating';
@@ -49,6 +50,8 @@ const BookSectionWrapper = styled.div`
   gap: 30px;
   justify-content: space-between;
   flex-wrap: wrap;
+  cursor: pointer;
+
 `;
 
 const BookContainer = styled.div`
@@ -100,7 +103,6 @@ const BookSubtitle = styled.div`
   word-wrap: break-word;
 `;
 
-
 const LabelContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -131,57 +133,69 @@ const PageText = styled.span`
 `;
 
 const SearchResults = () => {
-    const rating = 7.5;
-    const totalStars = 5;
-  
-    return (
-      <>
-        <Container>
-          <SearchBarWrapper>
-            <SearchBar />
-          </SearchBarWrapper>
-  
-          <SearchResultTextContainer>
-            <SearchResultTitle>‘채식주의자’</SearchResultTitle>
-            <SearchResultCount>검색 결과 총 00건</SearchResultCount>
-          </SearchResultTextContainer>
-  
-          <BookSectionWrapper>
-            <BookContainer>
-              <BookImage src="https://via.placeholder.com/176x258" />
-              <BookDetails>
-                <BookTitle>
-                  <span>채식주의자</span>
-                  <AladinImage src="../../public/images/aladinlogo.png" alt="알라딘 로고" />
-                </BookTitle>
-                <BookSubtitle>
-                  <span>저자: 한강</span>
-                  <span>출판사 : 창비</span>
-                  <div>출간일: 2022년 03월</div>
-                  <LabelContainer>
-                    <div>평점:</div>
-                    <Rating rating={rating} totalStars={totalStars} />
-                  </LabelContainer>
-                </BookSubtitle>
-                <LabelContainer>
-                  <BookLabel text="국내도서" />
-                </LabelContainer>
-              </BookDetails>
-            </BookContainer>
-  
-            <ModalButtonWrapper>
-              <ModalButton />
-            </ModalButtonWrapper>
-          </BookSectionWrapper>
-        </Container>
-  
-        <Pagination>
-          <PageText>이전</PageText>
-          <PageText active>1</PageText>
-          <PageText>2 3 4 5 6 7 다음</PageText>
-        </Pagination>
-      </>
-    );
+  const navigate = useNavigate();
+
+  const rating = 7.5;
+  const totalStars = 5;
+
+  const handleCreateGroup = () => {
+    navigate('/creategroup');
   };
-  
-  export default SearchResults;
+
+  const handleBookClick = () => {
+    navigate('/details');
+  };
+
+  return (
+    <>
+      <Container>
+        <SearchBarWrapper>
+          <SearchBar />
+        </SearchBarWrapper>
+
+        <SearchResultTextContainer>
+          <SearchResultTitle>‘채식주의자’</SearchResultTitle>
+          <SearchResultCount>검색 결과 총 00건</SearchResultCount>
+        </SearchResultTextContainer>
+
+        <BookSectionWrapper onClick={handleBookClick}>
+          <BookContainer>
+            <div>
+              <BookImage src="https://via.placeholder.com/176x258" />
+            </div>
+            <BookDetails>
+              <BookTitle>
+                <span>채식주의자</span>
+                <AladinImage src="../../public/images/aladinlogo.png" alt="알라딘 로고" />
+              </BookTitle>
+              <BookSubtitle>
+                <span>저자: 한강</span>
+                <span>출판사 : 창비</span>
+                <div>출간일: 2022년 03월</div>
+                <LabelContainer>
+                  <div>평점:</div>
+                  <Rating rating={rating} totalStars={totalStars} />
+                </LabelContainer>
+              </BookSubtitle>
+              <LabelContainer>
+                <BookLabel text="국내도서" />
+              </LabelContainer>
+            </BookDetails>
+          </BookContainer>
+
+          <ModalButtonWrapper>
+            <ModalButton onClick={handleCreateGroup}>참여하기</ModalButton>
+          </ModalButtonWrapper>
+        </BookSectionWrapper>
+      </Container>
+
+      <Pagination>
+        <PageText>이전</PageText>
+        <PageText active>1</PageText>
+        <PageText>2 3 4 5 6 7 다음</PageText>
+      </Pagination>
+    </>
+  );
+};
+
+export default SearchResults;

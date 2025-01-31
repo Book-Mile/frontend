@@ -13,6 +13,7 @@ import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
 import { handleOkClick } from '../../../api/Popup/JoinGroupPopupSubmit';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
 import makingGroupForm from '../../../hooks/makingGroupForm';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
@@ -21,31 +22,24 @@ const PopUpInnerBox1 = styled.div`
   align-items: flex-start;
   padding: 60px 80px;
   gap: 50px;
-
   width: 30%;
   height: auto;
-
   background: #ffffff;
   border-radius: 20px;
 `;
-const Title = styled.div`
-  /* 그룹 정보 */
 
+const Title = styled.div`
   font-family: ${(props) => props.theme.font.main};
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
   line-height: 35px;
-  /* identical to box height */
-
   color: ${(props) => props.theme.colors.main};
-  font-style: normal;
-
-  /* Inside auto layout */
   flex: none;
   order: 0;
   flex-grow: 0;
 `;
+
 const Content = styled.div`
   font-family: ${(props) => props.theme.font.main};
   font-size: 1rem;
@@ -74,8 +68,9 @@ const JoinGroupPopup = ({
   const [passwordErrorMessage, setPasswordErrorMessage] = useState(''); // 에러 메시지 상태
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const { error, handleError } = useErrorHandling();
-
   const { groupData, setPassword } = makingGroupForm();
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleConfirm = () => {
     let errorCheck = 0;
@@ -90,10 +85,16 @@ const JoinGroupPopup = ({
     }
 
     setPasswordErrorMessage('');
-    handleOkClick(id, groupData.password).catch((err) => {
-      handleError(err);
-    });
+    handleOkClick(id, groupData.password)
+      .then(() => {
+        // Redirect to /lobby on successful confirmation
+        navigate('/lobby');
+      })
+      .catch((err) => {
+        handleError(err);
+      });
   };
+
   if (error) {
     throw error; // 렌더링 시 에러 발생
   }

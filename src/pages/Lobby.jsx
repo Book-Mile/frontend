@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 import BookLabel from '../components/search/BookLabel';
 import GroupedPeople from '../components/GroupedPeople';
 import WhiteButton from '../components/button/whitebutton';
+import EndGroupPopup from '../components/popup/EndGroupPopup/EndGroupPopup';
 
 const MarginContainer = styled.div`
   display: flex;
@@ -74,7 +78,6 @@ const GroupInfo = styled.div`
   margin-top: 10px;
 `;
 
-
 const Close = styled.button`
   font-size: 0.75rem;
   font-weight: 500;
@@ -94,7 +97,6 @@ const Close = styled.button`
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     border: none;
-    
   }
 
   &:active {
@@ -103,7 +105,6 @@ const Close = styled.button`
     border: none;
   }
 `;
-
 
 const GroupMembers = styled.p`
   font-size: 1.5rem;
@@ -128,7 +129,6 @@ const ProgressBarContainer = styled.div`
   gap: 10px;
   padding: 3px;
 `;
-
 
 const FlexRow = styled.div`
   display: flex;
@@ -233,12 +233,29 @@ const WaitMessageStyled = styled(WaitMessage)`
 `;
 
 const Lobby = () => {
+  const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleStartClick = () => {
+    navigate('/bookprogress');
+  };
+
+  const handleCloseClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
     <>
+      {isPopupOpen && <EndGroupPopup onClose={handlePopupClose} />}
+
       <ImageContainer>
         <Image src="../../public/images/cover/dinnerindrawer.png" />
         <GradientOverlay />
-        <Close>그룹종료</Close>
+        <Close onClick={handleCloseClick}>그룹종료</Close> {/* Add onClick handler */}
         <ContentWrapper>
           <LeftContent>
             <Title>채식주의자</Title>
@@ -248,7 +265,7 @@ const Lobby = () => {
               <span>9챕터</span>
             </GroupInfo>
           </LeftContent>
-          <WhiteButton>시작하기</WhiteButton>
+          <WhiteButton onClick={handleStartClick}>시작하기</WhiteButton> {/* Add onClick handler */}
         </ContentWrapper>
       </ImageContainer>
       <MarginContainer>

@@ -19,7 +19,7 @@ export default function EditMyInfo() {
 
   const navigate = useNavigate();
   const handleUserEditBtn = () => {
-    navigate('/EditMyInfo');
+    navigate('/edit-profile');
   };
 
   return (
@@ -175,5 +175,6 @@ const TabBtn = styled.div`
 
 const ContentFrame = styled.div`
     display: flex;
-    flex-direction: column
-    gap: 20px;`;
+    flex-direction: column;
+    gap: 20px;
+`;
