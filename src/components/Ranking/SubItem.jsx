@@ -1,4 +1,14 @@
 import styled from 'styled-components';
+import { keyframes } from 'styled-components';
+
+const progressAnimation = (percentage) => keyframes`
+  from {
+    width: 0%;
+  }
+  to {
+    width: ${percentage}%;
+  }
+`;
 
 // 컨테이너 스타일
 const Container = styled.div`
@@ -7,12 +17,15 @@ const Container = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   gap: 5px;
+  width: 100%;
+  height: 56px;
+
 `;
 
-// 헤더 스타일 (순위 및 프로필 이미지 포함)
+// 순위 및 프로필 이미지 스타일
 const Header = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-grow: 0;
   flex-shrink: 0;
@@ -26,7 +39,9 @@ const Number = styled.p`
   flex-shrink: 0;
   font-size: 16px;
   text-align: left;
-  color: #4e202a;
+    min-width: 24px;
+    text-align: center; 
+
 `;
 
 // 프로필 이미지 래퍼 스타일
@@ -58,7 +73,9 @@ const Content = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-grow: 1;
-  gap: 2.5px;
+  gap: 10px;
+  width: 100%;
+
 `;
 
 // 제목 및 비율을 포함한 래퍼 스타일
@@ -80,7 +97,6 @@ const Title = styled.p`
   flex-shrink: 0;
   font-size: 16px;
   text-align: left;
-  color: #4e202a;
 `;
 
 // 퍼센티지 스타일
@@ -91,23 +107,27 @@ const Percentage = styled.p`
   font-size: 18px;
   font-weight: bold;
   text-align: left;
-  color: #4e202a;
 `;
 
 // 진행바 스타일 (배경)
 const ProgressBarWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  height: 3px;
+  height: 3px; /* 기존 3px → 8px로 변경 */
+  width: 100%; /* 전체 너비를 차지하도록 설정 */
   background-color: #d9d9d9;
+  border-radius: 4px; /* 둥근 테두리 추가 */
+  overflow: hidden; /* 내부 넘치는 요소 가리기 */
 `;
 
 // 진행바 스타일 (비율)
 const ProgressBar = styled.div`
   height: 100%;
-  width: ${props => props.percentage || '0%'};
-  background-color: #ab0909;
+  width: ${props => (props.percentage ? `${props.percentage}%` : "0%")}; /* 기본값 설정 */
+  background-color: ${props => props.theme.colors.main};
+  animation: ${props => progressAnimation(props.percentage)} 1s ease-in-out;
 `;
+
 
 const SubItem = ({ rank, profileImage, name, percentage }) => {
   // 기본 이미지 경로
@@ -116,7 +136,7 @@ const SubItem = ({ rank, profileImage, name, percentage }) => {
   return (
     <Container>
       <Header>
-        {/* 순위를 외부에서 받아오기 */}
+        {/* 순위를 */}
         <Number>{rank}</Number>
 
         {/* 프로필 이미지, 없으면 기본 이미지 사용 */}
@@ -126,13 +146,10 @@ const SubItem = ({ rank, profileImage, name, percentage }) => {
 
         <Content>
           <TitleWrapper>
-            {/* 이름 외부에서 받아오기 */}
             <Title>{name}</Title>
-            {/* 퍼센티지 외부에서 받아오기 */}
             <Percentage>{percentage}%</Percentage>
           </TitleWrapper>
 
-          {/* 진행바 외부에서 받아오기 */}
           <ProgressBarWrapper>
             <ProgressBar percentage={percentage} />
           </ProgressBarWrapper>

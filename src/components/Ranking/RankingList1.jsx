@@ -27,18 +27,24 @@ const Background = styled.div`
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  /* Background를 기준으로 위치 지정 */
+`;
+
+const MainWapper = styled.div`
+  width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
 `;
 
 const SvgOne = styled.svg`
   position: absolute;
-  left: 256.5px;  /* Background 내에서의 위치 */
+  left: 256.5px;
   top: -6.23px;
 `;
 
 const SvgTwo = styled.svg`
   position: absolute;
-  left: -35.5px;  /* Background 내에서의 위치 */
+  left: -35.5px;
   top: 56.49px;
 `;
 
@@ -46,7 +52,7 @@ const ImageOne = styled.img`
   width: 300px;
   height: 614.22px;
   position: absolute;
-  left: 267.5px;  /* Background 내에서의 위치 */
+  left: 267.5px;
   top: 50px;
   object-fit: contain;
   animation: ${({ delay }) => slideUp(delay)} 1s ease-out forwards;
@@ -56,7 +62,7 @@ const ImageTwo = styled.img`
   width: 300px;
   height: 571.73px;
   position: absolute;
-  left: 130.5px;  /* Background 내에서의 위치 */
+  left: 130.5px;
   top: 181.72px;
   object-fit: contain;
   animation: ${({ delay }) => slideUp(delay)} 2s ease-out forwards;
@@ -66,7 +72,7 @@ const ImageThree = styled.img`
   width: 300px;
   height: 571.73px;
   position: absolute;
-  left: 379.5px;  /* Background 내에서의 위치 */
+  left: 379.5px;
   top: 248.04px;
   object-fit: contain;
   animation: ${({ delay }) => slideUp(delay)} 3s ease-out forwards;
@@ -74,9 +80,84 @@ const ImageThree = styled.img`
 
 const SubRankingContainer = styled.div`
   position: absolute;
-  left: 1079.5px;  /* Background 내에서의 위치 */
+  left: 1079.5px;
   top: 40px;
-  object-fit: contain;
+  `;
+
+const PercentOne = styled.div`
+  position: absolute;
+  left: 390px;
+  top: 200px;
+  z-index: 3;
+  font-weight: 800;
+  font-size: 1.75rem;
+  color: #CC645F;
+  animation: ${({ delay }) => slideUp(delay)} 1s ease-out forwards;
+`
+const PercentTwo = styled.div`
+  position: absolute;
+  left: 250.5px;
+  top: 331.72px;
+  z-index: 3;
+  font-weight: 800;
+  font-size: 1.75rem;
+  color: #7DA3C9;
+  animation: ${({ delay }) => slideUp(delay)} 2s ease-out forwards;
+`
+const PercentThree = styled.div`
+  position: absolute;
+  left: 500.5px;
+  top: 401.72px;
+  z-index: 3;
+  font-weight: 800;
+  font-size: 1.75rem;
+  color: #E39191;
+  animation: ${({ delay }) => slideUp(delay)} 3s ease-out forwards;
+`
+const ProfileImage = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+`;
+const Name = styled.span`
+  font-size: 1rem;
+  font-weight: 700;
+`;
+
+const One = styled.div`
+  position: absolute;
+  left: 365px;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  gap: 10px;
+  animation: ${({ delay }) => slideUp(delay)} 1s ease-out forwards;
+
+`;
+
+const Two = styled.div`
+  position: absolute;
+  left: 230px;
+  top: 150px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  gap: 10px;
+  animation: ${({ delay }) => slideUp(delay)} 2s ease-out forwards;
+
+`;
+
+const Three = styled.div`
+  position: absolute;
+  left: 480px;
+  top: 220px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  gap: 10px;
+  animation: ${({ delay }) => slideUp(delay)} 3s ease-out forwards;
+
 `;
 
 const SvgGradientFilter = () => (
@@ -141,23 +222,16 @@ const SvgGradientFilterTwo = () => (
   </>
 );
 
-const MyComponent = () => {
+const RankingList1 = () => {
   return (
     <Container>
-      <div>
-        <Background>
-          <ImageOne src="../../../public/images/ranking/rectangle1.png" delay="0s" />
-          <ImageTwo src="../../../public/images/ranking/rectangle2.png" delay="0.3s" />
-          <ImageThree src="../../../public/images/ranking/rectangle3.png" delay="0.6s" />
-        </Background>
-
         <SvgOne
           width="1183"
           height="583"
           viewBox="0 0 1183 583"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none" /* 비율을 고정하지 않고 화면 크기에 맞게 설정 */
+          preserveAspectRatio="none"
           >
           <g filter="url(#filter0_f_507_2279)">
             <ellipse cx="916.5" cy="-125.987" rx="316.5" ry="312.745" fill="url(#paint0_linear_507_2279)" />
@@ -171,7 +245,7 @@ const MyComponent = () => {
           viewBox="0 0 753 583"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none" /* 비율을 고정하지 않고 화면 크기에 맞게 설정 */
+          preserveAspectRatio="none"
           >
           <g filter="url(#filter0_f_507_2280)">
             <ellipse
@@ -185,7 +259,34 @@ const MyComponent = () => {
           </g>
           <SvgGradientFilterTwo />
         </SvgTwo>
-      </div>
+      <MainWapper>
+        <Background>
+          <One>
+          <ProfileImage src="../../../public/images/profile.png"/>
+          <Name>미친운체개발자</Name>
+          </One>
+          <Two>
+          <ProfileImage src="../../../public/images/profile.png"/>
+          <Name>미친운체개발자</Name>
+          </Two>
+          <Three>
+          <ProfileImage src="../../../public/images/profile.png"/>
+          <Name>미친운체개발자</Name>
+          </Three>
+        <PercentOne>
+          95%
+        </PercentOne>
+        <PercentTwo>
+          90%
+        </PercentTwo>
+        <PercentThree>
+          88%
+        </PercentThree>
+          <ImageOne src="../../../public/images/ranking/rectangle1.png" delay="0s" />
+          <ImageTwo src="../../../public/images/ranking/rectangle2.png" delay="0.3s" />
+          <ImageThree src="../../../public/images/ranking/rectangle3.png" delay="0.6s" />
+        </Background>
+      </MainWapper>
       <SubRankingContainer>
         <SubRanking />
       </SubRankingContainer>
@@ -193,4 +294,4 @@ const MyComponent = () => {
   );
 };
 
-export default MyComponent;
+export default RankingList1;

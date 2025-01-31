@@ -44,7 +44,6 @@ const Title = styled.p`
   height: 30px;
   font-size: 18px;
   text-align: left;
-  color: #4e202a;
   margin: 0;
 `;
 
@@ -54,13 +53,12 @@ const PageNumber = styled.p`
   font-size: 18px;
   font-weight: bold;
   text-align: left;
-  color: #ab0909;
+  color: ${props => props.theme.colors.main};
   margin: 0;
 `;
 
 const Description = styled.span`
   font-size: 14px;
-  color: #4e202a;
   line-height: 1.6;
 `;
 

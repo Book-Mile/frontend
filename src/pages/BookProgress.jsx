@@ -4,6 +4,7 @@ import BarChart3D from '../components/Ranking/3d/BarChart3D'
 import RankingList from '../components/Ranking/RankingList';
 import WhiteButton from '../components/button/whitebutton';
 import RankingList1 from '../components/Ranking/RankingList1';
+import Memberstory from '../components/Ranking/memberstory';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const ImageContainer = styled.div`
   align-items: flex-start;
   position: relative;
   width: 100%;
-  height: 432px;
+  height: 360px;
 `;
 
 const Image = styled.img`
@@ -22,7 +23,7 @@ const Image = styled.img`
 
 const GradientOverlay = styled.div`
   width: 100%;
-  height: 432px;
+  height: 360px;
   position: absolute;
   top: 0;
   left: 0;
@@ -35,10 +36,9 @@ const Close = styled.button`
   color: #D5D5D5;
   cursor: pointer;
   z-index: 3;
-  margin-top: 80px;
   display: flex;
   position: absolute;
-  top: 16px;
+  top: 20px;
   left: 40px;
   background: none;
   border: none;
@@ -69,6 +69,7 @@ const ContentWrapper = styled.div`
   align-items: flex-end;
   width: calc(100% - 2 * 9.86%);
 
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
@@ -88,7 +89,6 @@ const Title = styled.p`
 `;
 
 const SubTitle = styled.p`
-  width: 150px;
   font-size: 1.25rem;
   margin: 5px 0;
 `;
@@ -98,7 +98,6 @@ const GroupInfo = styled.div`
   justify-content: start;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
 `;
 
 const RankingPage = () => {
@@ -116,19 +115,24 @@ const RankingPage = () => {
   return (
     <>
       <ImageContainer>
-        <Image src="../../public/images/cover.png" />
+        <Image src="../../public/images/cover/dinnerindrawer.png" />
         <GradientOverlay />
-        <Close>그룹종료</Close>
+        <Close>그룹종료</Close> {/* //그룹장한테만 보임 */}
         <ContentWrapper>
           <LeftContent>
-            <Title>채식주의자</Title>
-            <SubTitle>한강 저</SubTitle>
+          <GroupInfo>
+            <Title>한강 작가 책 도장깨기</Title>
+            <WhiteButton>페이지</WhiteButton>
+          </GroupInfo>
+            <SubTitle>서랍에 저녁을 넣어 두었다</SubTitle>
             <GroupInfo>
-              <span>198페이지</span>
-              <span>9챕터</span>
+              <span>한강 저</span>
             </GroupInfo>
           </LeftContent>
-          <WhiteButton>시작하기</WhiteButton>
+          <GroupInfo>
+          <WhiteButton>리뷰</WhiteButton>
+          <WhiteButton>체크포인트 기록</WhiteButton>
+          </GroupInfo>
         </ContentWrapper>
       </ImageContainer>
     {/* <div style={{ display: 'flex', width: '100%', height: '100vh' }}>

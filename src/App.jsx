@@ -22,11 +22,8 @@ import Detail from './pages/Detail';
 import SNSManage from './pages/SNSManage.jsx';
 import MyPage from './pages/MyPage.jsx';
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
-<<<<<<< HEAD
 import BookProgress from './pages/BookProgress.jsx'
-=======
 import Main from './pages/Main.jsx';
->>>>>>> main
 
 function App() {
   return (
@@ -41,38 +38,6 @@ function App() {
                 <Route path="/" element={<Main />} />
                 <Route path="/makingGroup" element={<MakingGroupPage />} />
                 <Route path="/login" element={<Login />} />
-
-<<<<<<< HEAD
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/mypage" element={<MyPage />} />
-              <Route
-                path="/checkPointRecord"
-                element={<CheckPointRecordPage />}
-              />
-              {/*<Route*/}
-              {/*  path="/anothercheckPointRecord"*/}
-              {/*  element={<AnotherCheckPointRecordPage />}*/}
-              {/*/>*/}
-              <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
-              <Route
-                path="/SecessionUserPopup"
-                element={<SecessionUserPopup />}
-              />
-              <Route path="/endgroup" element={<EndGroupPopup />} />
-              <Route
-                path="/checkpointrecordpopup"
-                element={<CheckpointRecordPopup />}
-              />
-              <Route
-                path="/registercompletepopup"
-                element={<RegisterCompletePopup />}
-              />
-              <Route path="/lobby" element={<Lobby />} />
-              <Route path="/SNSManage" element={<SNSManage />} />
-              <Route path="/RatingPopup" element={<RatingPopup />} />
-              <Route path='/bookprogress' element={<BookProgress/>}/>
-            </Routes>
-=======
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route
@@ -102,9 +67,9 @@ function App() {
                 <Route path="/EditMyInfo" element={<EditMyInfo />} />
                 <Route path="/SNSManage" element={<SNSManage />} />
                 <Route path="/RatingPopup" element={<RatingPopup />} />
+                <Route path='/bookprogress' element={<BookProgress/>}/>
               </Routes>
             </div>
->>>>>>> main
           </div>
         </BrowserRouter>
       </ThemeProvider>
