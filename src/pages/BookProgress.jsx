@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import BarChart3D from '../components/Ranking/3d/BarChart3D'
 import RankingList from '../components/Ranking/RankingList';
@@ -6,6 +6,9 @@ import WhiteButton from '../components/button/whitebutton';
 import RankingList1 from '../components/Ranking/RankingList1';
 import GroupThoughts from '../components/Ranking/GroupThoughts';
 import ImgComment from '../components/Ranking/ImgComment';
+import BookCard from '../components/Ranking/BookCard';
+import { Link } from 'react-router-dom';
+import RankingPopup from '../components/popup/RatingPopup/RatingPopup'
 
 const ImageContainer = styled.div`
   display: flex;
@@ -114,7 +117,12 @@ const ImgCommentWrapper= styled.div`
   gap: 20px;
 `;
 
+const RankWrapper= styled.div`
+  margin-bottom: 120px;
+`;
+
 const RankingPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
       <ImageContainer>
@@ -133,8 +141,10 @@ const RankingPage = () => {
             </GroupInfo>
           </LeftContent>
           <GroupInfo>
-          <WhiteButton>리뷰</WhiteButton>
+          <WhiteButton onClick={() => setIsModalOpen(true)}>리뷰</WhiteButton>
+          <Link to="/checkPointRecord">
           <WhiteButton>체크포인트 기록</WhiteButton>
+          </Link>
           </GroupInfo>
         </ContentWrapper>
       </ImageContainer>
@@ -146,7 +156,9 @@ const RankingPage = () => {
         <RankingList rankings={rankings.slice(3)} />
       </div>
     </div> */}
+    <RankWrapper>
       <RankingList1/>
+    </RankWrapper>
     <CommentWrapper>
       <GroupThoughts/>
       <ImgCommentWrapper>
@@ -162,6 +174,7 @@ const RankingPage = () => {
         />
       </ImgCommentWrapper>
     </CommentWrapper>
+    {isModalOpen && <RankingPopup onClose={() => setIsModalOpen(false)} />} 
     </>
   );
 };

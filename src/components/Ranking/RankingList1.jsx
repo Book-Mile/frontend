@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import SubRanking from './SubRanking';
 
-// 애니메이션 정의: 이미지들이 아래에서 위로 올라오는 애니메이션
 const slideUp = (delay) => keyframes`
   0% {
     transform: translateY(100px);
@@ -18,11 +17,10 @@ const Container = styled.div`
   width: 100%;
   height: 583px;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 `;
 
 const Background = styled.div`
-  width: 1200px;
   height: 583px;
   margin: 0 auto;
   position: relative;
@@ -80,8 +78,25 @@ const ImageThree = styled.img`
 
 const SubRankingContainer = styled.div`
   position: absolute;
-  left: 1079.5px;
+  left: 1060px;
   top: 40px;
+  @media (max-width: 1800px) {
+    position: absolute;
+    left: 960px;
+    top: 40px;
+  }
+  @media (max-width: 1490px) {
+    position: absolute;
+    left: 760px;
+    top: 40px;
+  }
+  @media (max-width: 900px) {
+
+    left: 760px;
+    top: 40px;
+    flex-direction: column;
+    display: flex;
+  }
   `;
 
 const PercentOne = styled.div`
@@ -226,8 +241,6 @@ const RankingList1 = () => {
   return (
     <Container>
         <SvgOne
-          width="1183"
-          height="583"
           viewBox="0 0 1183 583"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
