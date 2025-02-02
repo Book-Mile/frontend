@@ -135,6 +135,7 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
                 subject={subject}
+                handleClose={handleClose}
                 inputValue={inputValue}
               />
             ) : (

@@ -17,7 +17,7 @@ export const handleMakingGroupSubmit = async (
     const processedMaxMembers = isIndividual ? 'null' : maxMembers;
     // 요청 데이터 객체 생성
     const data = {
-      groupName,
+      groupName: groupName,
       groupType: groupType,
       maxMembers: processedMaxMembers,
       password: processedPassword,
@@ -30,17 +30,19 @@ export const handleMakingGroupSubmit = async (
     };
     console.log(data);
 
-    //추후 수정
-    const token = 123456465798;
+    const accessToken = JSON.parse(
+      sessionStorage.getItem('userData'),
+    )?.accessToken;
 
-    const response = await axios.post(`${BASE_URL}/api/making-group`, data, {
+    const response = await axios.post(`${BASE_URL}/api/v1/groups`, data, {
       headers: {
-        Authorization: `Bearer ${token}`, // 여기에 토큰값을 넣어줍니다.
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`, // 여기에 토큰값을 넣어줍니다.
       },
     });
 
     if (response.status === 200) {
-      alert(response.data.message);
+      alert('성공' + response.data.message);
     }
   } catch (err) {
     console.error('그룹 생성 실패:', err);
