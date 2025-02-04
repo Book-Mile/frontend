@@ -22,6 +22,7 @@ import Detail from './pages/Detail';
 import SNSManage from './pages/SNSManage.jsx';
 import MyPage from './pages/MyPage.jsx';
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
+import BookProgress from './pages/BookProgress.jsx'
 import Main from './pages/Main.jsx';
 
 function App() {
@@ -37,7 +38,6 @@ function App() {
                 <Route path="/" element={<Main />} />
                 <Route path="/makingGroup" element={<MakingGroupPage />} />
                 <Route path="/login" element={<Login />} />
-
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route
@@ -67,6 +67,7 @@ function App() {
                 <Route path="/EditMyInfo" element={<EditMyInfo />} />
                 <Route path="/SNSManage" element={<SNSManage />} />
                 <Route path="/RatingPopup" element={<RatingPopup />} />
+                <Route path='/bookprogress' element={<BookProgress/>}/>
               </Routes>
             </div>
           </div>
