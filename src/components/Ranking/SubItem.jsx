@@ -1,5 +1,47 @@
 import styled from 'styled-components';
 import { keyframes } from 'styled-components';
+import { Link } from 'react-router-dom';
+
+const SubItem = ({ rank, profileImage, name, percentage }) => {
+  const defaultImage = "../../../public/images/basic_profile.png";
+
+  return (
+    <Link
+      to={`/checkPointRecord`}
+      style={{
+        textDecoration: 'none',
+        color: 'inherit',
+        width: '100%'
+      }}
+    >
+    <Container>
+      <Header>
+        {/* 순위를 */}
+        <Number>{rank}</Number>
+
+        {/* 프로필 이미지, 없으면 기본 이미지 사용 */}
+        <ProfileImageWrapper>
+          <ProfileImage src={profileImage || defaultImage} alt="Profile" />
+        </ProfileImageWrapper>
+
+        <Content>
+          <TitleWrapper>
+            <Title>{name}</Title>
+            <Percentage>{percentage}%</Percentage>
+          </TitleWrapper>
+
+          <ProgressBarWrapper>
+            <ProgressBar percentage={percentage} />
+          </ProgressBarWrapper>
+        </Content>
+      </Header>
+    </Container>
+    </Link>
+  );
+};
+
+export default SubItem;
+
 
 const progressAnimation = (percentage) => keyframes`
   from {
@@ -19,7 +61,7 @@ const Container = styled.div`
   gap: 5px;
   width: 100%;
   height: 56px;
-
+  cursor: pointer;
 `;
 
 // 순위 및 프로필 이미지 스타일
@@ -31,6 +73,7 @@ const Header = styled.div`
   flex-shrink: 0;
   position: relative;
   gap: 1rem;
+  cursor: pointer;
 `;
 
 // 순위 번호 스타일
@@ -65,7 +108,7 @@ const ProfileImage = styled.img`
   position: relative;
 `;
 
-// 내용 부분 스타일 (이름, 퍼센티지 등)
+// 내용 부분 스타일
 const Content = styled.div`
   display: flex;
   width: auto;
@@ -113,50 +156,16 @@ const Percentage = styled.p`
 const ProgressBarWrapper = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  height: 3px; /* 기존 3px → 8px로 변경 */
-  width: 100%; /* 전체 너비를 차지하도록 설정 */
+  height: 3px;
+  width: 100%;
   background-color: #d9d9d9;
-  border-radius: 4px; /* 둥근 테두리 추가 */
-  overflow: hidden; /* 내부 넘치는 요소 가리기 */
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
-// 진행바 스타일 (비율)
 const ProgressBar = styled.div`
   height: 100%;
-  width: ${props => (props.percentage ? `${props.percentage}%` : "0%")}; /* 기본값 설정 */
+  width: ${props => (props.percentage ? `${props.percentage}%` : "0%")}; 
   background-color: ${props => props.theme.colors.main};
   animation: ${props => progressAnimation(props.percentage)} 1s ease-in-out;
 `;
-
-
-const SubItem = ({ rank, profileImage, name, percentage }) => {
-  // 기본 이미지 경로
-  const defaultImage = "../../../public/images/basic_profile.png";
-
-  return (
-    <Container>
-      <Header>
-        {/* 순위를 */}
-        <Number>{rank}</Number>
-
-        {/* 프로필 이미지, 없으면 기본 이미지 사용 */}
-        <ProfileImageWrapper>
-          <ProfileImage src={profileImage || defaultImage} alt="Profile" />
-        </ProfileImageWrapper>
-
-        <Content>
-          <TitleWrapper>
-            <Title>{name}</Title>
-            <Percentage>{percentage}%</Percentage>
-          </TitleWrapper>
-
-          <ProgressBarWrapper>
-            <ProgressBar percentage={percentage} />
-          </ProgressBarWrapper>
-        </Content>
-      </Header>
-    </Container>
-  );
-};
-
-export default SubItem;

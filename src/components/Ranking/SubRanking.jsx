@@ -24,7 +24,7 @@ const ArrowIcon = styled.svg`
   align-self: center;
 `;
 
-const SubRanking = () => {
+const SubRanking = ({ onSelectItem }) => {
   const allData = [
     { rank: 4, name: '개발천재', percentage: 87, profileImage: '' },
     { rank: 5, name: '프론트마스터', percentage: 75, profileImage: '' },
@@ -41,7 +41,6 @@ const SubRanking = () => {
     { rank: 16, name: '데이터분석가', percentage: 19, profileImage: '' },
   ];
 
-  // 추가 데이터 범위 관리
   const [startIndex, setStartIndex] = useState(0);
   const itemsPerPage = 5;
 
@@ -74,14 +73,20 @@ const SubRanking = () => {
         style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}
       >
         {currentItems.map((item) => (
-          <SubItem
-            key={item.rank}
-            rank={item.rank}
-            profileImage={item.profileImage}
-            name={item.name}
-            percentage={item.percentage}
-          />
+        <SubItem
+        key={item.rank}
+        rank={item.rank}
+        profileImage={item.profileImage}
+        name={item.name}
+        percentage={item.percentage}
+        onClick={() => {
+          console.log(`${item.name}이 선택되었습니다.`);
+          onSelectItem(item);
+        
+        }}
+      />
         ))}
+
       </motion.div>
 
       {/* 아래쪽 화살표 */}

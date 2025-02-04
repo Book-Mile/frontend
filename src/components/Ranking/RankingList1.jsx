@@ -2,6 +2,79 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import SubRanking from './SubRanking';
 
+const RankingList1 = ({ onSelectItem }) => {
+  return (
+    <Container>
+        <SvgOne
+          viewBox="0 0 1183 583"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          >
+          <g filter="url(#filter0_f_507_2279)">
+            <ellipse cx="916.5" cy="-125.987" rx="316.5" ry="312.745" fill="url(#paint0_linear_507_2279)" />
+          </g>
+          <SvgGradientFilter />
+        </SvgOne>
+
+        <SvgTwo
+          width="753"
+          height="583"
+          viewBox="0 0 753 583"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          >
+          <g filter="url(#filter0_f_507_2280)">
+            <ellipse
+              cx="257.474"
+              cy="254.419"
+              rx="257.474"
+              ry="254.419"
+              transform="matrix(0.999952 -0.00974339 0.00997875 0.99995 -365 423.987)"
+              fill="url(#paint0_linear_507_2280)"
+            />
+          </g>
+          <SvgGradientFilterTwo />
+        </SvgTwo>
+      <MainWapper>
+        <Background>
+          <One>
+          <ProfileImage src="../../../public/images/profile.png"/>
+          <Name>미친운체개발자</Name>
+          </One>
+          <Two>
+          <ProfileImage src="../../../public/images/profile.png"/>
+          <Name>미친운체개발자</Name>
+          </Two>
+          <Three>
+          <ProfileImage src="../../../public/images/profile.png"/>
+          <Name>미친운체개발자</Name>
+          </Three>
+        <PercentOne>
+          95%
+        </PercentOne>
+        <PercentTwo>
+          90%
+        </PercentTwo>
+        <PercentThree>
+          88%
+        </PercentThree>
+          <ImageOne src="../../../public/images/ranking/rectangle1.png" delay="0s" />
+          <ImageTwo src="../../../public/images/ranking/rectangle2.png" delay="0.3s" />
+          <ImageThree src="../../../public/images/ranking/rectangle3.png" delay="0.6s" />
+        </Background>
+      </MainWapper>
+      <SubRankingContainer>
+          <SubRanking onSelectItem={onSelectItem} />
+      </SubRankingContainer>
+    </Container>
+  );
+};
+
+export default RankingList1;
+
+
 const slideUp = (delay) => keyframes`
   0% {
     transform: translateY(100px);
@@ -236,75 +309,3 @@ const SvgGradientFilterTwo = () => (
     </defs>
   </>
 );
-
-const RankingList1 = () => {
-  return (
-    <Container>
-        <SvgOne
-          viewBox="0 0 1183 583"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-          >
-          <g filter="url(#filter0_f_507_2279)">
-            <ellipse cx="916.5" cy="-125.987" rx="316.5" ry="312.745" fill="url(#paint0_linear_507_2279)" />
-          </g>
-          <SvgGradientFilter />
-        </SvgOne>
-
-        <SvgTwo
-          width="753"
-          height="583"
-          viewBox="0 0 753 583"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-          >
-          <g filter="url(#filter0_f_507_2280)">
-            <ellipse
-              cx="257.474"
-              cy="254.419"
-              rx="257.474"
-              ry="254.419"
-              transform="matrix(0.999952 -0.00974339 0.00997875 0.99995 -365 423.987)"
-              fill="url(#paint0_linear_507_2280)"
-            />
-          </g>
-          <SvgGradientFilterTwo />
-        </SvgTwo>
-      <MainWapper>
-        <Background>
-          <One>
-          <ProfileImage src="../../../public/images/profile.png"/>
-          <Name>미친운체개발자</Name>
-          </One>
-          <Two>
-          <ProfileImage src="../../../public/images/profile.png"/>
-          <Name>미친운체개발자</Name>
-          </Two>
-          <Three>
-          <ProfileImage src="../../../public/images/profile.png"/>
-          <Name>미친운체개발자</Name>
-          </Three>
-        <PercentOne>
-          95%
-        </PercentOne>
-        <PercentTwo>
-          90%
-        </PercentTwo>
-        <PercentThree>
-          88%
-        </PercentThree>
-          <ImageOne src="../../../public/images/ranking/rectangle1.png" delay="0s" />
-          <ImageTwo src="../../../public/images/ranking/rectangle2.png" delay="0.3s" />
-          <ImageThree src="../../../public/images/ranking/rectangle3.png" delay="0.6s" />
-        </Background>
-      </MainWapper>
-      <SubRankingContainer>
-        <SubRanking />
-      </SubRankingContainer>
-    </Container>
-  );
-};
-
-export default RankingList1;
