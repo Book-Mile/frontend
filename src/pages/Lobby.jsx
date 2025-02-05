@@ -7,7 +7,7 @@ import BookLabel from '../components/search/BookLabel';
 import GroupedPeople from '../components/GroupedPeople';
 import WhiteButton from '../components/button/whitebutton';
 import EndGroupPopup from '../components/popup/EndGroupPopup/EndGroupPopup';
-
+import { useLocation } from 'react-router-dom';
 const MarginContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -38,7 +38,11 @@ const GradientOverlay = styled.div`
   top: 0;
   left: 0;
   z-index: 2;
-  background: linear-gradient(to bottom, rgba(217, 217, 217, 0.5), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(
+    to bottom,
+    rgba(217, 217, 217, 0.5),
+    rgba(0, 0, 0, 0.5)
+  );
 `;
 
 const ContentWrapper = styled.div`
@@ -81,7 +85,7 @@ const GroupInfo = styled.div`
 const Close = styled.button`
   font-size: 0.75rem;
   font-weight: 500;
-  color: #D5D5D5;
+  color: #d5d5d5;
   cursor: pointer;
   z-index: 3;
   margin-top: 80px;
@@ -92,7 +96,7 @@ const Close = styled.button`
   background: none;
   border: none;
   padding: 10px 20px;
-  
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -109,17 +113,17 @@ const Close = styled.button`
 const GroupMembers = styled.p`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
 `;
 
 const GroupSize = styled.p`
   font-size: 1rem;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
 `;
 
 const WaitMessage = styled.p`
   font-size: 1rem;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
   width: 533px;
   height: 11px;
 `;
@@ -170,7 +174,7 @@ const MemberImage = styled.img`
 const MemberName = styled.p`
   font-size: 1.125rem;
   font-weight: 700;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
 `;
 
 const MemberDetails = styled.div`
@@ -180,14 +184,15 @@ const MemberDetails = styled.div`
 `;
 
 const DetailText = styled.span`
-  font-size: ${props => (props.size === 'large' ? '1.7rem' : '1.125rem')};
-  font-weight: ${props => (props.size === 'large' ? '700' : '400')};
-  color: ${props => (props.size === 'large' ? props.theme.colors.body : '#565656')};
+  font-size: ${(props) => (props.size === 'large' ? '1.7rem' : '1.125rem')};
+  font-weight: ${(props) => (props.size === 'large' ? '700' : '400')};
+  color: ${(props) =>
+    props.size === 'large' ? props.theme.colors.body : '#565656'};
 `;
 
 const MembersContainer = styled.div`
   position: relative;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   width: 100%;
   height: 100%;
   display: flex;
@@ -198,8 +203,8 @@ const MembersContainer = styled.div`
 `;
 
 const MemberSpan = styled.span`
-  font-size: ${props => (props.type === 'current' ? '20px' : '16px')};
-  font-weight: ${props => (props.type === 'current' ? '700' : '400')};
+  font-size: ${(props) => (props.type === 'current' ? '20px' : '16px')};
+  font-weight: ${(props) => (props.type === 'current' ? '700' : '400')};
 `;
 
 const MembersWrapper = styled.div`
@@ -216,7 +221,7 @@ const FlexRowWrapper = styled.div`
 const GroupMembersText = styled(GroupMembers)`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
   margin: 0;
 `;
 
@@ -228,16 +233,20 @@ const GroupSizeWrapper = styled(GroupSize)`
 
 const WaitMessageStyled = styled(WaitMessage)`
   font-size: 1rem;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
   margin: 0;
 `;
 
 const Lobby = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
+
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleStartClick = () => {
-    navigate('/bookprogress');
+    navigate(`/bookprogress?isbn=${bookId}`);
   };
 
   const handleCloseClick = () => {
@@ -255,7 +264,8 @@ const Lobby = () => {
       <ImageContainer>
         <Image src="../../public/images/cover/dinnerindrawer.png" />
         <GradientOverlay />
-        <Close onClick={handleCloseClick}>그룹종료</Close> {/* Add onClick handler */}
+        <Close onClick={handleCloseClick}>그룹종료</Close>{' '}
+        {/* Add onClick handler */}
         <ContentWrapper>
           <LeftContent>
             <Title>채식주의자</Title>
@@ -265,7 +275,8 @@ const Lobby = () => {
               <span>9챕터</span>
             </GroupInfo>
           </LeftContent>
-          <WhiteButton onClick={handleStartClick}>시작하기</WhiteButton> {/* Add onClick handler */}
+          <WhiteButton onClick={handleStartClick}>시작하기</WhiteButton>{' '}
+          {/* Add onClick handler */}
         </ContentWrapper>
       </ImageContainer>
       <MarginContainer>
@@ -284,17 +295,22 @@ const Lobby = () => {
         </GroupContainer>
         <MembersContainer>
           <MembersWrapper>
-              <FlexRowWrapper>
-                <GroupMembersText>그룹원</GroupMembersText>
-                <GroupSizeWrapper>
-                  <MemberSpan type="current">4</MemberSpan>
-                  <MemberSpan type="total">/8</MemberSpan>
-                </GroupSizeWrapper>
-              </FlexRowWrapper>
-              <WaitMessageStyled>그룹원이 모두 모일 때까지 기다리고 있어요.</WaitMessageStyled>
+            <FlexRowWrapper>
+              <GroupMembersText>그룹원</GroupMembersText>
+              <GroupSizeWrapper>
+                <MemberSpan type="current">4</MemberSpan>
+                <MemberSpan type="total">/8</MemberSpan>
+              </GroupSizeWrapper>
+            </FlexRowWrapper>
+            <WaitMessageStyled>
+              그룹원이 모두 모일 때까지 기다리고 있어요.
+            </WaitMessageStyled>
           </MembersWrapper>
           <ProgressBarContainer>
-            <GroupedPeople title="구구단을 외우자" imageUrl="../../public/images/cover/dinnerindrawer.png" />
+            <GroupedPeople
+              title="구구단을 외우자"
+              imageUrl="../../public/images/cover/dinnerindrawer.png"
+            />
           </ProgressBarContainer>
         </MembersContainer>
       </MarginContainer>
@@ -303,5 +319,3 @@ const Lobby = () => {
 };
 
 export default Lobby;
-
-

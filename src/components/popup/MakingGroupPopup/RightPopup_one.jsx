@@ -19,6 +19,7 @@ import {
 import makingGroupForm from '../../../hooks/makingGroupForm';
 import { handleMakingGroupSubmit } from '../../../api/Popup/MakingGroupPopupSubmit';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
+import { useLocation } from 'react-router-dom';
 
 const Rightpopup_one = ({
   handleBack,
@@ -27,6 +28,10 @@ const Rightpopup_one = ({
   inputValue,
   handleClose,
 }) => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
+
   const [isIndividual, setIsIndividual] = useState(false); // 개인/단체 구분 상태
   const [isPasswordSet, setIsPasswordSet] = useState(true); // 비밀번호 설정 여부
   const [titleErrorMessage, setTitleErrorMessage] = useState(''); // 에러 메시지 상태
@@ -83,10 +88,12 @@ const Rightpopup_one = ({
       groupData.password,
       text,
       isIndividual,
+      bookId,
     ).catch((err) => {
       handleError(err);
     });
     handleClose();
+    window.location.href = `/lobby?isbn=${bookId}`;
   };
 
   if (error) {
