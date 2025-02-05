@@ -14,8 +14,10 @@ const Container = styled.article`
   overflow: hidden;
   padding: 3.2%;
   border-radius: 20px;
-  background-color: ${(props) => (props.completed ? '#f0f0f0' : props.theme.colors.sub)};
-  border: 1px solid ${(props) => (props.completed ? '#565656' : props.theme.colors.main)};
+  background-color: ${(props) =>
+    props.completed ? '#f0f0f0' : props.theme.colors.sub};
+  border: 1px solid
+    ${(props) => (props.completed ? '#565656' : props.theme.colors.main)};
 `;
 
 const TopSection = styled.header`
@@ -99,14 +101,14 @@ import ChapterIcon from '../../assets/label/chapter.svg?react';
 import CountIcon from '../../assets/label/count.svg?react';
 
 function ActivityCard({ completed = false, activity }) {
-  const [completedMembers, setCompletedMembers] = useState(0); 
+  const [completedMembers, setCompletedMembers] = useState(0);
   const [totalMembers, setTotalMembers] = useState(30);
 
   useEffect(() => {
     // 예시 API 응답 (실제 API 호출로 대체 필요)
     const fetchedData = {
-      totalMembers: 30, 
-      completedMembers: 12 
+      totalMembers: 30,
+      completedMembers: 12,
     };
 
     setCompletedMembers(fetchedData.completedMembers);
@@ -114,7 +116,7 @@ function ActivityCard({ completed = false, activity }) {
   }, []);
 
   const handleButtonClick = () => {
-    window.location.href = '/makingGroup';
+    window.location.href = '/joingroup';
   };
 
   // 아이콘을 매핑하기 위한 객체
@@ -122,7 +124,7 @@ function ActivityCard({ completed = false, activity }) {
     page: <PageIcon />,
     speed: <SpeedIcon />,
     count: <CountIcon />,
-    chapter: <ChapterIcon />
+    chapter: <ChapterIcon />,
   };
 
   // 텍스트를 매핑하기 위한 객체
@@ -130,7 +132,7 @@ function ActivityCard({ completed = false, activity }) {
     page: '페이지',
     speed: '속도',
     count: '횟수',
-    chapter: '챕터'
+    chapter: '챕터',
   };
 
   // activity.pageInfo에 따라 동적으로 처리
@@ -144,7 +146,7 @@ function ActivityCard({ completed = false, activity }) {
     } else if (pageInfo.includes('챕터')) {
       return { type: 'chapter', text: pageInfo };
     }
-    return { type: 'page', text: pageInfo };  // 기본값
+    return { type: 'page', text: pageInfo }; // 기본값
   };
 
   const { type, text } = determineTypeAndText(activity.pageInfo);
@@ -155,7 +157,9 @@ function ActivityCard({ completed = false, activity }) {
         <TopSection>
           <Image src="../../public/images/cover/werther.png" alt="profile" />
           <ProgressBar>
-            <span style={{ fontSize: '12px', color: '#4E202A', fontWeight: '700' }}>
+            <span
+              style={{ fontSize: '12px', color: '#4E202A', fontWeight: '700' }}
+            >
               {completedMembers}
             </span>
             <span style={{ fontSize: '10px', color: '#565656' }}>
@@ -178,7 +182,12 @@ function ActivityCard({ completed = false, activity }) {
       </SectionWithGap>
       {!completed && (
         <ButtonContainer>
-          <ModalButton onClick={handleButtonClick} width="168px" height="44px" fontWeight="500">
+          <ModalButton
+            onClick={handleButtonClick}
+            width="168px"
+            height="44px"
+            fontWeight="500"
+          >
             참여하기
           </ModalButton>
         </ButtonContainer>
