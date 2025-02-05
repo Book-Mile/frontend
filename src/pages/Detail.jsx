@@ -160,7 +160,7 @@ const Detail = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleButtonClick = () => {
-    window.location.href = '/makingGroup';
+    window.location.href = '/creategroup';
   };
 
   const bookData = {

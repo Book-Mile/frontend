@@ -26,23 +26,15 @@ const PopUpInnerBox1 = styled.div`
   border-radius: 20px;
 `;
 const Title = styled.div`
-  /* 그룹 정보 */
-
   font-family: ${(props) => props.theme.font.main};
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
   line-height: 35px;
-  /* identical to box height */
-
   color: ${(props) => props.theme.colors.main};
   font-style: normal;
-
-  /* Inside auto layout */
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 `;
+
 const Content = styled.div`
   font-family: ${(props) => props.theme.font.main};
   font-size: 1rem;
@@ -61,11 +53,12 @@ const ButtonContainer = styled.div`
   gap: 40px;
 `;
 
-const EndGroupPopup = ({ onClose = false }) => {
-  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
+const EndGroupPopup = ({ onClose }) => {
+  const [isClosing, setIsClosing] = useState(false);
 
   const handleClose = () => {
-    setIsClosing(true); // 닫히는 애니메이션 시작
+    setIsClosing(true);
+    setTimeout(() => onClose(true), 300);
   };
 
   useClosePopupAnimation(isClosing, onClose);

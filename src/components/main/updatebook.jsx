@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useSpring, animated } from '@react-spring/web';
+import { Link } from 'react-router-dom';
 
 const Section = styled.section`
   position: relative;
@@ -176,12 +177,16 @@ const BookList = () => {
         <ContentWrapper ref={scrollRef}>
           {books.slice(startIndex, startIndex + 4).map((book, index) => (
             <BookCard key={index}>
+            <Link to={`/details/${book.id}`}>
               <BookImage src={book.image} alt={book.title} />
-              <BookInfo>
+            </Link>
+            <BookInfo>
+              <Link to={`/details/${book.id}`}>
                 <BookTitle>{book.title}</BookTitle>
-                <Author>{book.author}</Author>
-              </BookInfo>
-            </BookCard>
+              </Link>
+              <Author>{book.author}</Author>
+            </BookInfo>
+          </BookCard>
           ))}
         </ContentWrapper>
       </animated.div>
