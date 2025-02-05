@@ -23,6 +23,7 @@ import Lobby from './pages/Lobby';
 import Detail from './pages/Detail';
 import SNSManage from './pages/SNSManage.jsx';
 import MyPage from './pages/MyPage.jsx';
+import BookProgress from './pages/BookProgress.jsx'
 import Main from './pages/Main.jsx';
 
 function App() {
@@ -53,6 +54,10 @@ function App() {
                 <Route path="/checkpoint" element={<CheckpointRecordPopup />} />
                 <Route path="/complete" element={<RegisterCompletePopup />} />
                 <Route path="/rate" element={<RatingPopup />} />
+                <Route path="/EditMyInfo" element={<EditMyInfo />} />
+                <Route path="/SNSManage" element={<SNSManage />} />
+                <Route path="/RatingPopup" element={<RatingPopup />} />
+                <Route path='/bookprogress' element={<BookProgress/>}/>
               </Routes>
             </div>
           </div>

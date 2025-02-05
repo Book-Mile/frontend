@@ -10,7 +10,6 @@ const bookEffect = keyframes`
 
 const BackgroundCircle1 = styled.svg`
   position: absolute;
-  top: 5vh;
   left: 45vw;
   width: 60vw;
   height: auto;
@@ -19,7 +18,6 @@ const BackgroundCircle1 = styled.svg`
 
 const BackgroundCircle2 = styled.svg`
   position: absolute;
-  top: 0vh;
   left: -6vw;
   height: auto;
   animation: ${bookEffect} 1.5s ease-out forwards;

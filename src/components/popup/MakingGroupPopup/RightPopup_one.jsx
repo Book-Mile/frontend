@@ -25,6 +25,7 @@ const Rightpopup_one = ({
   groupMemberNum,
   subject,
   inputValue,
+  handleClose,
 }) => {
   const [isIndividual, setIsIndividual] = useState(false); // 개인/단체 구분 상태
   const [isPasswordSet, setIsPasswordSet] = useState(true); // 비밀번호 설정 여부
@@ -85,6 +86,7 @@ const Rightpopup_one = ({
     ).catch((err) => {
       handleError(err);
     });
+    handleClose();
   };
 
   if (error) {

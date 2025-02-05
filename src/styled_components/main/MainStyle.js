@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const MainWrapper = styled.main`
   position: relative;
-  width: 100vw;
   height: 100vh;
   overflow: hidden;
   background-color: #f9f9f9;
