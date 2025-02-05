@@ -3,12 +3,14 @@ const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주�
 
 export const CheckPointRecordRequest = async (setData, setErrorMessage) => {
   try {
-    //추후 수정
-    const token = 123456465798;
+    const accessToken = JSON.parse(
+      sessionStorage.getItem('userData'),
+    )?.accessToken;
 
     const response = await axios.get(`${BASE_URL}/api/v1/records`, {
       headers: {
-        Authorization: `Bearer ${token}`, // 여기에 토큰값을 넣어줍니다.
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`, // 여기에 토큰값을 넣어줍니다.
       },
     });
     if (response.status === 200) {

@@ -8,11 +8,14 @@ export const RightPopup_oneRequestList = async (
   subject,
 ) => {
   try {
-    const token = 123456465798;
+    const accessToken = JSON.parse(
+      sessionStorage.getItem('userData'),
+    )?.accessToken;
     const response = await axios.post(`${BASE_URL}/api/v1/reviews`, {
       params: { subject },
       headers: {
-        Authorization: `Bearer ${token}`, // 여기에 토큰값을 넣어줍니다.
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`, // 여기에 토큰값을 넣어줍니다.
       },
     });
 
