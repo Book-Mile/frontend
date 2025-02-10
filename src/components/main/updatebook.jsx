@@ -1,6 +1,102 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSpring, animated } from '@react-spring/web';
+import apiClient from '../../api/apiClient';
+import useUserStore from '../../store/store'; 
+
+const BookList = () => {
+  const [books, setBooks] = useState([]);
+  const [startIndex, setStartIndex] = useState(0);
+    
+  useEffect(() => {
+    const retrievedToken = JSON.parse(sessionStorage.getItem('userData'))?.accessToken;
+    console.log('retrievedToken:', retrievedToken);
+  
+    if (!retrievedToken) {
+      console.warn('No access token available');
+      return;
+    }
+
+    const fetchNewBooks = async () => {
+      try {
+        const response = await apiClient.get('/books/new-books', {
+          headers: {
+            Authorization: `Bearer ${retrievedToken}`
+          }
+        });
+        console.log('API Response:', response.data);
+        if (response.data?.response) {
+          setBooks(response.data.response);
+        } else {
+          console.warn('No books data in response:', response.data);
+        }
+      } catch (error) {
+        console.error('API Error:', error.response?.data || error.message);
+      }
+    };
+
+    fetchNewBooks();
+  }, []);
+  
+  // 다음 페이지 이동
+  const nextBook = () => {
+    if (startIndex + 4 < books.length) {
+      setStartIndex(prevIndex => prevIndex + 4);
+    }
+  };
+
+  // 이전 페이지 이동
+  const prevBook = () => {
+    if (startIndex - 4 >= 0) {
+      setStartIndex(prevIndex => prevIndex - 4);
+    }
+  };
+
+  // 스크롤 애니메이션
+  const scrollProps = useSpring({
+    scrollLeft: startIndex * (1155 / 4),
+    config: { tension: 200, friction: 25 },
+    reset: true
+  });
+
+  return (
+    <Section>
+      <Header>
+        <Title>최신도서</Title>
+        <Navigation>
+          <Icon onClick={prevBook} viewBox="0 0 30 31">
+          <path
+            d="M15.1177 27.5817L13.4378 29.26L4.28769 20.1131C4.14019 19.9665 4.02314 19.7922 3.94326 19.6003C3.86339 19.4083 3.82226 19.2024 3.82226 18.9945C3.82226 18.7865 3.86339 18.5807 3.94326 18.3887C4.02314 18.1967 4.14019 18.0224 4.28769 17.8758L13.4378 8.72418L15.1161 10.4025L6.5281 18.9921L15.1177 27.5817Z"
+            fill="#4E202A"
+          />
+           </Icon>
+          <Icon onClick={nextBook} viewBox="0 0 30 31">
+          <path
+            d="M3.88231 10.4183L5.56223 8.73999L14.7123 17.8869C14.8598 18.0335 14.9769 18.2078 15.0567 18.3997C15.1366 18.5917 15.1777 18.7976 15.1777 19.0055C15.1777 19.2135 15.1366 19.4193 15.0567 19.6113C14.9769 19.8033 14.8598 19.9776 14.7123 20.1242L5.56223 29.2758L3.88389 27.5975L12.4719 19.0079L3.88231 10.4183Z"
+            fill="#4E202A"
+          />
+          </Icon>
+        </Navigation>
+      </Header>
+      <animated.div style={{ ...scrollProps }}>
+        <ContentWrapper>
+          {books.slice(startIndex, startIndex + 4).map((book, index) => (
+            <BookCard key={book.title || index}>
+              <BookImage src={book.cover} alt={book.title} />
+              <BookInfo>
+                <BookTitle>{book.title}</BookTitle>
+                <Author>{book.author}</Author>
+              </BookInfo>
+            </BookCard>
+          ))}
+        </ContentWrapper>
+      </animated.div>
+    </Section>
+  );
+};
+
+export default BookList;
+
 
 const Section = styled.section`
   position: relative;
@@ -82,111 +178,9 @@ const Author = styled.p`
   margin: 0;
   font-size: 0.875rem;
   color: #565656;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 268px;
+  height: 20px;
 `;
-
-const BookList = () => {
-  const [startIndex, setStartIndex] = useState(0);
-  const scrollRef = useRef(null);
-
-  const books = [
-    {
-      title: "소프트웨어 개발에 ChatGPT 사용하기",
-      author: "오노 사토시",
-      image: "../../../public/images/cover/Chatgpt.png"
-    },
-    {
-      title: "디자인 구구단",
-      author: "에이핫",
-      image: "../../../public/images/cover/designBasics.jpg"
-    },
-    {
-      title: "AI 영상 제작",
-      author: "민지영, 문수민, 전은재, 앤미디어",
-      image: "../../../public/images/cover/AI-VideoCreation.jpg"
-    },
-    {
-      title: "혼자 공부하는 머신러닝+딥러닝",
-      author: "박해선",
-      image: "../../../public/images/cover/ML-Self-Study.jpg"
-    },
-    {
-      title: "리액트로 만드는 웹 애플리케이션",
-      author: "김민수",
-      image: "../../../public/images/cover/ML-Self-Study.jpg"
-    },
-    {
-      title: "자바스크립트 완벽 가이드",
-      author: "벤 프랭클린",
-      image: "../../../public/images/cover/ML-Self-Study.jpg"
-    },
-    {
-      title: "프론트엔드 개발의 비밀",
-      author: "이상준",
-      image: "../../../public/images/cover/ML-Self-Study.jpg"
-    },
-    {
-      title: "웹 디자인의 핵심",
-      author: "김상호",
-      image: "../../../public/images/cover/ML-Self-Study.jpg"
-    }
-  ];
-
-  const nextBook = () => {
-    if (startIndex + 4 < books.length) {
-      setStartIndex(prevIndex => prevIndex + 4);
-    }
-  };
-
-  const prevBook = () => {
-    if (startIndex - 4 >= 0) {
-      setStartIndex(prevIndex => prevIndex - 4);
-    }
-  };
-
-  const scrollProps = useSpring({
-    scrollLeft: startIndex * (1155 / 4),
-    config: { tension: 200, friction: 25 },
-    reset: true
-  });
-
-  return (
-    <Section>
-      <Header>
-        <Title>최신도서</Title>
-        <Navigation>
-          <Icon
-            onClick={prevBook}
-            viewBox="0 0 30 31"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M20 5.5L10 15.5L20 25.5" stroke="#4E202A" />
-          </Icon>
-          <Icon
-            onClick={nextBook}
-            viewBox="0 0 30 31"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M10 25.5L20 15.5L10 5.5" stroke="#4E202A" />
-          </Icon>
-        </Navigation>
-      </Header>
-      <animated.div style={{ ...scrollProps }}>
-        <ContentWrapper ref={scrollRef}>
-          {books.slice(startIndex, startIndex + 4).map((book, index) => (
-            <BookCard key={index}>
-              <BookImage src={book.image} alt={book.title} />
-              <BookInfo>
-                <BookTitle>{book.title}</BookTitle>
-                <Author>{book.author}</Author>
-              </BookInfo>
-            </BookCard>
-          ))}
-        </ContentWrapper>
-      </animated.div>
-    </Section>
-  );
-};
-
-export default BookList;

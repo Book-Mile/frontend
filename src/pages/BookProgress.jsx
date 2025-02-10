@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import BarChart3D from '../components/Ranking/3d/BarChart3D';
 import RankingList from '../components/Ranking/RankingList';
@@ -8,12 +7,14 @@ import RankingList1 from '../components/Ranking/RankingList1';
 import GroupThoughts from '../components/Ranking/GroupThoughts';
 import ImgComment from '../components/Ranking/ImgComment';
 import BookCard from '../components/Ranking/BookCard';
-import RankingPopup from '../components/popup/RatingPopup/RatingPopup';
+import RatingPopup from '../components/popup/RatingPopup/RatingPopup';
+import CheckpointRecordPopup from '../components/popup/CheckpointRecordPopup/CheckpointRecordPopup'
 import ToggleOn from '../assets/Toggle/ToggleOn.svg';
 import ToggleOff from '../assets/Toggle/ToggleOff.svg';
 
 const BookProgress = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [RatingModalOpen, setRatingModalOpen] = useState(false);
+  const [CheckpointModalOpen, setCheckpointModalOpen] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [isToggled, setIsToggled] = useState(true);
   const [rating, setRating] = useState(null); 
@@ -32,7 +33,7 @@ const BookProgress = () => {
     setRating(newRating);
     setReviewText(newReviewText);
     setHasReviewed(true);
-    setIsModalOpen(false);
+    setRatingModalOpen(false);
   };
   const handleSelectItem = (item) => {
     const newBooks = [
@@ -85,7 +86,7 @@ const BookProgress = () => {
           </LeftContent>
           <GroupInfo>
             {!hasReviewed ? (
-              <WhiteButton onClick={() => setIsModalOpen(true)}>리뷰</WhiteButton>
+              <WhiteButton onClick={() => setRatingModalOpen(true)}>리뷰</WhiteButton>
             ) : (
               <>
                 <div>
@@ -94,9 +95,7 @@ const BookProgress = () => {
                 </div>
               </>
             )}
-            <Link to="/checkPointRecord">
-              <WhiteButton>체크포인트 기록</WhiteButton>
-            </Link>
+              <WhiteButton onClick={()=>setCheckpointModalOpen(true)}>체크포인트 기록</WhiteButton>
           </GroupInfo>
         </ContentWrapper>
       </ImageContainer>
@@ -124,9 +123,15 @@ const BookProgress = () => {
         </ImgCommentWrapper>
       </CommentWrapper>
 
-      {isModalOpen && (
-        <RankingPopup 
-          onClose={() => setIsModalOpen(false)} 
+      {RatingModalOpen && (
+        <RatingPopup 
+          onClose={() => setRatingModalOpen(false)} 
+          onSubmit={handleReviewSubmit}
+        />
+      )}
+      {CheckpointModalOpen && (
+        <CheckpointRecordPopup 
+          onClose={() => setCheckpointModalOpen(false)} 
           onSubmit={handleReviewSubmit}
         />
       )}

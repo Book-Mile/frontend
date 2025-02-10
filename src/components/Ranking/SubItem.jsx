@@ -7,7 +7,7 @@ const SubItem = ({ rank, profileImage, name, percentage }) => {
 
   return (
     <Link
-      to={`/checkPointRecord`}
+      to={`/checkpoints`}
       style={{
         textDecoration: 'none',
         color: 'inherit',

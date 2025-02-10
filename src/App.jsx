@@ -15,13 +15,13 @@ import EditMyInfo from './pages/EditMyInfo.jsx';
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
+import RatingPopup from './components/popup/RatingPopup/RatingPopup';
 import SearchResults from './pages/SearchResults';
 import Lobby from './pages/Lobby';
 import Detail from './pages/Detail';
 
 import SNSManage from './pages/SNSManage.jsx';
 import MyPage from './pages/MyPage.jsx';
-import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
 import BookProgress from './pages/BookProgress.jsx'
 import Main from './pages/Main.jsx';
 
@@ -40,34 +40,19 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/mypage" element={<MyPage />} />
-                <Route
-                  path="/checkPointRecord"
-                  element={<CheckPointRecordPage />}
-                />
-                {/*<Route*/}
-                {/*  path="/anothercheckPointRecord"*/}
-                {/*  element={<AnotherCheckPointRecordPage />}*/}
-                {/*/>*/}
-                <Route path="/joinGroupPopup" element={<JoinGroupPopup />} />
-                <Route
-                  path="/SecessionUserPopup"
-                  element={<SecessionUserPopup />}
-                />
-                <Route path="/endgroup" element={<EndGroupPopup />} />
-                <Route
-                  path="/checkpointrecordpopup"
-                  element={<CheckpointRecordPopup />}
-                />
-                <Route
-                  path="/registercompletepopup"
-                  element={<RegisterCompletePopup />}
-                />
+                <Route path="/checkpoints" element={<CheckPointRecordPage />} />
                 <Route path="/lobby" element={<Lobby />} />
-                <Route path="/detail" element={<Detail />} />
-                <Route path="/EditMyInfo" element={<EditMyInfo />} />
-                <Route path="/SNSManage" element={<SNSManage />} />
-                <Route path="/RatingPopup" element={<RatingPopup />} />
+                <Route path="/edit-profile" element={<EditMyInfo />} />
+                <Route path="/snsmanagement" element={<SNSManage />} />
                 <Route path='/bookprogress' element={<BookProgress/>}/>
+
+                {/* 추후 팝업 URL 제거 할 예정 */}
+                <Route path="/joingroup" element={<JoinGroupPopup />} />
+                <Route path="/leavegroup" element={<SecessionUserPopup />} />
+                <Route path="/endgroup" element={<EndGroupPopup />} />
+                <Route path="/complete" element={<RegisterCompletePopup />} />
+                <Route path="/rate" element={<RatingPopup />} />
+
               </Routes>
             </div>
           </div>
