@@ -20,6 +20,8 @@ import {
   changePassword,
   changeNicknameEmail,
 } from '/src/api/Pages/EditMyInfoRequest.jsx';
+import SecessionUserPopup from '../components/popup/SecessionUserPopup/SecessionUserPopup.jsx';
+
 
 export default function MyPage() {
   const { name, setName } = useUserStore();
@@ -27,6 +29,7 @@ export default function MyPage() {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
   const [snsId, setSnsId] = useState('email@kakao.com');
   const [isLinkedSNS, setIsLinkedSNS] = useState(false);
   const [isSented, setIsSented] = useState(false);
@@ -93,6 +96,14 @@ export default function MyPage() {
   //하단 완료 버튼 눌렀을 시 동작할 함수
   const handleSubmit = () => {
     changeNicknameEmail(nickname, email, setName, navigate);
+  };
+  
+  const openPopup = () => {
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   return (
@@ -272,7 +283,7 @@ export default function MyPage() {
               </Type2Middle>
               <Type2Right
                 onClick={() => {
-                  navigate('/snsmanage');
+                  navigate('/snsmanagement');
                 }}
               >
                 연동하기 &gt;
@@ -289,9 +300,7 @@ export default function MyPage() {
                 <Type2RightFirstLine>회원탈퇴</Type2RightFirstLine>
               </Type2Middle>
               <Type2Right
-                onClick={() => {
-                  navigate('/SecessionUserPopup');
-                }}
+                onClick={openPopup}
               >
                 탈퇴하기 &gt;
               </Type2Right>
@@ -309,6 +318,11 @@ export default function MyPage() {
           />
         </DownFrame>
       </OuterFrame>
+      {showPopup && (
+        <SecessionUserPopup
+          onClose={closePopup}
+        />
+      )}
     </MainContainer>
   );
 }

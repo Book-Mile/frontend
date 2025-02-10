@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import SearchIcon from '../../assets/search/search.svg';
 
 const SearchBar = () => {
