@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSpring, animated } from '@react-spring/web';
-import apiClient from '../../api/apiClient';
-import useUserStore from '../../store/store'; 
+import { fetchNewBooks } from '../../api/Pages/MainResponse'
 
 const BookList = () => {
   const [books, setBooks] = useState([]);
@@ -17,25 +16,12 @@ const BookList = () => {
       return;
     }
 
-    const fetchNewBooks = async () => {
-      try {
-        const response = await apiClient.get('/books/new-books', {
-          headers: {
-            Authorization: `Bearer ${retrievedToken}`
-          }
-        });
-        console.log('API Response:', response.data);
-        if (response.data?.response) {
-          setBooks(response.data.response);
-        } else {
-          console.warn('No books data in response:', response.data);
-        }
-      } catch (error) {
-        console.error('API Error:', error.response?.data || error.message);
-      }
+    const fetchBooks = async () => {
+      const newBooks = await fetchNewBooks(retrievedToken);
+      setBooks(newBooks);
     };
 
-    fetchNewBooks();
+    fetchBooks();
   }, []);
   
   // 다음 페이지 이동
