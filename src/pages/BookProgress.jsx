@@ -17,16 +17,16 @@ const BookProgress = () => {
   const [CheckpointModalOpen, setCheckpointModalOpen] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [isToggled, setIsToggled] = useState(true);
-  const [rating, setRating] = useState(null); 
-  const [reviewText, setReviewText] = useState("");
+  const [rating, setRating] = useState(null);
+  const [reviewText, setReviewText] = useState('');
   const [hasReviewed, setHasReviewed] = useState(false);
 
   const toggleSwitch = () => {
-    setIsToggled(prevState => !prevState);
+    setIsToggled((prevState) => !prevState);
   };
-  
+
   useEffect(() => {
-    console.log("선택된 책 목록:", selectedBooks);
+    console.log('선택된 책 목록:', selectedBooks);
   }, [selectedBooks]);
 
   const handleReviewSubmit = (newRating, newReviewText) => {
@@ -53,8 +53,8 @@ const BookProgress = () => {
         description: `이 책은 ${item.name}의 세 번째 작품입니다.`,
       },
     ];
-  
-    console.log("새로 추가될 책 목록:", newBooks);
+
+    console.log('새로 추가될 책 목록:', newBooks);
     setSelectedBooks(newBooks);
   };
 
@@ -71,10 +71,10 @@ const BookProgress = () => {
               <Title>한강 작가 책 도장깨기</Title>
               <WhiteButton>
                 {isToggled ? '템플릿 공개' : '템플릿 비공개'}
-                <img 
-                  src={isToggled ? ToggleOn : ToggleOff} 
-                  alt="Toggle" 
-                  onClick={toggleSwitch} 
+                <img
+                  src={isToggled ? ToggleOn : ToggleOff}
+                  alt="Toggle"
+                  onClick={toggleSwitch}
                   style={{ cursor: 'pointer' }}
                 />
               </WhiteButton>
@@ -91,7 +91,9 @@ const BookProgress = () => {
               <>
                 <div>
                   <p>리뷰</p>
-                  <p>{rating}점: {reviewText}</p>
+                  <p>
+                    {rating}점: {reviewText}
+                  </p>
                 </div>
               </>
             )}
@@ -101,7 +103,7 @@ const BookProgress = () => {
       </ImageContainer>
 
       <RankWrapper>
-        <RankingList1 onSelectItem={handleSelectItem}/>
+        <RankingList1 onSelectItem={handleSelectItem} />
         {selectedBooks.map((book, index) => (
           <BookCard key={index} bookData={book} />
         ))}
@@ -110,15 +112,15 @@ const BookProgress = () => {
       <CommentWrapper>
         <GroupThoughts />
         <ImgCommentWrapper>
-          <ImgComment 
-            nickname="우리이기 이전에" 
-            comment="너무 공감갔던 글귀들" 
-            imageSrc="../../public/images/cover/dinnerindrawer.png" 
+          <ImgComment
+            nickname="우리이기 이전에"
+            comment="너무 공감갔던 글귀들"
+            imageSrc="../../public/images/cover/dinnerindrawer.png"
           />
-          <ImgComment 
-            nickname="미친운체개발자" 
-            comment="스스로를 닦달하지 말고, 매사에 너무 심각하지 말고, 너무 고민하지 말고, 그냥 재미있게 살았으면 좋겠다." 
-            imageSrc="../../public/images/cover/dinnerindrawer.png" 
+          <ImgComment
+            nickname="미친운체개발자"
+            comment="스스로를 닦달하지 말고, 매사에 너무 심각하지 말고, 너무 고민하지 말고, 그냥 재미있게 살았으면 좋겠다."
+            imageSrc="../../public/images/cover/dinnerindrawer.png"
           />
         </ImgCommentWrapper>
       </CommentWrapper>
@@ -163,12 +165,16 @@ const GradientOverlay = styled.div`
   top: 0;
   left: 0;
   z-index: 2;
-  background: linear-gradient(to bottom, rgba(217, 217, 217, 0.5), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(
+    to bottom,
+    rgba(217, 217, 217, 0.5),
+    rgba(0, 0, 0, 0.5)
+  );
 `;
 const Close = styled.button`
   font-size: 0.75rem;
   font-weight: 500;
-  color: #D5D5D5;
+  color: #d5d5d5;
   cursor: pointer;
   z-index: 3;
   display: flex;
@@ -178,12 +184,11 @@ const Close = styled.button`
   background: none;
   border: none;
   padding: 10px 20px;
-  
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     border: none;
-    
   }
 
   &:active {
@@ -203,7 +208,6 @@ const ContentWrapper = styled.div`
   justify-content: space-between;
   align-items: flex-end;
   width: calc(100% - 2 * 9.86%);
-
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -243,11 +247,11 @@ const CommentWrapper = styled.div`
   gap: 100px;
 `;
 
-const ImgCommentWrapper= styled.div`
+const ImgCommentWrapper = styled.div`
   display: flex;
   gap: 20px;
 `;
 
-const RankWrapper= styled.div`
+const RankWrapper = styled.div`
   margin-bottom: 120px;
 `;

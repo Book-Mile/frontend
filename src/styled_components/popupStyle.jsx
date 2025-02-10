@@ -34,6 +34,7 @@ export const PopupInner = styled.div`
   gap: 3%;
   width: 900px;
   height: 60%;
+  z-index: 99;
   transform: translateY(100%);
   animation: ${(props) =>
     props.isClosing

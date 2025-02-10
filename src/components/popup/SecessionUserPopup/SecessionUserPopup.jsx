@@ -180,7 +180,7 @@ const SecessionUserPopup = ({ onClose = false }) => {
               height={'45px'}
               bgColor={'#FFF0F0'}
               text={'취소'}
-              onClick={handleClose}
+              func={handleClose}
               fontSize="16px"
               fontWeight={'700'}
             />
@@ -194,7 +194,7 @@ const SecessionUserPopup = ({ onClose = false }) => {
               fontSize="16px"
               disabled={inputValue !== '탈퇴하겠습니다'} // 조건부 비활성화
               fontWeight={'700'}
-              onClick={() => {
+              func={() => {
                 if (inputValue === '탈퇴하겠습니다') {
                   handleSubmit(); // 회원 탈퇴 함수 호출
                 }

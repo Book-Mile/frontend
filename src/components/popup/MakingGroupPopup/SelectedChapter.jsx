@@ -82,6 +82,9 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
+  const handleConfirm = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
       <PopUpInnerBox1 imgPath={imgPath}>
@@ -135,7 +138,9 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
                 subject={subject}
+                handleClose={handleClose}
                 inputValue={inputValue}
+                onConfirm={handleConfirm}
               />
             ) : (
               <RightPopup_two
