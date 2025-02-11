@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -7,11 +7,23 @@ import ProgressBookList from '../components/ProgressBookList.jsx';
 import PendingBookList from '../components/PendingBookList.jsx';
 import EndedBookList from '../components/EndedBookList.jsx';
 import Edit from '/src/assets/MyInfoAssets/edit.svg';
+import useUserStore from '../store/store.js';
+import { getUserInfo } from '../api/Pages/MyPageRequest.jsx';
 
-export default function EditMyInfo() {
-  const [nickname, setNickname] = useState('무서운 토끼');
+export default function MyPage() {
   const [email, setEmail] = useState('email@gmail.com');
+  const [profileImage, setProfileImage] = useState('/src/assets/profile.png');
   const [tab, setTab] = useState(1);
+
+  const { name, setName } = useUserStore();
+
+  useEffect(() => {
+    getUserInfo().then((data) => {
+      setEmail(data.email);
+      console.log(data.image);
+      setProfileImage(data.image);
+    });
+  }, []);
 
   const handleTabChange = (tab) => {
     setTab(tab);
@@ -29,11 +41,11 @@ export default function EditMyInfo() {
           <UpperFrame>
             <UserFrame>
               <UserFrameLeft>
-                <img src={'/src/assets/profile.png'} />
+                <img src={profileImage} style={{ width: '100px' }} />
               </UserFrameLeft>
               <UserFrameRight>
                 <NickName>
-                  {nickname}
+                  {name}
                   <img
                     src={Edit}
                     onClick={handleUserEditBtn}
@@ -174,7 +186,7 @@ const TabBtn = styled.div`
 `;
 
 const ContentFrame = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;

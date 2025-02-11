@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useUserStore from '../../src/store/store.js';
 import { handleLogout } from '/src/utils/publicFunctions.js';
 
@@ -63,6 +63,7 @@ const SignUpLink = styled(Link)`
 
 export default function NavBar() {
   const { name, setName } = useUserStore();
+  const navigate = useNavigate();
 
   return (
     <nav className="navbar">
@@ -77,7 +78,14 @@ export default function NavBar() {
             </>
           ) : (
             <>
-              {name} 님{' '}
+              <span
+                onClick={() => {
+                  navigate('/mypage');
+                }}
+                style={{ cursor: 'pointer' }}
+              >
+                {name} 님{' '}
+              </span>
               <span
                 onClick={() => {
                   handleLogout(setName);

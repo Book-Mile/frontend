@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ModeTag from '/src/components/modeTag/ModeTag.jsx';
+import { getUserGroups } from '../api/Pages/MyPageRequest.jsx';
 
 function Override({ groupName, groupKing, mode }) {
   return (
@@ -101,91 +102,32 @@ function Book({ img, bookname, writer, groupMode, groupKing, groupName }) {
   );
 }
 
-const books = [
-  {
-    img: '/src/assets/bookImg3.png',
-    bookname: '영어로 문장 만들기 훈련',
-    writer: '유은하',
-    groupMode: 'page',
-    groupName: '스프링이 뭔데요',
-    groupKing: '한준서',
-  },
-  {
-    img: '/src/assets/bookImg4.png',
-    bookname: '채식주의자',
-    writer: '한강',
-    groupMode: 'speed',
-    groupName: '한 페이지 이야기',
-    groupKing: '배현준',
-  },
-  {
-    img: '/src/assets/bookImg.png',
-    bookname: '좋은 사람 되려다 쉬운...',
-    writer: '이남훈',
-    groupMode: 'page',
-    groupName: '같이 어휘력을 쌓읍시다',
-    groupKing: '박영인',
-  },
-  {
-    img: '/src/assets/bookImg2.png',
-    bookname: '도둑 맞은 집중력',
-    writer: '요한 하리',
-    groupMode: 'speed',
-    groupName: '최강컴공모임',
-    groupKing: '김기수',
-  },
-  {
-    img: '/src/assets/bookImg4.png',
-    bookname: '채식주의자',
-    writer: '한강',
-    groupMode: 'speed',
-    groupName: '문장의 정원',
-    groupKing: '배현준',
-  },
-  {
-    img: '/src/assets/bookImg4.png',
-    bookname: '채식주의자',
-    writer: '한강',
-    groupMode: 'page',
-    groupName: '책숲 동행',
-    groupKing: '배현준',
-  },
-  {
-    img: '/src/assets/bookImg4.png',
-    bookname: '채식주의자',
-    writer: '한강',
-    groupMode: 'speed',
-    groupName: '책모임 온누리',
-    groupKing: '배현준',
-  },
-  {
-    img: '/src/assets/bookImg4.png',
-    bookname: '채식주의자',
-    writer: '한강',
-    groupMode: 'speed',
-    groupName: '베르테르 뮤지컬 예습',
-    groupKing: '배현준',
-  },
-];
-
 export default function PendingBookList({ tab }) {
+  const [responseData, setResponseData] = useState([]);
+  useEffect(() => {
+    getUserGroups('RECRUITING').then((data) => {
+      console.log('받아온 그룹 데이터:', data);
+      setResponseData(data);
+    });
+  }, []);
+
   return (
     <>
       <MainFrame>
         <InfoFrame>
-          총 <span style={{ color: '#ab0909' }}>3권</span>의 책이 그룹 시작을
-          기다리고 있어요.
+          총 <span style={{ color: '#ab0909' }}>{responseData.length}권</span>의
+          책이 그룹 시작을 기다리고 있어요.
         </InfoFrame>
         <ListRowFrame>
-          {books.map((book, index) => (
+          {responseData.map((data, index) => (
             <Book
               key={index}
-              img={book.img}
-              bookname={book.bookname}
-              writer={book.writer}
-              groupMode={book.groupMode}
-              groupName={book.groupName}
-              groupKing={book.groupKing}
+              img={data.book.cover}
+              bookname={data.book.title}
+              writer={data.book.author}
+              groupMode={data.goalType}
+              groupName={data.groupName}
+              groupKing={data.masterNickname}
             />
           ))}
         </ListRowFrame>

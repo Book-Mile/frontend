@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ModeTag from '/src/components/modeTag/ModeTag.jsx';
+import { getUserGroups } from '../api/Pages/MyPageRequest.jsx';
 
 function Override({ groupName, groupKing, mode }) {
   return (
@@ -172,22 +173,30 @@ const books = [
 ];
 
 export default function EndedBookList({ tab }) {
+  const [responseData, setResponseData] = useState([]);
+  useEffect(() => {
+    getUserGroups('COMPLETED').then((data) => {
+      console.log('받아온 그룹 데이터:', data);
+      setResponseData(data);
+    });
+  }, []);
   return (
     <>
       <MainFrame>
         <InfoFrame>
-          총 <span style={{ color: '#ab0909' }}>128개</span>의 책을 읽었어요.
+          총 <span style={{ color: '#ab0909' }}>{responseData.length}권</span>의
+          책을 읽었어요.
         </InfoFrame>
         <ListRowFrame>
-          {books.map((book, index) => (
+          {responseData.map((data, index) => (
             <Book
               key={index}
-              img={book.img}
-              bookname={book.bookname}
-              writer={book.writer}
-              groupMode={book.groupMode}
-              groupName={book.groupName}
-              groupKing={book.groupKing}
+              img={data.img}
+              bookname={data.bookname}
+              writer={data.writer}
+              groupMode={data.groupMode}
+              groupName={data.groupName}
+              groupKing={data.groupKing}
             />
           ))}
         </ListRowFrame>
