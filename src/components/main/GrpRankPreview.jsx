@@ -1,5 +1,56 @@
 import styled from 'styled-components';
 
+const GrpRankPreview = () => (
+  <Container>
+    <Title>가장 많은 성취도 달성한 그룹</Title>
+    <GroupList>
+      <GroupItem>
+        <RankNumber>01</RankNumber>
+        <GroupImage>
+          <GroupImageContent src="../../../public/images/cover/designBasics.jpg" alt="Group 1" />
+        </GroupImage>
+        <GroupInfo>
+          <GroupName>구구단을 외우자</GroupName>
+          <GroupDescription>디자인 구구단</GroupDescription>
+        </GroupInfo>
+      </GroupItem>
+      <GroupItem>
+        <RankNumber>02</RankNumber>
+        <GroupImage>
+          <GroupImageContent src="../../../public/images/cover/1st threshold for sentence building training in English.jpg" alt="Group 2" />
+        </GroupImage>
+        <GroupInfo>
+          <GroupName>영어뿌셔뿌셔</GroupName>
+          <GroupDescription>영어로 문장 만들기 훈련 1차 임계점</GroupDescription>
+        </GroupInfo>
+      </GroupItem>
+      <GroupItem>
+        <RankNumber>03</RankNumber>
+        <GroupImage>
+          <GroupImageContent src="../../../public/images/cover/Let-life- flow.jpg" alt="Group 3" />
+        </GroupImage>
+        <GroupInfo>
+          <GroupName>흐르는강물을거꾸로거슬러</GroupName>
+          <GroupDescription>삶이 흐르는 대로</GroupDescription>
+        </GroupInfo>
+      </GroupItem>
+      <GroupItem>
+        <RankNumber>04</RankNumber>
+        <GroupImage>
+          <GroupImageContent src="../../../public/images/cover/ETS-TOEIC-750+.jpg" alt="Group 4" />
+        </GroupImage>
+        <GroupInfo>
+          <GroupName>또...익</GroupName>
+          <GroupDescription>ETS 토익 단기공략 750+ (LC+RC)</GroupDescription>
+        </GroupInfo>
+      </GroupItem>
+    </GroupList>
+  </Container>
+);
+
+export default GrpRankPreview;
+
+
 const Container = styled.section`
   display: flex;
   flex-direction: column;
@@ -97,53 +148,3 @@ const GroupDescription = styled.p`
   text-overflow: ellipsis;
   display: block;
 `;
-
-const GrpRankPreview = () => (
-  <Container>
-    <Title>가장 많은 성취도 달성한 그룹</Title>
-    <GroupList>
-      <GroupItem>
-        <RankNumber>01</RankNumber>
-        <GroupImage>
-          <GroupImageContent src="../../../public/images/cover/designBasics.jpg" alt="Group 1" />
-        </GroupImage>
-        <GroupInfo>
-          <GroupName>구구단을 외우자</GroupName>
-          <GroupDescription>디자인 구구단</GroupDescription>
-        </GroupInfo>
-      </GroupItem>
-      <GroupItem>
-        <RankNumber>02</RankNumber>
-        <GroupImage>
-          <GroupImageContent src="../../../public/images/cover/designBasics.jpg" alt="Group 2" />
-        </GroupImage>
-        <GroupInfo>
-          <GroupName>영어뿌셔뿌셔</GroupName>
-          <GroupDescription>영어로 문장 만들기 훈련 1차 임계점</GroupDescription>
-        </GroupInfo>
-      </GroupItem>
-      <GroupItem>
-        <RankNumber>03</RankNumber>
-        <GroupImage>
-          <GroupImageContent src="../../../public/images/cover/designBasics.jpg" alt="Group 3" />
-        </GroupImage>
-        <GroupInfo>
-          <GroupName>흐르는강물을거꾸로거슬러</GroupName>
-          <GroupDescription>삶이 흐르는 대로</GroupDescription>
-        </GroupInfo>
-      </GroupItem>
-      <GroupItem>
-        <RankNumber>04</RankNumber>
-        <GroupImage>
-          <GroupImageContent src="../../../public/images/cover/designBasics.jpg" alt="Group 4" />
-        </GroupImage>
-        <GroupInfo>
-          <GroupName>또...익</GroupName>
-          <GroupDescription>ETS 토익 단기공략 750+ (LC+RC)</GroupDescription>
-        </GroupInfo>
-      </GroupItem>
-    </GroupList>
-  </Container>
-);
-
-export default GrpRankPreview;

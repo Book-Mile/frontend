@@ -29,4 +29,5 @@ export const Detail = styled.div`
   display: flex;
   flex-direction: column;
   gap: 120px;
+  margin-bottom: 100px;
 `;

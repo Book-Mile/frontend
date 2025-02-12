@@ -26,7 +26,7 @@ export default function Login() {
   const handleSubmit = () => {
     console.log('Email:', email);
     console.log('Password:', password);
-    login(email, password, navigate, name, setName);
+    login(email, password, navigate, setName);
     // alert('로그인되었습니다.');
   };
 
