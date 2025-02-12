@@ -12,17 +12,18 @@ const apiClient = axios.create({
 // Access Token 갱신 API
 const refreshAccessToken = async () => {
   try {
-    const refreshToken = localStorage.getItem('refreshToken'); // 저장된 Refresh Token 가져오기
+    const refreshToken = localStorage.getItem('refreshToken'); 
     if (!refreshToken) throw new Error('No refresh token available');
 
-    const response = await axios.post(`${BASE_URL}/api/v1/auth/refresh`, null, {
+    const response = await axios.post(`${BASE_URL}/users/reissue`, null, {
       headers: {
         Authorization: `Bearer ${refreshToken}`,
       },
     });
 
-    const newAccessToken = response.data.accessToken; // 새 Access Token
-    localStorage.setItem('accessToken', newAccessToken); // 저장
+    const newAccessToken = response.data.accessToken;
+    localStorage.setItem('accessToken', newAccessToken);
+
     return newAccessToken;
   } catch (error) {
     console.error('Refresh token expired or invalid:', error.response?.data || error.message);
@@ -44,20 +45,25 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+
+
 // 응답을 받을 때 Access Token 갱신 로직 추가
 apiClient.interceptors.response.use(
-  (response) => response, // 정상 응답은 그대로 반환
+  (response) => response, 
+
   async (error) => {
     if (error.response?.status === 401) {
       // Access Token이 만료된 경우
       const newAccessToken = await refreshAccessToken();
       if (newAccessToken) {
         error.config.headers.Authorization = `Bearer ${newAccessToken}`;
-        return apiClient(error.config); // 새로운 Access Token으로 요청 재시도
+        return apiClient(error.config);
       }
     }
     return Promise.reject(error);
   }
 );
 
+
 export default apiClient;
+

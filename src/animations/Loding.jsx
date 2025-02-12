@@ -24,7 +24,7 @@ const LoadingIcon = styled.div`
 const LoadingText = styled.div`
   margin-top: 6px;
   font-size: 1rem;
-  color: ${props => props.theme.colors.main};
+  color: #AB0909;
   font-weight: 500;
 `;
 

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { ErrorBoundary } from 'react-error-boundary';
+import { useState, useEffect } from 'react';
 
 import { theme } from './theme';
 import ErrorFallback from './utils/ErrorFallback';
@@ -11,7 +12,9 @@ import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionU
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
-import RatingPopup from './components/popup/RatingPopup/RatingPopup';
+
+import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
+import Loding from './animations/Loding.jsx';
 
 import MakingGroupPage from './pages/MakingGroupPage';
 import Login from './pages/Login';
@@ -27,6 +30,19 @@ import BookProgress from './pages/BookProgress.jsx'
 import Main from './pages/Main.jsx';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }); 
+
+    return () => clearTimeout(timer); 
+  }, []);
+
+  if (isLoading) {
+    return <Loding theme={theme}/>;
+  }
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ThemeProvider theme={theme}>

@@ -2,6 +2,90 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '../../assets/search/search.svg';
+import apiClient from '../../api/apiClient';
+
+const SearchBar = ({ initialQuery }) => {
+  const [query, setQuery] = useState(initialQuery || '');
+  const [recentSearches, setRecentSearches] = useState([]);
+  const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const placeholderText = "노벨 문학상 한강작가 ‘소년이 온다’";
+
+  const handleSearch = async () => {
+    const searchQuery = query || "소년이 온다";
+
+    // recentSearches에 검색어가 없으면 추가
+    if (!recentSearches.includes(searchQuery)) {
+      setRecentSearches([searchQuery, ...recentSearches].slice(0, 5));
+    }
+
+    console.log(recentSearches); // recentSearches가 제대로 업데이트 되는지 확인
+
+    try {
+      const response = await apiClient.post('/books/search', {
+        query: searchQuery,
+        queryType: 'Title',
+        sort: 'Accuracy',
+        maxResults: 10,
+      });
+
+      const searchResults = response.data;
+
+      navigate(`/searchresults?query=${encodeURIComponent(searchQuery)}`);
+    } catch (error) {
+      console.error('Search API Error:', error);
+      alert('검색 중 문제가 발생했습니다.');
+    }
+  };
+
+  const handleButtonClick = () => {
+    handleSearch();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  return (
+    <div>
+      <SearchBarContainer>
+        <Input
+          type="text"
+          placeholder={placeholderText}
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <SearchButton
+          onClick={handleButtonClick}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <img src={SearchIcon} alt="검색" width={22} height={22} />
+        </SearchButton>
+      </SearchBarContainer>
+
+      {/* 최근 검색어가 있고, Hover 상태일 때만 표시 */}
+      {(isHovered || query || recentSearches.length > 0) && (
+        <RecentSearchesContainer>
+          <h4>최근 검색</h4>
+          {recentSearches.length === 0 ? (
+            <p>최근 검색어가 없습니다.</p>
+          ) : (
+            recentSearches.map((search, index) => (
+              <SearchItem key={index}>{search}</SearchItem>
+            ))
+          )}
+        </RecentSearchesContainer>
+      )}
+    </div>
+  );
+};
+
+export default SearchBar;
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
