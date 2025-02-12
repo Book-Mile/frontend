@@ -87,58 +87,6 @@ const SearchBar = ({ initialQuery }) => {
 
 export default SearchBar;
 
-const SearchBar = () => {
-  const [query, setQuery] = useState('');
-  const [recentSearches, setRecentSearches] = useState([]);
-  const [isHovered, setIsHovered] = useState(false); 
-  const handleSearch = () => {
-    if (query && !recentSearches.includes(query)) {
-      setRecentSearches([query, ...recentSearches].slice(0, 5)); // 최대 5개의 검색어만 저장
-    }
-    // 추후 실제 검색 로직 추가할 예정
-    console.log('검색어:', query);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch(); 
-    }
-  };
-
-  return (
-    <div>
-      <SearchBarContainer>
-        <Input
-          type="text"
-          placeholder="노벨 문학상 한강작가 ‘소년이 온다’"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          onKeyDown={handleKeyDown}  
-        />
-        <SearchButton
-          onClick={handleSearch}
-          onMouseEnter={() => setIsHovered(true)} 
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <img src={SearchIcon} alt="검색" width={22} height={22} />
-        </SearchButton>
-      </SearchBarContainer>
-
-      {/* hover 상태가 true일 때만 최근 검색어 표시 */}
-      {isHovered && recentSearches.length > 0 && (
-        <RecentSearchesContainer>
-          <h4>최근 검색</h4>
-          {recentSearches.map((search, index) => (
-            <SearchItem key={index}>{search}</SearchItem>
-          ))}
-        </RecentSearchesContainer>
-      )}
-    </div>
-  );
-};
-
-export default SearchBar;
-
 
 const SearchBarContainer = styled.div`
   display: flex;
