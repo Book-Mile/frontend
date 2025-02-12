@@ -24,7 +24,12 @@ export const PopupContainer = styled.div`
   -webkit-backdrop-filter: blur(8px); /* 사파리 호환성 */
 
   z-index: 1000;
+<<<<<<< Updated upstream
   overflow: hidden;
+=======
+
+  overflow-y: hidden;
+>>>>>>> Stashed changes
 `;
 
 export const PopupInner = styled.div`
