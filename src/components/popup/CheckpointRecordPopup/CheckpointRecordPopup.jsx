@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import {
   PopupContainer,
   PopupInner,
@@ -7,6 +8,8 @@ import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
+import Loding from '../../../animations/Loding';
+import CompletePopup from '../RegisterCompletePopup/RegisterCompletePopup';
 
 // eslint-disable-next-line react/prop-types
 const FileInfo = ({
@@ -14,12 +17,10 @@ const FileInfo = ({
   setUploadedInfo,
   setUploadCount,
   uploadCount,
-  // fillEmptySlot,
 }) => {
   const handleDeleteButton = () => {
     setUploadedInfo(null);
     setUploadCount(uploadCount - 1);
-    // fillEmptySlot();
   };
 
   return (
@@ -43,24 +44,17 @@ const FileInfo = ({
 };
 
 const CheckpointRecordPopup = ({ onClose = false }) => {
-  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
+  const [isClosing, setIsClosing] = useState(false);
   const [page, setPage] = useState('');
   const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(false); 
+  const [isCompleted, setIsCompleted] = useState(false); 
+  const navigate = useNavigate();
 
   const handleClose = () => {
-    setIsClosing(true); // 닫히는 애니메이션 시작
+    setIsClosing(true);
   };
 
-  //드래그 앤 드롭 관련
-  const [isActive, setActive] = useState(false);
-  const handleDragStart = (event) => {
-    event.preventDefault(); // 브라우저 기본 동작인 새 창에서 파일 열기를 막기 위함
-    setActive(true);
-  };
-  const handleDragEnd = (event) => {
-    event.preventDefault(); // 브라우저 기본 동작인 새 창에서 파일 열기를 막기 위함
-    setActive(false);
-  };
   const [uploadCount, setUploadCount] = useState(1);
 
   const handleDrop = (event) => {
@@ -73,10 +67,6 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
     }
     setUploadCount(uploadCount + 1);
     setFileInfo(file);
-    setActive(false);
-  };
-  const handleDragOver = (event) => {
-    event.preventDefault(); // 브라우저 기본 동작인 새 창에서 파일 열기를 막기 위함
   };
 
   const [uploadedInfo1, setUploadedInfo1] = useState(null);
@@ -90,38 +80,14 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
     setUploadedInfo3,
     setUploadedInfo4,
   ];
-  const findFirstEmptySlot = () => {
-    for (let i = 0; i < slotList.length; i++) {
-      if (slotList[i] === null) {
-        console.log(`First empty slot found at index: ${i}`);
-        return i; // 첫 번째 빈 슬롯의 인덱스를 반환
-      }
-    }
-    return -1; // 빈 슬롯이 없을 경우
-  };
-
-  // const fillEmptySlot = () => {
-  //   console.log('Fill Empty Slot');
-  //   for (let i = 0; i < slotList.length; i++) {
-  //     console.log(slotList[i]);
-  //     if (slotList[i] === null) {
-  //       setSlotList[i](slotList[i + 1]);
-  //     }
-  //   }
-  // };
 
   const setFileInfo = (file) => {
     const { name, type } = file;
     const isImage = type.includes('image');
     const size = (file.size / (1024 * 1024)).toFixed(2) + 'mb';
-    // if (!isImage) {
-    //   setUploadedInfo1({ name, size, type });
-    //   return;
-    // }
     const reader = new FileReader();
     reader.onload = () => {
       const emptySlot = findFirstEmptySlot() + 1;
-      console.log(emptySlot);
       if (emptySlot === 1)
         setUploadedInfo1({ name, size, type, imageUrl: String(reader.result) });
       else if (emptySlot === 2)
@@ -134,8 +100,37 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
     reader.readAsDataURL(file);
   };
 
-  useClosePopupAnimation(isClosing, onClose);
+  const findFirstEmptySlot = () => {
+    for (let i = 0; i < slotList.length; i++) {
+      if (slotList[i] === null) {
+        return i; // 첫 번째 빈 슬롯의 인덱스를 반환
+      }
+    }
+    return -1; // 빈 슬롯이 없을 경우
+  };
 
+  const handleSubmit = () => {
+    if (!page || !content) {
+      alert('페이지 수와 내용을 모두 작성해주세요.');
+      return;
+    }
+  
+    setLoading(true); 
+  
+    setTimeout(() => {
+      setLoading(false); 
+      setIsCompleted(true); 
+    }, 1000); 
+  };
+  
+  useEffect(() => {
+    if (isCompleted) {
+      setTimeout(() => {
+        navigate('/checkpoints'); 
+      }, 10000);
+    }
+  }, [isCompleted, navigate]);
+  
   return (
     <PopupContainer isClosing={isClosing}>
       <PopupInner isClosing={isClosing}>
@@ -171,19 +166,14 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
               <InputTitle>
                 이미지 업로드 (선택사항) {uploadCount - 1}/4
               </InputTitle>
+              {/* 드래그 앤 드롭 처리 */}
               <div
-                onDragEnter={handleDragStart} // drag 시작 핸들러
-                onDragLeave={handleDragEnd} // drag 종료 핸들러
-                onDragOver={handleDragOver} // 기본 동작 막기
-                onDrop={handleDrop} // drop 핸들러
+                onDrop={handleDrop}
                 style={{ position: 'relative', zIndex: '10000' }}
               >
-                <UploadRectangle
-                  isActive={isActive} // styled component에 상태 전달
-                >
+                <UploadRectangle>
                   {!(uploadCount > 1) && (
                     <>
-                      {' '}
                       <FirstLine>
                         <FirstLineLeft>Click to Upload</FirstLineLeft>
                         <FirstLineRight>or Drag and Drop</FirstLineRight>
@@ -208,7 +198,6 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
                           setUploadedInfo={setUploadedInfo1}
                           setUploadCount={setUploadCount}
                           uploadCount={uploadCount}
-                          // fillEmptySlot={fillEmptySlot}
                         />
                       )}
                       {uploadedInfo2 && (
@@ -217,7 +206,6 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
                           setUploadedInfo={setUploadedInfo2}
                           setUploadCount={setUploadCount}
                           uploadCount={uploadCount}
-                          // fillEmptySlot={fillEmptySlot}
                         />
                       )}
                       {uploadedInfo3 && (
@@ -226,7 +214,6 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
                           setUploadedInfo={setUploadedInfo3}
                           setUploadCount={setUploadCount}
                           uploadCount={uploadCount}
-                          // fillEmptySlot={fillEmptySlot}
                         />
                       )}
                       {uploadedInfo4 && (
@@ -235,7 +222,6 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
                           setUploadedInfo={setUploadedInfo4}
                           setUploadCount={setUploadCount}
                           uploadCount={uploadCount}
-                          // fillEmptySlot={fillEmptySlot}
                         />
                       )}
                     </div>
@@ -246,12 +232,15 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
           </ContentFrame>
           <ButtonContainer>
             <ModalButtonCancel width="150px" onClick={handleClose} />
-            <ModalButtonOk width="150px" />
+            <ModalButtonOk width="150px" onClick={handleSubmit} />
           </ButtonContainer>
         </PopUpInnerBox1>
       </PopupInner>
+  
+      {loading && <Loding />} 
+      {isCompleted && <CompletePopup />}
     </PopupContainer>
-  );
+  );  
 };
 
 export default CheckpointRecordPopup;

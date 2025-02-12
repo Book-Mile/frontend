@@ -12,6 +12,7 @@ import SecessionUserPopup from './components/popup/SecessionUserPopup/SecessionU
 import EndGroupPopup from './components/popup/EndGroupPopup/EndGroupPopup';
 import CheckpointRecordPopup from './components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import RegisterCompletePopup from './components/popup/RegisterCompletePopup/RegisterCompletePopup';
+
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
 import Loding from './animations/Loding.jsx';
 
@@ -61,6 +62,8 @@ function App() {
                 <Route path="/lobby" element={<Lobby />} />
                 <Route path="/edit-profile" element={<EditMyInfo />} />
                 <Route path="/snsmanagement" element={<SNSManage />} />
+                <Route path='/bookprogress' element={<BookProgress/>}/>
+
 
                 {/* 추후 팝업 URL 제거 할 예정 */}
                 <Route path="/joingroup" element={<JoinGroupPopup />} />
@@ -72,7 +75,6 @@ function App() {
                 <Route path="/EditMyInfo" element={<EditMyInfo />} />
                 <Route path="/SNSManage" element={<SNSManage />} />
                 <Route path="/RatingPopup" element={<RatingPopup />} />
-                <Route path='/bookprogress' element={<BookProgress/>}/>
               </Routes>
             </div>
           </div>

@@ -5,6 +5,9 @@ const useUserStore = create((set) => ({
   setName: (newName) => {
     set({ name: newName });
   },
+  accessToken: null, // 초기값
+  setAccessToken: token => set({ accessToken: token }),
+  accessToken: JSON.parse(sessionStorage.getItem('userData'))?.accessToken || null,
 }));
 
 export default useUserStore;

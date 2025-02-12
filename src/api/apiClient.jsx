@@ -23,6 +23,7 @@ const refreshAccessToken = async () => {
 
     const newAccessToken = response.data.accessToken;
     localStorage.setItem('accessToken', newAccessToken);
+
     return newAccessToken;
   } catch (error) {
     console.error('Refresh token expired or invalid:', error.response?.data || error.message);
@@ -30,7 +31,6 @@ const refreshAccessToken = async () => {
     localStorage.removeItem('refreshToken');
     return null;
   }
-  
 };
 
 // 요청을 보낼 때 Access Token 자동 추가
@@ -46,9 +46,11 @@ apiClient.interceptors.request.use(
 );
 
 
+
 // 응답을 받을 때 Access Token 갱신 로직 추가
 apiClient.interceptors.response.use(
   (response) => response, 
+
   async (error) => {
     if (error.response?.status === 401) {
       // Access Token이 만료된 경우
@@ -62,4 +64,6 @@ apiClient.interceptors.response.use(
   }
 );
 
+
 export default apiClient;
+

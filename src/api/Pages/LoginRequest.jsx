@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { useState } from 'react';
 
 export const login = async (email, password, navigate, setName) => {
   const apiUrl = 'https://bookmile.site/api/v1/users/sign-in';
+
   const requestBody = {
     email: email,
     password: password,
@@ -40,6 +42,7 @@ const getUserInfo = async (accessToken, refreshToken, setName, navigate) => {
     });
 
     if (response.status === 200) {
+
       console.log('유저 정보 불러오기 성공!', response.data);
       const { nickName } = response.data.response;
 
@@ -59,6 +62,7 @@ const getUserInfo = async (accessToken, refreshToken, setName, navigate) => {
       }
 
       navigate('/');
+
     } else {
       alert('유저 정보를 불러오는 중 오류가 발생하였습니다.');
     }
