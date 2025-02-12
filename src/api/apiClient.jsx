@@ -23,7 +23,6 @@ const refreshAccessToken = async () => {
 
     const newAccessToken = response.data.accessToken;
     localStorage.setItem('accessToken', newAccessToken);
-
     return newAccessToken;
   } catch (error) {
     console.error(
@@ -34,6 +33,7 @@ const refreshAccessToken = async () => {
     localStorage.removeItem('refreshToken');
     return null;
   }
+
 };
 
 // 요청을 보낼 때 Access Token 자동 추가
@@ -52,6 +52,7 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
 
+
   async (error) => {
     if (error.response?.status === 401) {
       // Access Token이 만료된 경우
@@ -66,3 +67,4 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
+
