@@ -90,68 +90,68 @@ export default SearchBar;
 
 
 const SearchBarContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid ${(props) => props.theme.colors.main};
-  border-radius: 40px;
-  width: 570px;
-  flex-direction: row;
-  position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid ${(props) => props.theme.colors.main};
+    border-radius: 40px;
+    width: 570px;
+    flex-direction: row;
+    position: relative;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 14px 20px;
-  font-size: 16px;
-  border: none;
-  outline: none;
-  position: relative;
-  border-radius: 40px 0 0 40px;
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    position: relative;
+    border-radius: 40px 0 0 40px;
 
-  &:focus {
-    border-color: ${(props) => props.theme.colors.main};
-  }
+    &:focus {
+        border-color: ${(props) => props.theme.colors.main};
+    }
 `;
 
 const SearchButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 10px 20px;
-  height: 100%;
-  background: white;
-  border-radius: 0 40px 40px 0;
-  position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    height: 100%;
+    background: white;
+    border-radius: 0 40px 40px 0;
+    position: relative;
 
-  &:hover {
-    background-color: #f1f1f1;
-  }
+    &:hover {
+        background-color: #f1f1f1;
+    }
 `;
 
 const RecentSearchesContainer = styled.div`
-  margin-top: 20px;
-  width: 100%;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 10;
-  display: none;
+    margin-top: 20px;
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    display: none;
 `;
 
 const SearchItem = styled.div`
-  padding: 8px 0;
-  font-size: 14px;
-  color: ${(props) => props.theme.colors.main};
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
+    padding: 8px 0;
+    font-size: 14px;
+    color: ${(props) => props.theme.colors.main};
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
