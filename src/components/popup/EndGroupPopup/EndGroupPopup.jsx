@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   PopupContainer,
   PopupInner,
@@ -9,6 +9,8 @@ import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
 
 import Warning from '../../../assets/Alert/warning.svg';
+
+import { updateGroupStatus } from '../../../api/Popup/EndGroupPopupSubmit.jsx';
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
@@ -35,16 +37,6 @@ const Title = styled.div`
   font-style: normal;
 `;
 
-const Content = styled.div`
-  font-family: ${(props) => props.theme.font.main};
-  font-size: 1rem;
-  line-height: 35px;
-  color: black;
-  .book-title {
-    font-weight: 800;
-  }
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -53,12 +45,31 @@ const ButtonContainer = styled.div`
   gap: 40px;
 `;
 
-const EndGroupPopup = ({ onClose }) => {
+const EndGroupPopup = ({ onClose, groupId }) => {
   const [isClosing, setIsClosing] = useState(false);
+  const accessToken = JSON.parse(
+    sessionStorage.getItem('userData'),
+  )?.accessToken;
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => onClose(true), 300);
+  };
+
+  const handleConfirm = async () => {
+    if (!groupId) {
+      alert('그룹 ID가 존재하지 않습니다.');
+      return;
+    }
+
+    try {
+      await updateGroupStatus(groupId, 'COMPLETED', accessToken);
+      alert('그룹이 성공적으로 종료되었습니다.');
+      onClose(true);
+    } catch (error) {
+      console.error('그룹 상태 변경 실패:', error);
+      alert(error);
+    }
   };
 
   useClosePopupAnimation(isClosing, onClose);
@@ -71,7 +82,7 @@ const EndGroupPopup = ({ onClose }) => {
           <img src={Warning} alt="WarningIco" width="200px" height="200px" />
           <ButtonContainer>
             <ModalButtonCancel width="150px" onClick={handleClose} />
-            <ModalButtonOk width="150px" />
+            <ModalButtonOk width="150px" onClick={handleConfirm} />
           </ButtonContainer>
         </PopUpInnerBox1>
       </PopupInner>
