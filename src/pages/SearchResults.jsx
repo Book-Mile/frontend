@@ -1,10 +1,123 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import apiClient from '../api/apiClient';
 import ModalButton from '../components/modalButton/ModalCustomButton';
 import BookLabel from '../components/search/BookLabel';
 import SearchBar from '../components/search/SearchBar';
 import Rating from '../components/search/Rating';
+import Loading from '../animations/Loding';
+
+const SearchResults = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [query, setQuery] = useState('');
+  const [books, setBooks] = useState([]); 
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const queryFromUrl = queryParams.get('query');
+    
+    if (queryFromUrl) {
+      setQuery(queryFromUrl);
+    }
+  }, [location]);
+  
+  useEffect(() => {
+    if (!query) return; 
+
+    const fetchBooks = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await apiClient.post('/books/search', { query }); 
+        setBooks(response.data.response || []);
+      } catch (err) {
+        setError('검색 중 오류가 발생했습니다.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, [query]);
+
+  const handleCreateGroup = () => {
+    navigate('/creategroup');
+  };
+
+  const handleBookClick = (isbn13) => {
+    navigate(`/details/${isbn13}`);
+  };
+
+  return (
+    <>
+      <Container>
+        <SearchBarWrapper>
+          <SearchBar initialQuery={query} />
+        </SearchBarWrapper>
+
+        <SearchResultTextContainer>
+          <SearchResultTitle>‘{query || '검색어 없음'}’</SearchResultTitle>
+          <SearchResultCount>검색 결과 총 {books.length}건</SearchResultCount>
+        </SearchResultTextContainer>
+        {error && <p>❌ {error}</p>}
+
+        {books.map((book) => (
+          <BookSectionWrapper key={book.isbn13} onClick={() => handleBookClick(book.isbn13)}>
+            <BookContainer>
+              <div>
+                <BookImage src={book.cover} alt={book.title} />
+              </div>
+              <BookDetails>
+                <BookTitle>
+                  <span>{book.title}</span>
+                  <a href={book.link} target="_blank" rel="noopener noreferrer" onClick={(e) => {e.stopPropagation(); }}>
+                    <AladinImage src="../../public/images/aladinlogo.png" alt="알라딘 로고" />
+                  </a>
+                  </BookTitle>
+                <BookSubtitle>
+                  <span>저자: {book.author}</span>
+                  <span>출판사 : {book.publisher}</span>
+                  <div>ISBN: {book.isbn13}</div>
+                  <LabelContainer>
+                    <div>평점:</div>
+                    <Rating rating={book.customerReviewRank / 2} totalStars={5} />
+                  </LabelContainer>
+                </BookSubtitle>
+                <LabelContainer>
+                  <BookLabel text="국내도서" />
+                </LabelContainer>
+              </BookDetails>
+            </BookContainer>
+
+            <ModalButtonWrapper>
+            <ModalButton
+              onClick={(e) => {
+                e.stopPropagation(); 
+                handleCreateGroup(); 
+              }}
+            >참여하기
+            </ModalButton>
+            </ModalButtonWrapper>
+          </BookSectionWrapper>
+        ))}
+      </Container>
+
+      <Pagination>
+        <PageText>이전</PageText>
+        <PageText active>1</PageText>
+        <PageText>2 3 4 5 6 7 다음</PageText>
+      </Pagination>
+    {loading && <Loading/>}
+    </>
+  );
+};
+
+export default SearchResults;
 
 const Container = styled.div`
   margin: 0 9.86%;
@@ -82,6 +195,9 @@ const BookTitle = styled.div`
   word-wrap: break-word;
   gap: 10px;
   display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 600px;
 `;
 
 const AladinImage = styled.img`
@@ -131,71 +247,3 @@ const PageText = styled.span`
   font-weight: 400;
   color: ${props => (props.active ? props.theme.colors.main : '#4E202A')};
 `;
-
-const SearchResults = () => {
-  const navigate = useNavigate();
-
-  const rating = 7.5;
-  const totalStars = 5;
-
-  const handleCreateGroup = () => {
-    navigate('/creategroup');
-  };
-
-  const handleBookClick = () => {
-    navigate('/details');
-  };
-
-  return (
-    <>
-      <Container>
-        <SearchBarWrapper>
-          <SearchBar />
-        </SearchBarWrapper>
-
-        <SearchResultTextContainer>
-          <SearchResultTitle>‘채식주의자’</SearchResultTitle>
-          <SearchResultCount>검색 결과 총 00건</SearchResultCount>
-        </SearchResultTextContainer>
-
-        <BookSectionWrapper onClick={handleBookClick}>
-          <BookContainer>
-            <div>
-              <BookImage src="https://via.placeholder.com/176x258" />
-            </div>
-            <BookDetails>
-              <BookTitle>
-                <span>채식주의자</span>
-                <AladinImage src="../../public/images/aladinlogo.png" alt="알라딘 로고" />
-              </BookTitle>
-              <BookSubtitle>
-                <span>저자: 한강</span>
-                <span>출판사 : 창비</span>
-                <div>출간일: 2022년 03월</div>
-                <LabelContainer>
-                  <div>평점:</div>
-                  <Rating rating={rating} totalStars={totalStars} />
-                </LabelContainer>
-              </BookSubtitle>
-              <LabelContainer>
-                <BookLabel text="국내도서" />
-              </LabelContainer>
-            </BookDetails>
-          </BookContainer>
-
-          <ModalButtonWrapper>
-            <ModalButton onClick={handleCreateGroup}>참여하기</ModalButton>
-          </ModalButtonWrapper>
-        </BookSectionWrapper>
-      </Container>
-
-      <Pagination>
-        <PageText>이전</PageText>
-        <PageText active>1</PageText>
-        <PageText>2 3 4 5 6 7 다음</PageText>
-      </Pagination>
-    </>
-  );
-};
-
-export default SearchResults;
