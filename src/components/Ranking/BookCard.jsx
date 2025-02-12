@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -44,7 +44,11 @@ const GradientOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
   z-index: 2;
 `;
 
@@ -85,10 +89,14 @@ const BookCard = ({ bookData }) => {
   return (
     <Container>
       <ImageContainer>
-        {imageExists && <StyledImage src={bookData.imageSrc} onError={handleImageError} />}
+        {imageExists && (
+          <StyledImage src={bookData.imageSrc} onError={handleImageError} />
+        )}
         {imageExists && <GradientOverlay />}
         <Title imageExists={imageExists}>{bookData.title}</Title>
-        <Description imageExists={imageExists}>{bookData.description}</Description>
+        <Description imageExists={imageExists}>
+          {bookData.description}
+        </Description>
       </ImageContainer>
     </Container>
   );

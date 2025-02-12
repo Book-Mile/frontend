@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import {
   PopupContainer,
   PopupInner,
@@ -152,9 +153,9 @@ const SecessionUserPopup = ({ onClose = false }) => {
               <path
                 d="M16.8332 12.8333V19.8333M12.1665 12.8333V19.8333M7.49984 8.16667V22.1667C7.49984 22.7855 7.74567 23.379 8.18325 23.8166C8.62084 24.2542 9.21433 24.5 9.83317 24.5H19.1665C19.7853 24.5 20.3788 24.2542 20.8164 23.8166C21.254 23.379 21.4998 22.7855 21.4998 22.1667V8.16667M5.1665 8.16667H23.8332M8.6665 8.16667L10.9998 3.5H17.9998L20.3332 8.16667"
                 stroke="black"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </Circle>

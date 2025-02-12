@@ -15,7 +15,7 @@ export default function MyPage() {
   const [profileImage, setProfileImage] = useState('/src/assets/profile.png');
   const [tab, setTab] = useState(1);
 
-  const { name, setName } = useUserStore();
+  const { name } = useUserStore();
 
   useEffect(() => {
     getUserInfo().then((data) => {

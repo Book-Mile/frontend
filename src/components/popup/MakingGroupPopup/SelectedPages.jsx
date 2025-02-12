@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import {
   PopUpInnerBox1,
   CardTitle,
@@ -137,6 +138,7 @@ const SelectedPages = ({ imgPath, title, content, handleClose, subject }) => {
                 handleBack={() => handleBack(setInputValue)}
                 groupMemberNum={selectedGroup?.members || 0}
                 subject={subject}
+                handleClose={handleClose}
                 inputValue={inputValue}
               />
             ) : (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -7,6 +7,7 @@ import {
   CheckPointCardsContainer,
 } from '../../styled_components/CheckPointRecordPageStyle';
 
+// eslint-disable-next-line react/prop-types
 const CheckPointCards = ({ images, handleCardClick }) => {
   const [cards, setCards] = useState(images);
   const [isButtonVisible, setIsButtonVisible] = useState(false);

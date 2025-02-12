@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BookLabel from '../../components/search/BookLabel';
 import ModalButton from '../modalButton/ModalCustomButton';
@@ -99,7 +99,7 @@ import SpeedIcon from '../../assets/label/speed.svg?react';
 import PageIcon from '../../assets/label/page.svg?react';
 import ChapterIcon from '../../assets/label/chapter.svg?react';
 import CountIcon from '../../assets/label/count.svg?react';
-
+// eslint-disable-next-line react/prop-types
 function ActivityCard({ completed = false, activity }) {
   const [completedMembers, setCompletedMembers] = useState(0);
   const [totalMembers, setTotalMembers] = useState(30);
@@ -127,14 +127,6 @@ function ActivityCard({ completed = false, activity }) {
     chapter: <ChapterIcon />,
   };
 
-  // 텍스트를 매핑하기 위한 객체
-  const textMap = {
-    page: '페이지',
-    speed: '속도',
-    count: '횟수',
-    chapter: '챕터',
-  };
-
   // activity.pageInfo에 따라 동적으로 처리
   const determineTypeAndText = (pageInfo) => {
     if (pageInfo.includes('페이지')) {
@@ -149,6 +141,7 @@ function ActivityCard({ completed = false, activity }) {
     return { type: 'page', text: pageInfo }; // 기본값
   };
 
+  // eslint-disable-next-line react/prop-types
   const { type, text } = determineTypeAndText(activity.pageInfo);
 
   return (
@@ -170,7 +163,7 @@ function ActivityCard({ completed = false, activity }) {
         <GapContainer>
           <InfoContainer>
             <AuthorText>홍길동</AuthorText>
-            <MainText>{activity.groupName}</MainText>
+            <MainText>{activity}</MainText>
           </InfoContainer>
           <LabelContainer>
             <BookLabel

@@ -4,7 +4,7 @@ export const theme = {
     sub: '#FFF0F0',
     background: '#FAFAFA',
     body: '#4E202A',
-    },
+  },
   font: {
     main: 'Noto Sans KR',
   },

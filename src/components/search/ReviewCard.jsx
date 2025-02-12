@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Rating from './Rating';
+import Rating from './Rating'; /* eslint-disable react/prop-types */
 
 const Container = styled.div`
   width: 500px;
@@ -57,7 +57,12 @@ const ReviewCard = ({ name, date, review, rating }) => {
   return (
     <Container>
       <InnerContainer>
-        <Rating rating={rating} totalStars={5} starSize="20px" fontSize="16px"/>
+        <Rating
+          rating={rating}
+          totalStars={5}
+          starSize="20px"
+          fontSize="16px"
+        />
         <TopRow>
           <Text>{name}</Text>
           <Text>{date}</Text>

@@ -44,7 +44,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
   gap: 40px;
 `;
-
+/* eslint-disable react/prop-types */
 const EndGroupPopup = ({ onClose, groupId }) => {
   const [isClosing, setIsClosing] = useState(false);
   const accessToken = JSON.parse(

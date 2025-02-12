@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
+/* eslint-disable react/prop-types */
 import ModeTag from '/src/components/modeTag/ModeTag.jsx';
 import { getUserGroups } from '../api/Pages/MyPageRequest.jsx';
 
@@ -102,7 +102,7 @@ function Book({ img, bookname, writer, groupMode, groupKing, groupName }) {
   );
 }
 
-export default function ProgressBookList({ tab }) {
+export default function ProgressBookList() {
   const [responseData, setResponseData] = useState([]);
   useEffect(() => {
     getUserGroups('IN_PROGRESS').then((data) => {

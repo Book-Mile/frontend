@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 
 const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주소 불러오기
-export const RatingPopupSubmit = async (rating, text) => {
-  const location = useLocation();
+
+export const RatingPopupSubmit = async (rating, text, location) => {
   const params = new URLSearchParams(location.search);
   const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
   try {
