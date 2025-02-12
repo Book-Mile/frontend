@@ -1,13 +1,12 @@
-import React from 'react';
 import styled from 'styled-components';
-
+/* eslint-disable react/prop-types */
 const FlexContainer = styled.div`
   display: flex;
   flex-grow: 1;
   align-items: center;
   overflow: hidden;
   gap: 10px;
-  margin:0;
+  margin: 0;
 `;
 
 const ItemNumber = styled.p`
@@ -16,7 +15,7 @@ const ItemNumber = styled.p`
   width: 17px;
   height: 2.5rem;
   font-size: 0.75rem;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
 `;
 
 const StyledImage = styled.img`
@@ -37,17 +36,17 @@ const TextWrapper = styled.div`
 const Title = styled.p`
   flex-grow: 0;
   flex-shrink: 0;
-  margin:0 10px;
+  margin: 0 10px;
   font-size: 1.125rem;
   font-weight: 700;
   text-align: left;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
 `;
 
 const SubTitle = styled.p`
   flex-grow: 0;
   flex-shrink: 0;
-  margin:0;
+  margin: 0;
   font-size: 0.75rem;
   text-align: left;
   color: #565656;
@@ -59,7 +58,7 @@ const GroupedPeople = ({ itemNumber, title, subtitle, imageUrl }) => {
   return (
     <FlexContainer>
       <ItemNumber>{formattedItemNumber}</ItemNumber>
-      <StyledImage src={imageUrl || "default-image.png"} alt="grouped people" />
+      <StyledImage src={imageUrl || 'default-image.png'} alt="grouped people" />
       <TextWrapper>
         <Title>{title}</Title>
         {subtitle && <SubTitle>{subtitle}</SubTitle>}

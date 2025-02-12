@@ -6,8 +6,10 @@ const useUserStore = create((set) => ({
     set({ name: newName });
   },
   accessToken: null, // 초기값
-  setAccessToken: token => set({ accessToken: token }),
-  accessToken: JSON.parse(sessionStorage.getItem('userData'))?.accessToken || null,
+  setAccessToken: (token) => set({ accessToken: token }),
+  // eslint-disable-next-line no-dupe-keys
+  accessToken:
+    JSON.parse(sessionStorage.getItem('userData'))?.accessToken || null,
 }));
 
 export default useUserStore;

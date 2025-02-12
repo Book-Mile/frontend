@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ModeTag from '/src/components/modeTag/ModeTag.jsx';
@@ -102,7 +103,7 @@ function Book({ img, bookname, writer, groupMode, groupKing, groupName }) {
   );
 }
 
-export default function PendingBookList({ tab }) {
+export default function PendingBookList() {
   const [responseData, setResponseData] = useState([]);
   useEffect(() => {
     getUserGroups('RECRUITING').then((data) => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || process.env.REACT_APP_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -12,7 +12,7 @@ const apiClient = axios.create({
 // Access Token 갱신 API
 const refreshAccessToken = async () => {
   try {
-    const refreshToken = localStorage.getItem('refreshToken'); 
+    const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) throw new Error('No refresh token available');
 
     const response = await axios.post(`${BASE_URL}/users/reissue`, null, {
@@ -25,7 +25,10 @@ const refreshAccessToken = async () => {
     localStorage.setItem('accessToken', newAccessToken);
     return newAccessToken;
   } catch (error) {
-    console.error('Refresh token expired or invalid:', error.response?.data || error.message);
+    console.error(
+      'Refresh token expired or invalid:',
+      error.response?.data || error.message,
+    );
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     return null;
@@ -42,13 +45,14 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
-
 
 // 응답을 받을 때 Access Token 갱신 로직 추가
 apiClient.interceptors.response.use(
-  (response) => response, 
+  (response) => response,
+
+
   async (error) => {
     if (error.response?.status === 401) {
       // Access Token이 만료된 경우
@@ -59,8 +63,8 @@ apiClient.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
-
 export default apiClient;
+

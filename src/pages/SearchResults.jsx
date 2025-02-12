@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import apiClient from '../api/apiClient';
@@ -12,27 +12,27 @@ const SearchResults = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [query, setQuery] = useState('');
-  const [books, setBooks] = useState([]); 
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState(null); 
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const queryFromUrl = queryParams.get('query');
-    
+
     if (queryFromUrl) {
       setQuery(queryFromUrl);
     }
   }, [location]);
-  
+
   useEffect(() => {
-    if (!query) return; 
+    if (!query) return;
 
     const fetchBooks = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await apiClient.post('/books/search', { query }); 
+        const response = await apiClient.post('/books/search', { query });
         setBooks(response.data.response || []);
       } catch (err) {
         setError('검색 중 오류가 발생했습니다.');
@@ -46,7 +46,7 @@ const SearchResults = () => {
   }, [query]);
 
   const handleCreateGroup = () => {
-    navigate('/creategroup');
+    navigate(`/creategroup?isbn=${123123123213}`);
   };
 
   const handleBookClick = (isbn13) => {
@@ -67,7 +67,10 @@ const SearchResults = () => {
         {error && <p>❌ {error}</p>}
 
         {books.map((book) => (
-          <BookSectionWrapper key={book.isbn13} onClick={() => handleBookClick(book.isbn13)}>
+          <BookSectionWrapper
+            key={book.isbn13}
+            onClick={() => handleBookClick(book.isbn13)}
+          >
             <BookContainer>
               <div>
                 <BookImage src={book.cover} alt={book.title} />
@@ -75,17 +78,30 @@ const SearchResults = () => {
               <BookDetails>
                 <BookTitle>
                   <span>{book.title}</span>
-                  <a href={book.link} target="_blank" rel="noopener noreferrer" onClick={(e) => {e.stopPropagation(); }}>
-                    <AladinImage src="../../public/images/aladinlogo.png" alt="알라딘 로고" />
+                  <a
+                    href={book.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <AladinImage
+                      src="../../public/images/aladinlogo.png"
+                      alt="알라딘 로고"
+                    />
                   </a>
-                  </BookTitle>
+                </BookTitle>
                 <BookSubtitle>
                   <span>저자: {book.author}</span>
                   <span>출판사 : {book.publisher}</span>
                   <div>ISBN: {book.isbn13}</div>
                   <LabelContainer>
                     <div>평점:</div>
-                    <Rating rating={book.customerReviewRank / 2} totalStars={5} />
+                    <Rating
+                      rating={book.customerReviewRank / 2}
+                      totalStars={5}
+                    />
                   </LabelContainer>
                 </BookSubtitle>
                 <LabelContainer>
@@ -95,13 +111,14 @@ const SearchResults = () => {
             </BookContainer>
 
             <ModalButtonWrapper>
-            <ModalButton
-              onClick={(e) => {
-                e.stopPropagation(); 
-                handleCreateGroup(); 
-              }}
-            >참여하기
-            </ModalButton>
+              <ModalButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCreateGroup();
+                }}
+              >
+                참여하기
+              </ModalButton>
             </ModalButtonWrapper>
           </BookSectionWrapper>
         ))}
@@ -112,7 +129,7 @@ const SearchResults = () => {
         <PageText active>1</PageText>
         <PageText>2 3 4 5 6 7 다음</PageText>
       </Pagination>
-    {loading && <Loading/>}
+      {loading && <Loading />}
     </>
   );
 };
@@ -142,14 +159,14 @@ const SearchResultTextContainer = styled.div`
 `;
 
 const SearchResultTitle = styled.span`
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
   font-size: 18px;
   font-weight: 700;
   word-wrap: break-word;
 `;
 
 const SearchResultCount = styled.span`
-  color: #4E202A;
+  color: #4e202a;
   font-size: 18px;
   font-weight: 400;
   word-wrap: break-word;
@@ -164,7 +181,6 @@ const BookSectionWrapper = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   cursor: pointer;
-
 `;
 
 const BookContainer = styled.div`
@@ -189,7 +205,7 @@ const BookDetails = styled.div`
 `;
 
 const BookTitle = styled.div`
-  color: #4E202A;
+  color: #4e202a;
   font-size: 18px;
   font-weight: 700;
   word-wrap: break-word;
@@ -245,5 +261,5 @@ const Pagination = styled.div`
 const PageText = styled.span`
   font-size: 14px;
   font-weight: 400;
-  color: ${props => (props.active ? props.theme.colors.main : '#4E202A')};
+  color: ${(props) => (props.active ? props.theme.colors.main : '#4E202A')};
 `;

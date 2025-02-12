@@ -1,5 +1,4 @@
-import React from "react";
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const CardContainer = styled.section`
   display: flex;
@@ -22,7 +21,7 @@ const Title = styled.h2`
   font-size: 1.125rem;
   font-weight: 500;
   text-align: left;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
 `;
 
 const InfoContainer = styled.div`
@@ -39,15 +38,16 @@ const InfoText = styled.p`
   margin: 0;
   font-size: 0.875rem;
   text-align: left;
-  color: ${props => props.theme.colors.body};
+  color: ${(props) => props.theme.colors.body};
 `;
 
 const HighlightedText = styled.span`
   font-size: 0.875rem;
   text-align: left;
-  color: ${(props) => props.theme.colors.main || "#ab0909"};
+  color: ${(props) => props.theme.colors.main || '#ab0909'};
 `;
 
+// eslint-disable-next-line react/prop-types
 const ProgressGroup = ({ groupName, pageInfo, membersCount }) => (
   <CardContainer>
     <Title>{groupName}</Title>

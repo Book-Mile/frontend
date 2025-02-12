@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 
 // 에러 발생 시 보여줄 Fallback UI
 const ErrorFallback = ({ error, resetErrorBoundary }) => (

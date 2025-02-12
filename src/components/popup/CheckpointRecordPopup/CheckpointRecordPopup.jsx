@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   PopupContainer,
   PopupInner,
 } from '../../../styled_components/popupStyle';
-import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
@@ -43,12 +43,12 @@ const FileInfo = ({
   );
 };
 
-const CheckpointRecordPopup = ({ onClose = false }) => {
+const CheckpointRecordPopup = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [page, setPage] = useState('');
   const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(false); 
-  const [isCompleted, setIsCompleted] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -74,16 +74,9 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
   const [uploadedInfo3, setUploadedInfo3] = useState(null);
   const [uploadedInfo4, setUploadedInfo4] = useState(null);
   const slotList = [uploadedInfo1, uploadedInfo2, uploadedInfo3, uploadedInfo4];
-  const setSlotList = [
-    setUploadedInfo1,
-    setUploadedInfo2,
-    setUploadedInfo3,
-    setUploadedInfo4,
-  ];
 
   const setFileInfo = (file) => {
     const { name, type } = file;
-    const isImage = type.includes('image');
     const size = (file.size / (1024 * 1024)).toFixed(2) + 'mb';
     const reader = new FileReader();
     reader.onload = () => {
@@ -114,23 +107,23 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
       alert('페이지 수와 내용을 모두 작성해주세요.');
       return;
     }
-  
-    setLoading(true); 
-  
+
+    setLoading(true);
+
     setTimeout(() => {
-      setLoading(false); 
-      setIsCompleted(true); 
-    }, 1000); 
+      setLoading(false);
+      setIsCompleted(true);
+    }, 1000);
   };
-  
+
   useEffect(() => {
     if (isCompleted) {
       setTimeout(() => {
-        navigate('/checkpoints'); 
+        navigate('/checkpoints');
       }, 10000);
     }
   }, [isCompleted, navigate]);
-  
+
   return (
     <PopupContainer isClosing={isClosing}>
       <PopupInner isClosing={isClosing}>
@@ -236,11 +229,11 @@ const CheckpointRecordPopup = ({ onClose = false }) => {
           </ButtonContainer>
         </PopUpInnerBox1>
       </PopupInner>
-  
-      {loading && <Loding />} 
+
+      {loading && <Loding />}
       {isCompleted && <CompletePopup />}
     </PopupContainer>
-  );  
+  );
 };
 
 export default CheckpointRecordPopup;

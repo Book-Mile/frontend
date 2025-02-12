@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import MakingGroupPopup from '../popup/MakingGroupPopup/MakingGroupPopup';
 import { cardData } from '../../data/cardData';
 import {

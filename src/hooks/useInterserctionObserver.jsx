@@ -7,12 +7,11 @@ const useIntersectionObserver = (
   onIntersect = () => {}, // 관찰 대상 정보를 전달할 콜백 함수
 ) => {
   useEffect(() => {
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add(className);
           onIntersect(entry.target); // 관찰된 요소 정보를 콜백으로 전달
-          //observer.unobserve(entry.target); // 한 번 나타나면 관찰 중지
         } else {
           entry.target.classList.remove(className);
         }

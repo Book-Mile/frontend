@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import LGButton from '../components/LGButton/LGButton';
@@ -15,10 +15,6 @@ export default function SNSManage() {
   const [toggle3, setToggle3] = useState(false);
 
   const [isChanged, setIsChanged] = useState(false);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
 
   const handleToggle = (toggleNum) => {
     if (toggleNum === 1) {

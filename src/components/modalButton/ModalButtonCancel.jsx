@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 
 const ModalButtonCancel = ({ width = '122px', height = '38px', onClick }) => {

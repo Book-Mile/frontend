@@ -1,11 +1,11 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 
 const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-  font-size: ${props => props.fontSize || '14px'};
+  font-size: ${(props) => props.fontSize || '14px'};
   font-weight: 400;
   color: #565656;
 `;
@@ -16,10 +16,10 @@ const StarContainer = styled.div`
 `;
 
 const Star = styled.div`
-  width: ${props => props.size || '14px'};
-  height: ${props => props.size || '14px'};
+  width: ${(props) => props.size || '14px'};
+  height: ${(props) => props.size || '14px'};
   position: relative;
-  background: ${props => {
+  background: ${(props) => {
     const quarter = props.filled;
     if (quarter === 1) {
       return props.theme.colors.main;
@@ -49,8 +49,8 @@ const Star = styled.div`
 `;
 
 const RatingNumber = styled.div`
-  color: ${props => props.theme.colors.main};
-  font-size: ${props => props.fontSize || '14px'};
+  color: ${(props) => props.theme.colors.main};
+  font-size: ${(props) => props.fontSize || '14px'};
   font-weight: 900;
 `;
 

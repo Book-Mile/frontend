@@ -1,72 +1,81 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import styled, { keyframes } from 'styled-components';
 import SubRanking from './SubRanking';
 
 const RankingList1 = ({ onSelectItem }) => {
   return (
     <Container>
-        <SvgOne
-          viewBox="0 0 1183 583"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-          >
-          <g filter="url(#filter0_f_507_2279)">
-            <ellipse cx="916.5" cy="-125.987" rx="316.5" ry="312.745" fill="url(#paint0_linear_507_2279)" />
-          </g>
-          <SvgGradientFilter />
-        </SvgOne>
+      <SvgOne
+        viewBox="0 0 1183 583"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+      >
+        <g filter="url(#filter0_f_507_2279)">
+          <ellipse
+            cx="916.5"
+            cy="-125.987"
+            rx="316.5"
+            ry="312.745"
+            fill="url(#paint0_linear_507_2279)"
+          />
+        </g>
+        <SvgGradientFilter />
+      </SvgOne>
 
-        <SvgTwo
-          width="753"
-          height="583"
-          viewBox="0 0 753 583"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-          >
-          <g filter="url(#filter0_f_507_2280)">
-            <ellipse
-              cx="257.474"
-              cy="254.419"
-              rx="257.474"
-              ry="254.419"
-              transform="matrix(0.999952 -0.00974339 0.00997875 0.99995 -365 423.987)"
-              fill="url(#paint0_linear_507_2280)"
-            />
-          </g>
-          <SvgGradientFilterTwo />
-        </SvgTwo>
+      <SvgTwo
+        width="753"
+        height="583"
+        viewBox="0 0 753 583"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+      >
+        <g filter="url(#filter0_f_507_2280)">
+          <ellipse
+            cx="257.474"
+            cy="254.419"
+            rx="257.474"
+            ry="254.419"
+            transform="matrix(0.999952 -0.00974339 0.00997875 0.99995 -365 423.987)"
+            fill="url(#paint0_linear_507_2280)"
+          />
+        </g>
+        <SvgGradientFilterTwo />
+      </SvgTwo>
       <MainWapper>
         <Background>
           <One>
-          <ProfileImage src="../../../public/images/profile.png"/>
-          <Name>미친운체개발자</Name>
+            <ProfileImage src="../../../public/images/profile.png" />
+            <Name>미친운체개발자</Name>
           </One>
           <Two>
-          <ProfileImage src="../../../public/images/profile.png"/>
-          <Name>미친운체개발자</Name>
+            <ProfileImage src="../../../public/images/profile.png" />
+            <Name>미친운체개발자</Name>
           </Two>
           <Three>
-          <ProfileImage src="../../../public/images/profile.png"/>
-          <Name>미친운체개발자</Name>
+            <ProfileImage src="../../../public/images/profile.png" />
+            <Name>미친운체개발자</Name>
           </Three>
-        <PercentOne>
-          95%
-        </PercentOne>
-        <PercentTwo>
-          90%
-        </PercentTwo>
-        <PercentThree>
-          88%
-        </PercentThree>
-          <ImageOne src="../../../public/images/ranking/rectangle1.png" delay="0s" />
-          <ImageTwo src="../../../public/images/ranking/rectangle2.png" delay="0.3s" />
-          <ImageThree src="../../../public/images/ranking/rectangle3.png" delay="0.6s" />
+          <PercentOne>95%</PercentOne>
+          <PercentTwo>90%</PercentTwo>
+          <PercentThree>88%</PercentThree>
+          <ImageOne
+            src="../../../public/images/ranking/rectangle1.png"
+            delay="0s"
+          />
+          <ImageTwo
+            src="../../../public/images/ranking/rectangle2.png"
+            delay="0.3s"
+          />
+          <ImageThree
+            src="../../../public/images/ranking/rectangle3.png"
+            delay="0.6s"
+          />
         </Background>
       </MainWapper>
       <SubRankingContainer>
-          <SubRanking onSelectItem={onSelectItem} />
+        <SubRanking onSelectItem={onSelectItem} />
       </SubRankingContainer>
     </Container>
   );
@@ -74,8 +83,7 @@ const RankingList1 = ({ onSelectItem }) => {
 
 export default RankingList1;
 
-
-const slideUp = (delay) => keyframes`
+const slideUp = () => keyframes`
   0% {
     transform: translateY(100px);
     opacity: 0;
@@ -164,13 +172,12 @@ const SubRankingContainer = styled.div`
     top: 40px;
   }
   @media (max-width: 900px) {
-
     left: 760px;
     top: 40px;
     flex-direction: column;
     display: flex;
   }
-  `;
+`;
 
 const PercentOne = styled.div`
   position: absolute;
@@ -179,9 +186,9 @@ const PercentOne = styled.div`
   z-index: 3;
   font-weight: 800;
   font-size: 1.75rem;
-  color: #CC645F;
+  color: #cc645f;
   animation: ${({ delay }) => slideUp(delay)} 1s ease-out forwards;
-`
+`;
 const PercentTwo = styled.div`
   position: absolute;
   left: 250.5px;
@@ -189,9 +196,9 @@ const PercentTwo = styled.div`
   z-index: 3;
   font-weight: 800;
   font-size: 1.75rem;
-  color: #7DA3C9;
+  color: #7da3c9;
   animation: ${({ delay }) => slideUp(delay)} 2s ease-out forwards;
-`
+`;
 const PercentThree = styled.div`
   position: absolute;
   left: 500.5px;
@@ -199,9 +206,9 @@ const PercentThree = styled.div`
   z-index: 3;
   font-weight: 800;
   font-size: 1.75rem;
-  color: #E39191;
+  color: #e39191;
   animation: ${({ delay }) => slideUp(delay)} 3s ease-out forwards;
-`
+`;
 const ProfileImage = styled.img`
   width: 100px;
   height: 100px;
@@ -221,7 +228,6 @@ const One = styled.div`
   z-index: 3;
   gap: 10px;
   animation: ${({ delay }) => slideUp(delay)} 1s ease-out forwards;
-
 `;
 
 const Two = styled.div`
@@ -233,7 +239,6 @@ const Two = styled.div`
   z-index: 3;
   gap: 10px;
   animation: ${({ delay }) => slideUp(delay)} 2s ease-out forwards;
-
 `;
 
 const Three = styled.div`
@@ -245,7 +250,6 @@ const Three = styled.div`
   z-index: 3;
   gap: 10px;
   animation: ${({ delay }) => slideUp(delay)} 3s ease-out forwards;
-
 `;
 
 const SvgGradientFilter = () => (
@@ -258,11 +262,19 @@ const SvgGradientFilter = () => (
         width={1833}
         height="1825.49"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity={0} result="BackgroundImageFix" />
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-        <feGaussianBlur stdDeviation={300} result="effect1_foregroundBlur_507_2279" />
+        <feFlood floodOpacity={0} result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feGaussianBlur
+          stdDeviation={300}
+          result="effect1_foregroundBlur_507_2279"
+        />
       </filter>
       <linearGradient
         id="paint0_linear_507_2279"
@@ -289,11 +301,19 @@ const SvgGradientFilterTwo = () => (
         width="1714.95"
         height="1708.84"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity={0} result="BackgroundImageFix" />
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-        <feGaussianBlur stdDeviation={300} result="effect1_foregroundBlur_507_2280" />
+        <feFlood floodOpacity={0} result="BackgroundImageFix" />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feGaussianBlur
+          stdDeviation={300}
+          result="effect1_foregroundBlur_507_2280"
+        />
       </filter>
       <linearGradient
         id="paint0_linear_507_2280"

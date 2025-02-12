@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import {
   PopupContainer,
   PopupInner,
@@ -10,7 +11,7 @@ import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
 import { RatingPopupSubmit } from '../../../api/Popup/RatingPopupSubmit';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
 import StarRating from '../../starRating/StarRating';
-
+import { useLocation } from 'react-router-dom';
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
   display: flex;
@@ -96,6 +97,7 @@ const ButtonContainer = styled.div`
 `;
 
 const RatingPopup = ({ onClose = false, id = 1, onSubmit }) => {
+  const location = useLocation();
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const [text, setText] = useState(''); // 현재 입력된 텍스트 상태
   const [rating, setRating] = useState(1); // rating 상태와 setRating 함수 정
@@ -127,7 +129,11 @@ const RatingPopup = ({ onClose = false, id = 1, onSubmit }) => {
           <Title>리뷰 기록하기</Title>
           <Content>
             <div className="subTitle">별점</div>
-            <StarRating rating={rating} setRating={setRating} />
+            <StarRating
+              rating={rating}
+              setRating={setRating}
+              location={location}
+            />
             <div className="subTitle">내용</div>
             <textarea
               className="custom_textarea"

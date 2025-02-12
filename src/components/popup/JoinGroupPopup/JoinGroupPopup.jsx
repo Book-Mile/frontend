@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import {
   PopupContainer,
   PopupInner,
@@ -110,8 +111,8 @@ const JoinGroupPopup = ({
         <PopUpInnerBox1>
           <Title>그룹 정보</Title>
           <Content>
-            <span className="book-title">"{title}"</span>에 참여하시겠습니까?{' '}
-            <br /> 방식 : {subject}
+            <span className="book-title">&quot;{title}&quot;</span>에
+            참여하시겠습니까? <br /> 방식 : {subject}
             <div style={{ marginBottom: '10%' }} />
             {/* 비밀번호 설정 */}
             {password && (

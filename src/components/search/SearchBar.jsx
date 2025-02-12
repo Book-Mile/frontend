@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '../../assets/search/search.svg';
@@ -10,10 +11,10 @@ const SearchBar = ({ initialQuery }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
-  const placeholderText = "노벨 문학상 한강작가 ‘소년이 온다’";
+  const placeholderText = '노벨 문학상 한강작가 ‘소년이 온다’';
 
   const handleSearch = async () => {
-    const searchQuery = query || "소년이 온다";
+    const searchQuery = query || '소년이 온다';
 
     // recentSearches에 검색어가 없으면 추가
     if (!recentSearches.includes(searchQuery)) {
@@ -56,7 +57,7 @@ const SearchBar = ({ initialQuery }) => {
           type="text"
           placeholder={placeholderText}
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         <SearchButton
@@ -92,11 +93,11 @@ const SearchBarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid ${props => props.theme.colors.main};
+  border: 2px solid ${(props) => props.theme.colors.main};
   border-radius: 40px;
   width: 570px;
   flex-direction: row;
-  position: relative; 
+  position: relative;
 `;
 
 const Input = styled.input`
@@ -109,7 +110,7 @@ const Input = styled.input`
   border-radius: 40px 0 0 40px;
 
   &:focus {
-    border-color: ${props => props.theme.colors.main};
+    border-color: ${(props) => props.theme.colors.main};
   }
 `;
 
@@ -124,8 +125,8 @@ const SearchButton = styled.button`
   height: 100%;
   background: white;
   border-radius: 0 40px 40px 0;
-  position: relative; 
-  
+  position: relative;
+
   &:hover {
     background-color: #f1f1f1;
   }
@@ -133,13 +134,13 @@ const SearchButton = styled.button`
 
 const RecentSearchesContainer = styled.div`
   margin-top: 20px;
-  width: 100%; 
+  width: 100%;
   background-color: #f9f9f9;
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 100%; 
+  top: 100%;
   left: 0;
   z-index: 10;
   display: none;
@@ -148,7 +149,7 @@ const RecentSearchesContainer = styled.div`
 const SearchItem = styled.div`
   padding: 8px 0;
   font-size: 14px;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
   cursor: pointer;
   &:hover {
     text-decoration: underline;

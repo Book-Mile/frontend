@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 
 const ModalCustomButton = ({
@@ -36,7 +36,7 @@ const ModalCustomButton = ({
 
 const CustomButton = styled.div`
   color: ${(props) => props.color};
-  font-size: ${(props) => props.fontSize}; 
+  font-size: ${(props) => props.fontSize};
   font-weight: ${(props) => props.fontWeight};
   width: ${(props) => props.width};
   height: ${(props) => props.height};

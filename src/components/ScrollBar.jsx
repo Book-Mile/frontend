@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 import { scrollToBottom } from '../utils/scrollUtils';
 
