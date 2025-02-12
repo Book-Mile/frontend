@@ -8,11 +8,11 @@ const ModeTag = ({ mode }) => {
   return (
     <>
       <MainContainer>
-        {mode === 'speed' ? (
+        {mode === 'SPEED' ? (
           <>
             <img src={Speed} /> 속도
           </>
-        ) : mode === 'page' ? (
+        ) : mode === 'PAGE' ? (
           <>
             <img src={Page} /> 페이지
           </>

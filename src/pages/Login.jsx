@@ -15,10 +15,13 @@ import googleLogo from '/src/assets/snslogo/google.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
 import naverLogo from '/src/assets/snslogo/naver.svg';
 import { useNavigate } from 'react-router-dom';
+import useClosePopupAnimation from '../hooks/useClosePopupAnimation.jsx';
+import Cancel from '../assets/cancel.svg';
 
 export default function Login() {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
+  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
 
   const navigate = useNavigate();
   const { name, setName } = useUserStore();
@@ -41,74 +44,78 @@ export default function Login() {
   const handleClose = () => {
     navigate('/');
   };
+  const onClose = false;
+  useClosePopupAnimation(isClosing, onClose);
 
   return (
     <PopupContainer>
-      <MainContainer>
-        <Frame>
-          <CloseBtn onClick={handleClose}>닫기</CloseBtn>
-          <SignInLogo>BookMille에 로그인</SignInLogo>
-          <Frame1>
-            <Frame2>
-              <Frame3>
-                <IdInput>이메일</IdInput>
-                <Rectangle
-                  type="text"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setemail(e.target.value)}
-                  placeholder="이메일을 입력하세요"
-                />
-              </Frame3>
-              <Frame4>
-                <PasswordInput>비밀번호</PasswordInput>
-                <Rectangle5
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="비밀번호를 입력하세요"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      // 엔터 키가 눌리면 실행될 함수 호출
-                      handleSubmit();
-                    }
-                  }}
-                />
-              </Frame4>
-            </Frame2>
-            <Frame5>
-              <LGButton text="Log in" width="345px" func={handleSubmit} />
-            </Frame5>
-          </Frame1>
-          <Frame7>
-            <SnsLogin>SNS 계정으로 로그인 하기</SnsLogin>
-            <Frame8>
-              <Frame9>
-                <img src={googleLogo} alt="Google Logo" />
-              </Frame9>
-              <FrameA>
-                <img src={kakaoLogo} alt="Kakao Logo" />
-              </FrameA>
-              <FrameB>
-                <img src={naverLogo} alt="Naver Logo" />
-              </FrameB>
-            </Frame8>
-          </Frame7>
-          <Frame6>
-            <ForgotPassword>
-              아직 회원이 아니신가요?{' '}
-              <SmallButton onClick={handleSignUpButton}>회원가입</SmallButton>
-            </ForgotPassword>
-            <ForgotPassword>
-              비밀번호를 잊어버리셨나요?{' '}
-              <SmallButton onClick={handleForgetPassword}>
-                비밀번호 찾기
-              </SmallButton>
-            </ForgotPassword>
-          </Frame6>
-        </Frame>
-      </MainContainer>
+      <PopupInner>
+        <MainContainer>
+          <Frame>
+            <CloseBtn src={Cancel} onClick={handleClose} />
+            <SignInLogo>BookMille에 로그인</SignInLogo>
+            <Frame1>
+              <Frame2>
+                <Frame3>
+                  <IdInput>이메일</IdInput>
+                  <Rectangle
+                    type="text"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setemail(e.target.value)}
+                    placeholder="이메일을 입력하세요"
+                  />
+                </Frame3>
+                <Frame4>
+                  <PasswordInput>비밀번호</PasswordInput>
+                  <Rectangle5
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="비밀번호를 입력하세요"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        // 엔터 키가 눌리면 실행될 함수 호출
+                        handleSubmit();
+                      }
+                    }}
+                  />
+                </Frame4>
+              </Frame2>
+              <Frame5>
+                <LGButton text="Log in" width="345px" func={handleSubmit} />
+              </Frame5>
+            </Frame1>
+            <Frame7>
+              <SnsLogin>SNS 계정으로 로그인 하기</SnsLogin>
+              <Frame8>
+                <Frame9>
+                  <img src={googleLogo} alt="Google Logo" />
+                </Frame9>
+                <FrameA>
+                  <img src={kakaoLogo} alt="Kakao Logo" />
+                </FrameA>
+                <FrameB>
+                  <img src={naverLogo} alt="Naver Logo" />
+                </FrameB>
+              </Frame8>
+            </Frame7>
+            <Frame6>
+              <ForgotPassword>
+                아직 회원이 아니신가요?{' '}
+                <SmallButton onClick={handleSignUpButton}>회원가입</SmallButton>
+              </ForgotPassword>
+              <ForgotPassword>
+                비밀번호를 잊어버리셨나요?{' '}
+                <SmallButton onClick={handleForgetPassword}>
+                  비밀번호 찾기
+                </SmallButton>
+              </ForgotPassword>
+            </Frame6>
+          </Frame>
+        </MainContainer>
+      </PopupInner>
     </PopupContainer>
   );
 }
@@ -285,12 +292,10 @@ const FrameB = styled(FrameA)`
   background: #2db400;
 `;
 
-const CloseBtn = styled.button`
+const CloseBtn = styled.img`
   position: absolute;
-  top: 10px; /* 위쪽에서 10px */
-  right: 10px; /* 오른쪽에서 10px */
-  background: red;
-  color: white;
+  top: 20px; /* 위쪽에서 10px */
+  right: 20px; /* 오른쪽에서 10px */
   border: none;
   border-radius: 5px;
   padding: 5px 10px;

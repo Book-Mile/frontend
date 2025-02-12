@@ -15,8 +15,8 @@ export const PopupContainer = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  min-height: 900px;
-  min-width: 1200px;
+  //min-height: 900px;
+  //min-width: 1200px;
   bottom: 0;
   background-color: rgba(46, 46, 46, 0.8);
   /* 블러 효과 추가 */
@@ -24,6 +24,7 @@ export const PopupContainer = styled.div`
   -webkit-backdrop-filter: blur(8px); /* 사파리 호환성 */
 
   z-index: 1000;
+  overflow: hidden;
 `;
 
 export const PopupInner = styled.div`
@@ -310,6 +311,7 @@ export const Rightpopup_oneWarningIcon = styled.span`
   display: flex;
   align-items: center;
   margin-left: 2%;
+
   :hover {
     cursor: pointer;
   }
@@ -412,6 +414,7 @@ export const ModalContent = styled.div`
     animation: ${({ isNext }) => (isNext ? slideOutLeft : slideOutRight)} 0.3s
       ease-in-out forwards;
   }
+
   //overflow: auto;
 `;
 

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { validatePassword } from '../utils/publicFunctions.js';
+import Cancel from '../assets/cancel.svg';
 
 import {
   registerUser,
@@ -24,6 +25,8 @@ export default function SignUp() {
 
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordconfirm] = useState('');
+
+  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
 
   const handleSubmit = () => {
     // event.preventDefault();
@@ -77,91 +80,93 @@ export default function SignUp() {
 
   return (
     <PopupContainer>
-      <MainContainer>
-        <Frame>
-          <CloseBtn onClick={handleClose}>닫기</CloseBtn>
+      <PopupInner>
+        <MainContainer>
+          <Frame>
+            <CloseBtn src={Cancel} onClick={handleClose} />
 
-          <SignInLogo>
-            BookMille의
-            <br />
-            회원이 되고 싶으신가요?
-          </SignInLogo>
-          <Frame1>
-            <Frame2>
-              <Frame3>
-                <IdInput>이메일</IdInput>
-                <InputFrame>
-                  <Rectangle
-                    type="text"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    width="none"
-                  />
-                  <LGButton
-                    text="인증번호 전송"
-                    width="87px"
-                    height="100%"
-                    radius="10px"
-                    fontSize="14px"
-                    func={handleSendAuthBtn}
-                  ></LGButton>
-                </InputFrame>
-              </Frame3>
-              {isSented && (
+            <SignInLogo>
+              BookMille의
+              <br />
+              회원이 되고 싶으신가요?
+            </SignInLogo>
+            <Frame1>
+              <Frame2>
                 <Frame3>
-                  <IdInput>인증번호</IdInput>
+                  <IdInput>이메일</IdInput>
                   <InputFrame>
                     <Rectangle
                       type="text"
-                      id="authNum"
-                      value={authNum}
-                      onChange={(e) => setAuthNum(e.target.value)}
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       width="none"
                     />
                     <LGButton
-                      text="확인"
+                      text="인증번호 전송"
                       width="87px"
-                      height="100%"
+                      height="40px"
                       radius="10px"
                       fontSize="14px"
-                      func={checkAuthNum}
+                      func={handleSendAuthBtn}
                     ></LGButton>
                   </InputFrame>
                 </Frame3>
-              )}
+                {isSented && (
+                  <Frame3>
+                    <IdInput>인증번호</IdInput>
+                    <InputFrame>
+                      <Rectangle
+                        type="text"
+                        id="authNum"
+                        value={authNum}
+                        onChange={(e) => setAuthNum(e.target.value)}
+                        width="none"
+                      />
+                      <LGButton
+                        text="확인"
+                        width="87px"
+                        height="40px"
+                        radius="10px"
+                        fontSize="14px"
+                        func={checkAuthNum}
+                      ></LGButton>
+                    </InputFrame>
+                  </Frame3>
+                )}
 
-              <Frame4>
-                <PasswordInput>비밀번호</PasswordInput>
-                <Rectangle5
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Frame4>
-              <Frame4>
-                <PasswordInput>비밀번호 확인</PasswordInput>
-                <Rectangle5
-                  type="password"
-                  id="passwordconfirm"
-                  value={passwordconfirm}
-                  onChange={(e) => setPasswordconfirm(e.target.value)}
-                />
-              </Frame4>
-            </Frame2>
-            <Frame5>
-              <LGButton text="Sign Up" width="345px" func={handleSubmit} />
-            </Frame5>
-          </Frame1>
-          <Frame6>
-            <ForgotPassword>
-              이미 회원가입을 하셨나요?{' '}
-              <SmallButton onClick={handleLoginButton}>로그인</SmallButton>
-            </ForgotPassword>
-          </Frame6>
-        </Frame>
-      </MainContainer>
+                <Frame4>
+                  <PasswordInput>비밀번호</PasswordInput>
+                  <Rectangle5
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Frame4>
+                <Frame4>
+                  <PasswordInput>비밀번호 확인</PasswordInput>
+                  <Rectangle5
+                    type="password"
+                    id="passwordconfirm"
+                    value={passwordconfirm}
+                    onChange={(e) => setPasswordconfirm(e.target.value)}
+                  />
+                </Frame4>
+              </Frame2>
+              <Frame5>
+                <LGButton text="Sign Up" width="345px" func={handleSubmit} />
+              </Frame5>
+            </Frame1>
+            <Frame6>
+              <ForgotPassword>
+                이미 회원가입을 하셨나요?{' '}
+                <SmallButton onClick={handleLoginButton}>로그인</SmallButton>
+              </ForgotPassword>
+            </Frame6>
+          </Frame>
+        </MainContainer>
+      </PopupInner>
     </PopupContainer>
   );
 }
@@ -304,12 +309,10 @@ const SmallButton = styled(ForgotPassword)`
   cursor: pointer;
 `;
 
-const CloseBtn = styled.button`
+const CloseBtn = styled.img`
   position: absolute;
-  top: 10px; /* 위쪽에서 10px */
-  right: 10px; /* 오른쪽에서 10px */
-  background: red;
-  color: white;
+  top: 20px; /* 위쪽에서 10px */
+  right: 20px; /* 오른쪽에서 10px */
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
