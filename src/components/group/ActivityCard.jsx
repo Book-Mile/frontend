@@ -5,13 +5,14 @@ import ModalButton from '../modalButton/ModalCustomButton';
 
 const Container = styled.article`
   width: 23.92%;
-  height: 24.31%;
+  height: 290px;
   display: flex;
   flex-direction: column;
   flex-grow: 0;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  justify-content: space-between;
   padding: 3.2%;
   border-radius: 20px;
   background-color: ${(props) =>
@@ -78,22 +79,30 @@ const MainText = styled.p`
 const SectionWithGap = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px;
 `;
 
 const GapContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 `;
 
-const ButtonContainer = styled.footer`
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
   height: 40px;
-  margin-top: 60px;
 `;
+
+const Description = styled.div`
+  display: flex;
+  gap: 0;
+  margin: 0;
+  flex-direction: column;
+  font-size: 14px;
+`;
+
 
 import SpeedIcon from '../../assets/label/speed.svg?react';
 import PageIcon from '../../assets/label/page.svg?react';
@@ -127,50 +136,61 @@ function ActivityCard({ completed = false, activity }) {
     chapter: <ChapterIcon />,
   };
 
-  // activity.pageInfo에 따라 동적으로 처리
-  const determineTypeAndText = (pageInfo) => {
-    if (pageInfo.includes('페이지')) {
-      return { type: 'page', text: pageInfo };
-    } else if (pageInfo.includes('속도')) {
-      return { type: 'speed', text: pageInfo };
-    } else if (pageInfo.includes('횟수')) {
-      return { type: 'count', text: pageInfo };
-    } else if (pageInfo.includes('챕터')) {
-      return { type: 'chapter', text: pageInfo };
-    }
-    return { type: 'page', text: pageInfo }; // 기본값
+  // 텍스트를 매핑하기 위한 객체
+  const textMap = {
+    page: '페이지',
+    speed: '속도',
+    count: '횟수',
+    chapter: '챕터',
   };
 
-  // eslint-disable-next-line react/prop-types
-  const { type, text } = determineTypeAndText(activity.pageInfo);
+  const determineTypeAndText = (goalType, pageInfo) => {
+    if (goalType === 'PAGE') {
+      return { type: 'page', text: pageInfo };
+    } else if (goalType === 'NUMBER') {
+      return { type: 'count', text: pageInfo };
+    } else if (goalType === 'CUSTOM') {
+      return { type: 'speed', text: pageInfo };
+    } else if (goalType === 'CHAPTER') {
+      return { type: 'chapter', text: pageInfo };
+    }
+
+    return { type: 'page', text: pageInfo };
+  };
+
+  const { type, text } = determineTypeAndText(activity.goalType, activity.pageInfo);
 
   return (
     <Container completed={completed}>
       <SectionWithGap>
         <TopSection>
-          <Image src="../../public/images/cover/werther.png" alt="profile" />
+          <Image src={activity.masterImage} alt="profile" />
           <ProgressBar>
             <span
-              style={{ fontSize: '12px', color: '#4E202A', fontWeight: '700' }}
+              style={{ fontSize: '14px', color: '#4E202A', fontWeight: '700' }}
             >
-              {completedMembers}
+              {activity.currentMembers}
             </span>
-            <span style={{ fontSize: '10px', color: '#565656' }}>
-              /{totalMembers}
+            <span style={{ fontSize: '12px', color: '#565656' }}>
+              /{activity.maxMembers}
             </span>
           </ProgressBar>
         </TopSection>
         <GapContainer>
           <InfoContainer>
-            <AuthorText>홍길동</AuthorText>
-            <MainText>{activity}</MainText>
-          </InfoContainer>
-          <LabelContainer>
+            <AuthorText>{activity.masterNickname}</AuthorText>
+            <MainText>{activity.groupName}</MainText>
+            <LabelContainer>
             <BookLabel
-              text={text}
-              icon={iconMap[type]} // 동적으로 아이콘을 렌더링
+              text={textMap[type]}
+              icon={iconMap[type]}
             />
           </LabelContainer>
+          </InfoContainer>
+          <Description>
+          <span>{activity.goalContent}</span>
+          <span>{activity.groupDescription}</span>
+          </Description>
         </GapContainer>
       </SectionWithGap>
       {!completed && (
