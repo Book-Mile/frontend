@@ -11,7 +11,6 @@ const BookList = () => {
     const retrievedToken = JSON.parse(
       sessionStorage.getItem('userData'),
     )?.accessToken;
-    console.log('retrievedToken:', retrievedToken);
 
     if (!retrievedToken) {
       console.warn('No access token available');

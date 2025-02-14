@@ -1,7 +1,8 @@
-import axios from 'axios';
+import apiClient from '../apiClient'
+import Cookies from 'js-cookie'; 
 
 export const login = async (email, password, navigate, setName) => {
-  const apiUrl = 'https://bookmile.site/api/v1/users/sign-in';
+  const apiUrl = '/users/sign-in'; 
 
   const requestBody = {
     email: email,
@@ -9,16 +10,16 @@ export const login = async (email, password, navigate, setName) => {
   };
 
   try {
-    const response = await axios.post(apiUrl, requestBody, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await apiClient.post(apiUrl, requestBody);  
 
     if (response.status === 200) {
-      console.log(response.data);
-
       const { accessToken, refreshToken } = response.data.response;
+
+      // 쿠키에 토큰 저장
+      Cookies.set('accessToken', accessToken, { expires: 7, secure: true, sameSite: 'Strict' });
+      Cookies.set('refreshToken', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+
+      // 사용자 정보 가져오기
       await getUserInfo(accessToken, refreshToken, setName, navigate);
     } else {
       alert('로그인 중 오류가 발생하였습니다.');
@@ -29,13 +30,13 @@ export const login = async (email, password, navigate, setName) => {
   }
 };
 
+// 사용자 정보 가져오기
 const getUserInfo = async (accessToken, refreshToken, setName, navigate) => {
-  const apiUrl = 'https://bookmile.site/api/v1/users';
+  const apiUrl = '/users';  
 
   try {
-    const response = await axios.get(apiUrl, {
+    const response = await apiClient.get(apiUrl, {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
     });
@@ -44,12 +45,10 @@ const getUserInfo = async (accessToken, refreshToken, setName, navigate) => {
       console.log('유저 정보 불러오기 성공!', response.data);
       const { nickName } = response.data.response;
 
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-
+      // 세션 스토리지에 사용자 정보 저장
       sessionStorage.setItem(
         'userData',
-        JSON.stringify({ accessToken, refreshToken, nickName }),
+        JSON.stringify({ accessToken, refreshToken, nickName })
       );
 
       if (typeof setName === 'function') {
