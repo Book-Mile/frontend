@@ -16,12 +16,11 @@ const SearchBar = ({ initialQuery }) => {
   const handleSearch = async () => {
     const searchQuery = query || '소년이 온다';
 
-    // recentSearches에 검색어가 없으면 추가
     if (!recentSearches.includes(searchQuery)) {
       setRecentSearches([searchQuery, ...recentSearches].slice(0, 5));
     }
 
-    console.log(recentSearches); // recentSearches가 제대로 업데이트 되는지 확인
+    console.log(recentSearches);
 
     try {
       const response = await apiClient.post('/books/search', {
@@ -30,8 +29,6 @@ const SearchBar = ({ initialQuery }) => {
         sort: 'Accuracy',
         maxResults: 10,
       });
-
-      const searchResults = response.data;
 
       navigate(`/searchresults?query=${encodeURIComponent(searchQuery)}`);
     } catch (error) {
