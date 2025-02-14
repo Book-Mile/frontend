@@ -1,108 +1,98 @@
-/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   PopupContainer,
   PopupInner,
 } from '../../../styled_components/popupStyle';
+import { useNavigate } from 'react-router-dom';
+import useClosePopupAnimation from '../../../hooks/useClosePopupAnimation';
 import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
+import uploadRecord from '../../../api/Popup/CheckpointRecordPopupSubmit.jsx';
+
 import Loding from '../../../animations/Loding';
 import CompletePopup from '../RegisterCompletePopup/RegisterCompletePopup';
 
-// eslint-disable-next-line react/prop-types
-const FileInfo = ({
-  uploadedInfo,
-  setUploadedInfo,
-  setUploadCount,
-  uploadCount,
-}) => {
-  const handleDeleteButton = () => {
-    setUploadedInfo(null);
-    setUploadCount(uploadCount - 1);
-  };
-
+// 업로드 미리보기창에 보여지는 각 파일 컴포넌트
+const FileInfo = ({ file, onDelete }) => {
   return (
-    <>
-      <img
-        src={uploadedInfo.imageUrl}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px dashed #D4D4D4',
-          borderRadius: '8px',
-          height: '70px',
-          width: '70px',
-        }}
-        onClick={handleDeleteButton}
-      />
-    </>
+    <img
+      src={file.imageUrl}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1px dashed #D4D4D4',
+        borderRadius: '8px',
+        height: '70px',
+        width: '70px',
+      }}
+      onClick={onDelete}
+    />
   );
 };
 
-const CheckpointRecordPopup = () => {
-  const [isClosing, setIsClosing] = useState(false);
+//팝업창 컴포넌트
+//임시로 테스트를 위해 groupId를 19로 기본값을 주었습니다.
+const CheckpointRecordPopup = (groupId = 19) => {
+  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const [page, setPage] = useState('');
   const [content, setContent] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState([]); // 파일들을 배열로 관리
+  const [isActive, setActive] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
 
   const handleClose = () => {
-    setIsClosing(true);
+    setIsClosing(true); // 닫히는 애니메이션 시작
   };
 
-  const [uploadCount, setUploadCount] = useState(1);
+  const handleDragStart = (event) => {
+    event.preventDefault();
+    setActive(true);
+  };
+
+  const handleDragEnd = (event) => {
+    event.preventDefault();
+    setActive(false);
+  };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
 
-    if (uploadCount === 5) {
+    if (uploadedFiles.length >= 4) {
       alert('더 이상 추가할 수 없어요.');
       return;
     }
-    setUploadCount(uploadCount + 1);
-    setFileInfo(file);
-  };
 
-  const [uploadedInfo1, setUploadedInfo1] = useState(null);
-  const [uploadedInfo2, setUploadedInfo2] = useState(null);
-  const [uploadedInfo3, setUploadedInfo3] = useState(null);
-  const [uploadedInfo4, setUploadedInfo4] = useState(null);
-  const slotList = [uploadedInfo1, uploadedInfo2, uploadedInfo3, uploadedInfo4];
-
-  const setFileInfo = (file) => {
-    const { name, type } = file;
-    const size = (file.size / (1024 * 1024)).toFixed(2) + 'mb';
     const reader = new FileReader();
     reader.onload = () => {
-      const emptySlot = findFirstEmptySlot() + 1;
-      if (emptySlot === 1)
-        setUploadedInfo1({ name, size, type, imageUrl: String(reader.result) });
-      else if (emptySlot === 2)
-        setUploadedInfo2({ name, size, type, imageUrl: String(reader.result) });
-      else if (emptySlot === 3)
-        setUploadedInfo3({ name, size, type, imageUrl: String(reader.result) });
-      else if (emptySlot === 4)
-        setUploadedInfo4({ name, size, type, imageUrl: String(reader.result) });
+      const newFile = {
+        name: file.name,
+        size: (file.size / (1024 * 1024)).toFixed(2) + 'mb',
+        type: file.type,
+        imageUrl: reader.result,
+      };
+      setUploadedFiles([...uploadedFiles, newFile]);
     };
     reader.readAsDataURL(file);
+    setActive(false);
   };
 
-  const findFirstEmptySlot = () => {
-    for (let i = 0; i < slotList.length; i++) {
-      if (slotList[i] === null) {
-        return i; // 첫 번째 빈 슬롯의 인덱스를 반환
-      }
-    }
-    return -1; // 빈 슬롯이 없을 경우
+  const handleDragOver = (event) => {
+    event.preventDefault();
   };
 
-  const handleSubmit = () => {
+  const handleDeleteFile = (index) => {
+    const newFiles = uploadedFiles.filter((_, i) => i !== index);
+    setUploadedFiles(newFiles);
+  };
+
+  const handleSubmit = async () => {
     if (!page || !content) {
       alert('페이지 수와 내용을 모두 작성해주세요.');
       return;
@@ -110,19 +100,35 @@ const CheckpointRecordPopup = () => {
 
     setLoading(true);
 
-    setTimeout(() => {
+    try {
+      if (content && page) {
+        // 업로드 로직 구현
+        await uploadRecord(groupId, content, page, uploadedFiles);
+        alert('기록이 성공적으로 업로드되었습니다.');
+        setPage('');
+        setContent('');
+        setUploadedFiles([]);
+      } else {
+        alert('페이지와 내용을 입력해주세요.');
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      alert('기록 업로드에 실패했습니다.\n오류 내용 : ' + error.response.data);
+    } finally {
       setLoading(false);
       setIsCompleted(true);
-    }, 1000);
+    }
   };
 
-  useEffect(() => {
-    if (isCompleted) {
-      setTimeout(() => {
-        navigate('/checkpoints');
-      }, 10000);
-    }
-  }, [isCompleted, navigate]);
+  // useClosePopupAnimation(isClosing, onClose);
+
+  // useEffect(() => {
+  //   if (isCompleted) {
+  //     setTimeout(() => {
+  //       navigate('/checkpoints');
+  //     }, 10000);
+  //   }
+  // }, [isCompleted, navigate]);
 
   return (
     <PopupContainer isClosing={isClosing}>
@@ -151,21 +157,23 @@ const CheckpointRecordPopup = () => {
                 style={{
                   textAlign: 'left',
                   verticalAlign: 'top',
-                  resize: 'none', // 크기 조정 비활성화
+                  resize: 'none',
                 }}
               />
             </InputFrame>
             <InputFrame>
               <InputTitle>
-                이미지 업로드 (선택사항) {uploadCount - 1}/4
+                이미지 업로드 (선택사항) {uploadedFiles.length}/4
               </InputTitle>
-              {/* 드래그 앤 드롭 처리 */}
               <div
+                onDragEnter={handleDragStart}
+                onDragLeave={handleDragEnd}
+                onDragOver={handleDragOver}
                 onDrop={handleDrop}
                 style={{ position: 'relative', zIndex: '10000' }}
               >
-                <UploadRectangle>
-                  {!(uploadCount > 1) && (
+                <UploadRectangle isActive={isActive}>
+                  {uploadedFiles.length === 0 && (
                     <>
                       <FirstLine>
                         <FirstLineLeft>Click to Upload</FirstLineLeft>
@@ -174,7 +182,7 @@ const CheckpointRecordPopup = () => {
                       <SecondLine> JPG, JPEG, PNG less than 1MB</SecondLine>
                     </>
                   )}
-                  {uploadCount > 1 && (
+                  {uploadedFiles.length > 0 && (
                     <div
                       style={{
                         display: 'flex',
@@ -185,38 +193,13 @@ const CheckpointRecordPopup = () => {
                         alignItems: 'center',
                       }}
                     >
-                      {uploadedInfo1 && (
+                      {uploadedFiles.map((file, index) => (
                         <FileInfo
-                          uploadedInfo={uploadedInfo1}
-                          setUploadedInfo={setUploadedInfo1}
-                          setUploadCount={setUploadCount}
-                          uploadCount={uploadCount}
+                          key={index}
+                          file={file}
+                          onDelete={() => handleDeleteFile(index)}
                         />
-                      )}
-                      {uploadedInfo2 && (
-                        <FileInfo
-                          uploadedInfo={uploadedInfo2}
-                          setUploadedInfo={setUploadedInfo2}
-                          setUploadCount={setUploadCount}
-                          uploadCount={uploadCount}
-                        />
-                      )}
-                      {uploadedInfo3 && (
-                        <FileInfo
-                          uploadedInfo={uploadedInfo3}
-                          setUploadedInfo={setUploadedInfo3}
-                          setUploadCount={setUploadCount}
-                          uploadCount={uploadCount}
-                        />
-                      )}
-                      {uploadedInfo4 && (
-                        <FileInfo
-                          uploadedInfo={uploadedInfo4}
-                          setUploadedInfo={setUploadedInfo4}
-                          setUploadCount={setUploadCount}
-                          uploadCount={uploadCount}
-                        />
-                      )}
+                      ))}
                     </div>
                   )}
                 </UploadRectangle>
@@ -237,6 +220,8 @@ const CheckpointRecordPopup = () => {
 };
 
 export default CheckpointRecordPopup;
+
+//styled components (이하 동일)
 
 //styled components
 const PopUpInnerBox1 = styled.div`
