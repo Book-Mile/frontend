@@ -1,48 +1,44 @@
 import axios from 'axios';
 
-/**
- * 체크포인트 기록 업로드 API
- * @param {number} groupId - 그룹 ID
- * @param {string} text - 기록 내용
- * @param {number} currentPage - 현재 페이지 번호
- * @param {File[]} images - 업로드할 이미지 파일 목록
- * @returns {Promise<Object>}
- */
-const uploadRecord = async ({ groupId, text, currentPage, images }) => {
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주소 불러오기
+
+const uploadRecord = async (groupId, content, page, uploadedFiles) => {
+  const accessToken = JSON.parse(
+    sessionStorage.getItem('userData'),
+  )?.accessToken;
+
+  const formData = new FormData();
+  formData.append(
+    'jsonData',
+    JSON.stringify({
+      text: content,
+      currentPage: page,
+    }),
+  );
+  // 이미지 파일을 FormData에 추가
+  // 어케하노진짜 별짓을해도 업로드가 안되네
+  uploadedFiles.forEach((file) => {
+    console.log(file);
+    formData.append('images', file);
+  });
+
+  console.log('폼데이터');
+  console.log(formData);
+
   try {
-    const accessToken = JSON.parse(
-      sessionStorage.getItem('userData'),
-    )?.accessToken;
-    if (!accessToken) throw new Error('로그인이 필요합니다.');
-
-    const formData = new FormData();
-    formData.append(
-      'jsonData',
-      new Blob([JSON.stringify({ text, currentPage })], {
-        type: 'application/json',
-      }),
-    );
-
-    if (images?.length) {
-      images.forEach((image) => formData.append('images', image));
-    }
-
-    const apiUrl = 'https://bookmile.site/api/v1/records'; // API 엔드포인트
-
     const response = await axios.post(
-      `${apiUrl}?groupId=${groupId}`,
+      `${BASE_URL}/api/v1/records?groupId=${groupId}`,
       formData,
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`, // 여기에 토큰값을 넣어줍니다.
         },
       },
     );
 
     return response.data;
   } catch (error) {
-    console.error('기록 업로드 실패:', error);
     throw error;
   }
 };
