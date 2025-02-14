@@ -135,7 +135,7 @@ const BookProgress = () => {
       )}
       {CheckpointModalOpen && (
         <CheckpointRecordPopup
-          onClose={() => setCheckpointModalOpen(false)}
+          // onClose={() => setCheckpointModalOpen(false)}
           onSubmit={handleReviewSubmit}
         />
       )}
