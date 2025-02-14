@@ -21,8 +21,9 @@ import {
 } from '/src/api/Pages/EditMyInfoRequest.jsx';
 import SecessionUserPopup from '../components/popup/SecessionUserPopup/SecessionUserPopup.jsx';
 
-export default function MyPage() {
+export default function EditMyInfo() {
   const { setName } = useUserStore();
+  const navigate = useNavigate();
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -30,24 +31,54 @@ export default function MyPage() {
   const [showPopup, setShowPopup] = useState(false);
   const [snsId] = useState('email@kakao.com');
   const [isLinkedSNS] = useState(false);
+
+  //닉네임 변경 관련
+  const [isCheckedNickname, setCheckedNickname] = useState(false);
+
+  //이메일 변경 관련
   const [isSented, setIsSented] = useState(false);
-  const [authNum] = useState('');
-  const [setIsAuthed] = useState(false);
+  const [authNum, setAuthNum] = useState('');
+  const [isAuthed, setIsAuthed] = useState(false);
 
   const [originPassword, setOriginPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
 
-  const navigate = useNavigate();
+  const [isChanged, setIsChanged] = useState(false);
+
+  const [isTracking, setIsTracking] = useState(false); // 트래킹 활성화 여부
 
   useEffect(() => {
-    getUserInfo(setEmail, setNickname, setImage);
-    getSocialInfo(); //일단은 정보 받아오기만 하고, 화면 연동은 나중에..
+    const fetchData = async () => {
+      await getUserInfo(setEmail, setNickname, setImage);
+      await getSocialInfo(); // 일단은 정보 받아오기만 하고, 화면 연동은 나중에..
+
+      setIsTracking(true); // getUserInfo 완료 후 트래킹 시작
+    };
+
+    fetchData();
   }, []);
 
-  const onClickCheckNickname = () => {
+  useEffect(() => {
+    if (!isTracking) return; // getUserInfo가 끝나기 전에는 실행 안 함
+
+    // isChanged가 변경될 때 실행할 로직
+    console.log('isChanged가 변경됨:', isChanged);
+  }, [isChanged, isTracking]);
+
+  const onClickCheckNickname = async () => {
     if (nickname.length >= 2) {
-      checkNicknameExists(nickname);
+      try {
+        const response = checkNicknameExists(nickname);
+        if (response) {
+          //사용 가능한 경우
+          setCheckedNickname(true);
+        } else {
+          setCheckedNickname(false);
+        }
+      } catch (error) {
+        alert(error.message);
+      }
     } else {
       alert('닉네임은 최소 2글자 이상이어야 합니다.');
     }
@@ -93,6 +124,19 @@ export default function MyPage() {
 
   //하단 완료 버튼 눌렀을 시 동작할 함수
   const handleSubmit = () => {
+    if (!isChanged) {
+      //변경된 사항이 없으면
+      alert('변경된 사항이 없습니다.');
+      return;
+    }
+    if (!isCheckedNickname) {
+      alert('닉네임 검사를 완료해주세요!');
+      return;
+    }
+    if (!isAuthed) {
+      alert('이메일 인증을 완료해주세요!');
+      return;
+    }
     changeNicknameEmail(nickname, email, setName, navigate);
   };
 
@@ -125,7 +169,10 @@ export default function MyPage() {
                     type="text"
                     id="nickname"
                     value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
+                    onChange={(e) => {
+                      setNickname(e.target.value);
+                      setIsChanged(true);
+                    }}
                     placeholder="닉네임을 입력하세요"
                   />
                   <LGButton
@@ -176,7 +223,7 @@ export default function MyPage() {
                       type="text"
                       id="authNum"
                       value={authNum}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setAuthNum(e.target.value)}
                     />
                     <LGButton
                       text="인증하기"
@@ -321,14 +368,12 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: nowrap;
   position: relative;
   width: 100%;
   height: 100%;
-  margin: 0 auto;
   background: #fafafa;
-  box-sizing: border-box;
   overflow-y: auto;
+  flex-wrap: wrap;
 `;
 
 const OuterFrame = styled.div`
@@ -336,8 +381,6 @@ const OuterFrame = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-
-  padding-top: 100px;
 
   gap: 50px;
 `;
