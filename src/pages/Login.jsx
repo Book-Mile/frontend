@@ -8,7 +8,7 @@ import {
 } from '../../src/styled_components/popupStyle.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
-import { login } from '../api/Pages/LoginRequest.jsx';
+import { login, socialLogin } from '../api/Pages/LoginRequest.jsx';
 
 // import { ReactComponent as Google } from '../assets/snslogo/google.svg';
 import googleLogo from '/src/assets/snslogo/google.svg';
@@ -26,17 +26,22 @@ export default function Login() {
   const navigate = useNavigate();
   const { setName } = useUserStore();
 
-  const handleSubmit = () => {
+  const handleLogin = () => {
     console.log('Email:', email);
     console.log('Password:', password);
     login(email, password, navigate, setName);
-    // alert('로그인되었습니다.');
   };
 
+  const handleSocial = (social) => {
+    socialLogin(social); // 플랫폼별 로그인
+  };
+
+  //회원가입 버튼 눌렸을 때
   const handleSignUpButton = () => {
     navigate('/signup');
   };
 
+  //비밀번호 찾기 버튼 눌렸을 때
   const handleForgetPassword = () => {
     alert('비밀번호 찾기 버튼 눌림');
   };
@@ -50,77 +55,88 @@ export default function Login() {
   return (
     <PopupContainer>
       <PopupInner>
-        <MainContainer>
-          <Frame>
-            <CloseBtn src={Cancel} onClick={handleClose} />
-            <SignInLogo>BookMille에 로그인</SignInLogo>
-            <Frame1>
-              <Frame2>
-                <Frame3>
-                  <IdInput>이메일</IdInput>
-                  <Rectangle
-                    type="text"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setemail(e.target.value)}
-                    placeholder="이메일을 입력하세요"
+        <LoginWrapper>
+          <LoginBox>
+            <CloseButton src={Cancel} onClick={handleClose} />
+            <LoginTitle>BookMille에 로그인</LoginTitle>
+            <LoginForm>
+              <InputWrapper>
+                <InputLabel>이메일</InputLabel>
+                <InputField
+                  type="text"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setemail(e.target.value)}
+                  placeholder="이메일을 입력하세요"
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <InputLabel>비밀번호</InputLabel>
+                <PasswordField
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="비밀번호를 입력하세요"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleLogin();
+                    }
+                  }}
+                />
+              </InputWrapper>
+              <ButtonWrapper>
+                <LGButton text="Log in" width="345px" func={handleLogin} />
+              </ButtonWrapper>
+            </LoginForm>
+            <SocialLoginWrapper>
+              <SocialLoginText>SNS 계정으로 로그인 하기</SocialLoginText>
+              <SocialLogins>
+                <SocialLoginIcon>
+                  <img
+                    src={googleLogo}
+                    alt="Google Logo"
+                    onClick={() => handleSocial('google')}
                   />
-                </Frame3>
-                <Frame4>
-                  <PasswordInput>비밀번호</PasswordInput>
-                  <Rectangle5
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="비밀번호를 입력하세요"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        // 엔터 키가 눌리면 실행될 함수 호출
-                        handleSubmit();
-                      }
-                    }}
+                </SocialLoginIcon>
+                <SocialLoginIcon style={{ background: '#f7e600' }}>
+                  <img
+                    src={kakaoLogo}
+                    alt="Kakao Logo"
+                    onClick={() => handleSocial('kakao')}
                   />
-                </Frame4>
-              </Frame2>
-              <Frame5>
-                <LGButton text="Log in" width="345px" func={handleSubmit} />
-              </Frame5>
-            </Frame1>
-            <Frame7>
-              <SnsLogin>SNS 계정으로 로그인 하기</SnsLogin>
-              <Frame8>
-                <Frame9>
-                  <img src={googleLogo} alt="Google Logo" />
-                </Frame9>
-                <FrameA>
-                  <img src={kakaoLogo} alt="Kakao Logo" />
-                </FrameA>
-                <FrameB>
-                  <img src={naverLogo} alt="Naver Logo" />
-                </FrameB>
-              </Frame8>
-            </Frame7>
-            <Frame6>
+                </SocialLoginIcon>
+                <SocialLoginIcon style={{ background: '#2db400' }}>
+                  <img
+                    src={naverLogo}
+                    alt="Naver Logo"
+                    onClick={() => handleSocial('naver')}
+                  />
+                </SocialLoginIcon>
+              </SocialLogins>
+            </SocialLoginWrapper>
+            <OtherLinksWrapper>
               <ForgotPassword>
                 아직 회원이 아니신가요?{' '}
-                <SmallButton onClick={handleSignUpButton}>회원가입</SmallButton>
+                <SignUpButton onClick={handleSignUpButton}>
+                  회원가입
+                </SignUpButton>
               </ForgotPassword>
               <ForgotPassword>
                 비밀번호를 잊어버리셨나요?{' '}
-                <SmallButton onClick={handleForgetPassword}>
+                <PasswordRecoveryButton onClick={handleForgetPassword}>
                   비밀번호 찾기
-                </SmallButton>
+                </PasswordRecoveryButton>
               </ForgotPassword>
-            </Frame6>
-          </Frame>
-        </MainContainer>
+            </OtherLinksWrapper>
+          </LoginBox>
+        </LoginWrapper>
       </PopupInner>
     </PopupContainer>
   );
 }
 
-const MainContainer = styled.div`
+const LoginWrapper = styled.div`
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -132,7 +148,7 @@ const MainContainer = styled.div`
   margin: 0 auto;
 `;
 
-const Frame = styled.div`
+const LoginBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -149,7 +165,7 @@ const Frame = styled.div`
   border-radius: 30px;
 `;
 
-const SignInLogo = styled.span`
+const LoginTitle = styled.span`
   align-self: stretch;
   height: 52px;
   color: ${(props) => props.theme.colors.main};
@@ -160,7 +176,7 @@ const SignInLogo = styled.span`
   white-space: nowrap;
 `;
 
-const Frame1 = styled.div`
+const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -168,7 +184,7 @@ const Frame1 = styled.div`
   width: 350px;
 `;
 
-const Frame2 = styled.div`
+const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -176,15 +192,7 @@ const Frame2 = styled.div`
   width: 345px;
 `;
 
-const Frame3 = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  width: 345px;
-`;
-
-const IdInput = styled.span`
+const InputLabel = styled.span`
   width: 345px;
   height: 29px;
   color: #000000;
@@ -194,7 +202,7 @@ const IdInput = styled.span`
   text-align: left;
 `;
 
-const Rectangle = styled.input`
+const InputField = styled.input`
   width: 345px;
   height: 49px;
   background: rgba(217, 217, 217, 0);
@@ -202,59 +210,24 @@ const Rectangle = styled.input`
   border-radius: 10px;
 `;
 
-const Frame4 = styled(Frame3)``;
+const PasswordField = styled(InputField)``;
 
-const PasswordInput = styled(IdInput)``;
-
-const Rectangle5 = styled(Rectangle)``;
-
-const Frame5 = styled.div`
+const ButtonWrapper = styled.div`
   display: flex;
-  align-items: center; /* 세로 정렬 */
-  justify-content: center; /* 가로 정렬 */
-  width: 100%; /* 부모 너비를 차지하도록 설정 */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 
-const Frame6 = styled.div`
+const SocialLoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   width: 350px;
-  height: 17px;
 `;
 
-const ForgotPassword = styled.span`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 18px;
-
-  color: #565656;
-`;
-
-const SmallButton = styled(ForgotPassword)`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 18px;
-
-  color: ${(props) => props.theme.colors.main};
-
-  cursor: pointer;
-`;
-
-const Frame7 = styled(Frame1)`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const SnsLogin = styled.span`
+const SocialLoginText = styled.span`
   width: 248px;
   height: 19px;
   color: #565656;
@@ -264,7 +237,7 @@ const SnsLogin = styled.span`
   text-align: center;
 `;
 
-const Frame8 = styled.div`
+const SocialLogins = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -273,7 +246,7 @@ const Frame8 = styled.div`
   height: 64px;
 `;
 
-const Frame9 = styled.div`
+const SocialLoginIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,21 +254,42 @@ const Frame9 = styled.div`
   height: 20px;
   padding: 14px;
   border: 2px solid #d9d9d9;
-  border-radius: 50px;
+  border-radius: 50%;
 `;
 
-const FrameA = styled(Frame9)`
-  background: #f7e600;
+const OtherLinksWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 350px;
 `;
 
-const FrameB = styled(FrameA)`
-  background: #2db400;
+const ForgotPassword = styled.span`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  color: #565656;
 `;
 
-const CloseBtn = styled.img`
+const SignUpButton = styled.span`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  color: ${(props) => props.theme.colors.main};
+  cursor: pointer;
+`;
+
+const PasswordRecoveryButton = styled(SignUpButton)``;
+
+const CloseButton = styled.img`
   position: absolute;
-  top: 20px; /* 위쪽에서 10px */
-  right: 20px; /* 오른쪽에서 10px */
+  top: 20px;
+  right: 20px;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
