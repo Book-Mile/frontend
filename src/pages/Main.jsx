@@ -1,10 +1,17 @@
-import React from 'react';
-import { MainWrapper, MainContent, Detail } from '../styled_components/main/MainStyle';
+import {
+  MainWrapper,
+  MainContent,
+  Detail,
+} from '../styled_components/main/MainStyle';
 import BackgroundCircle from '../styled_components/main/BackgroundCircles';
 import SearchBar from '../components/search/SearchBar';
-import UpdateBook from '../components/main/updatebook'
+import UpdateBook from '../components/main/updatebook';
 import GrpRankPreview from '../components/main/GrpRankPreview';
-import { MainTitle, SearchContainer, Letter } from '../styled_components/main/TextComponents';
+import {
+  MainTitle,
+  SearchContainer,
+  Letter,
+} from '../styled_components/main/TextComponents';
 
 const Main = () => {
   return (

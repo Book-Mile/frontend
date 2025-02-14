@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Rating from '../components/search/Rating';
 import ModalButton from '../components/modalButton/ModalCustomButton';
@@ -334,7 +334,11 @@ const Detail = () => {
           <GroupTitle>모집중인 그룹</GroupTitle>
           <ActivityList>
             {activityData.map((activity, index) => (
-              <ActivityCard key={index} activity={activity} completed={false} />
+              <ActivityCard
+                key={index}
+                activity={activity.groupName}
+                completed={false}
+              />
             ))}
           </ActivityList>
         </GroupSection>

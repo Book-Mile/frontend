@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import BarChart3D from '../components/Ranking/3d/BarChart3D';
-import RankingList from '../components/Ranking/RankingList';
 import WhiteButton from '../components/button/whitebutton';
 import RankingList1 from '../components/Ranking/RankingList1';
 import GroupThoughts from '../components/Ranking/GroupThoughts';
 import ImgComment from '../components/Ranking/ImgComment';
 import BookCard from '../components/Ranking/BookCard';
 import RatingPopup from '../components/popup/RatingPopup/RatingPopup';
-import CheckpointRecordPopup from '../components/popup/CheckpointRecordPopup/CheckpointRecordPopup'
+import CheckpointRecordPopup from '../components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import ToggleOn from '../assets/Toggle/ToggleOn.svg';
 import ToggleOff from '../assets/Toggle/ToggleOff.svg';
 
@@ -86,7 +84,9 @@ const BookProgress = () => {
           </LeftContent>
           <GroupInfo>
             {!hasReviewed ? (
-              <WhiteButton onClick={() => setRatingModalOpen(true)}>리뷰</WhiteButton>
+              <WhiteButton onClick={() => setRatingModalOpen(true)}>
+                리뷰
+              </WhiteButton>
             ) : (
               <>
                 <div>
@@ -97,7 +97,9 @@ const BookProgress = () => {
                 </div>
               </>
             )}
-              <WhiteButton onClick={()=>setCheckpointModalOpen(true)}>체크포인트 기록</WhiteButton>
+            <WhiteButton onClick={() => setCheckpointModalOpen(true)}>
+              체크포인트 기록
+            </WhiteButton>
           </GroupInfo>
         </ContentWrapper>
       </ImageContainer>
@@ -126,14 +128,14 @@ const BookProgress = () => {
       </CommentWrapper>
 
       {RatingModalOpen && (
-        <RatingPopup 
-          onClose={() => setRatingModalOpen(false)} 
+        <RatingPopup
+          onClose={() => setRatingModalOpen(false)}
           onSubmit={handleReviewSubmit}
         />
       )}
       {CheckpointModalOpen && (
-        <CheckpointRecordPopup 
-          onClose={() => setCheckpointModalOpen(false)} 
+        <CheckpointRecordPopup
+          onClose={() => setCheckpointModalOpen(false)}
           onSubmit={handleReviewSubmit}
         />
       )}

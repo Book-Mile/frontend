@@ -5,7 +5,6 @@ import { validatePassword } from '../utils/publicFunctions.js';
 
 import LGButton from '../components/LGButton/LGButton';
 
-import profileAsset from '/src/assets/EditMyInfoAssets/Profile.svg';
 import emailAsset from '/src/assets/EditMyInfoAssets/email.svg';
 import passwordAsset from '/src/assets/EditMyInfoAssets/password.svg';
 import snsAsset from '/src/assets/EditMyInfoAssets/sns.svg';
@@ -22,19 +21,18 @@ import {
 } from '/src/api/Pages/EditMyInfoRequest.jsx';
 import SecessionUserPopup from '../components/popup/SecessionUserPopup/SecessionUserPopup.jsx';
 
-
 export default function MyPage() {
-  const { name, setName } = useUserStore();
+  const { setName } = useUserStore();
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
-  const [snsId, setSnsId] = useState('email@kakao.com');
-  const [isLinkedSNS, setIsLinkedSNS] = useState(false);
+  const [snsId] = useState('email@kakao.com');
+  const [isLinkedSNS] = useState(false);
   const [isSented, setIsSented] = useState(false);
-  const [authNum, setAuthNum] = useState('');
-  const [isAuthed, setIsAuthed] = useState(false);
+  const [authNum] = useState('');
+  const [setIsAuthed] = useState(false);
 
   const [originPassword, setOriginPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -97,7 +95,7 @@ export default function MyPage() {
   const handleSubmit = () => {
     changeNicknameEmail(nickname, email, setName, navigate);
   };
-  
+
   const openPopup = () => {
     setShowPopup(true);
   };
@@ -299,11 +297,7 @@ export default function MyPage() {
               <Type2Middle>
                 <Type2RightFirstLine>회원탈퇴</Type2RightFirstLine>
               </Type2Middle>
-              <Type2Right
-                onClick={openPopup}
-              >
-                탈퇴하기 &gt;
-              </Type2Right>
+              <Type2Right onClick={openPopup}>탈퇴하기 &gt;</Type2Right>
             </BoxType2>
           </BoxFrame>
         </UpperFrame>
@@ -318,11 +312,7 @@ export default function MyPage() {
           />
         </DownFrame>
       </OuterFrame>
-      {showPopup && (
-        <SecessionUserPopup
-          onClose={closePopup}
-        />
-      )}
+      {showPopup && <SecessionUserPopup onClose={closePopup} />}
     </MainContainer>
   );
 }

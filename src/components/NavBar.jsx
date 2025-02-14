@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import useUserStore from '../../src/store/store.js';

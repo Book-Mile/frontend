@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -13,9 +13,9 @@ const Wrapper = styled.div`
 `;
 
 const Image = styled.img`
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
   flex-grow: 0;
   flex-shrink: 0;
 `;
@@ -51,7 +51,7 @@ const PageNumber = styled.p`
   font-size: 18px;
   font-weight: bold;
   text-align: left;
-  color: ${props => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.main};
   margin: 0;
 `;
 

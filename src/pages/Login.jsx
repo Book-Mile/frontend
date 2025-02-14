@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import useUserStore from '../../src/store/store.js';
 
@@ -21,10 +21,10 @@ import Cancel from '../assets/cancel.svg';
 export default function Login() {
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
-  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
+  const [isClosing] = useState(false); // 닫힘 상태 관리
 
   const navigate = useNavigate();
-  const { name, setName } = useUserStore();
+  const { setName } = useUserStore();
 
   const handleSubmit = () => {
     console.log('Email:', email);

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import SubItem from './SubItem';
 import styled from 'styled-components';
@@ -70,23 +71,27 @@ const SubRanking = ({ onSelectItem }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+        }}
       >
         {currentItems.map((item) => (
-        <SubItem
-        key={item.rank}
-        rank={item.rank}
-        profileImage={item.profileImage}
-        name={item.name}
-        percentage={item.percentage}
-        onClick={() => {
-          console.log(`${item.name}이 선택되었습니다.`);
-          onSelectItem(item);
-        
-        }}
-      />
+          <SubItem
+            key={item.rank}
+            rank={item.rank}
+            profileImage={item.profileImage}
+            name={item.name}
+            percentage={item.percentage}
+            onClick={() => {
+              console.log(`${item.name}이 선택되었습니다.`);
+              onSelectItem(item);
+            }}
+          />
         ))}
-
       </motion.div>
 
       {/* 아래쪽 화살표 */}

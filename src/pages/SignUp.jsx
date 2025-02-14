@@ -26,8 +26,6 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordconfirm] = useState('');
 
-  const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
-
   const handleSubmit = () => {
     // event.preventDefault();
     // console.log('Email:', email);

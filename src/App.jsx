@@ -54,7 +54,7 @@ function App() {
                 <Route path="/" element={<Main />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="/details" element={<Detail />} />
+                <Route path="/details/:isbn13" element={<Detail />} />
                 <Route path="/searchresults" element={<SearchResults />} />
                 <Route path="/creategroup" element={<MakingGroupPage />} />
                 <Route path="/mypage" element={<MyPage />} />

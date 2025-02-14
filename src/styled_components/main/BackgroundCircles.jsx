@@ -1,4 +1,3 @@
-import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const bookEffect = keyframes`
@@ -33,7 +32,12 @@ const BackgroundCircle = () => (
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_f_1320_733)">
-        <circle cx="916.5" cy="30.5" r="316.5" fill="url(#paint0_linear_1320_733)" />
+        <circle
+          cx="916.5"
+          cy="30.5"
+          r="316.5"
+          fill="url(#paint0_linear_1320_733)"
+        />
       </g>
       <defs>
         <filter
@@ -46,8 +50,16 @@ const BackgroundCircle = () => (
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation={300} result="effect1_foregroundBlur_1320_733" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feGaussianBlur
+            stdDeviation={300}
+            result="effect1_foregroundBlur_1320_733"
+          />
         </filter>
         <linearGradient
           id="paint0_linear_1320_733"
@@ -90,8 +102,16 @@ const BackgroundCircle = () => (
           colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity={0} result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation={300} result="effect1_foregroundBlur_1320_734" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feGaussianBlur
+            stdDeviation={300}
+            result="effect1_foregroundBlur_1320_734"
+          />
         </filter>
         <linearGradient
           id="paint0_linear_1320_734"

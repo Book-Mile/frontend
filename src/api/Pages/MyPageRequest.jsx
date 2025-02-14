@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주소 불러오기
 const accessToken = JSON.parse(sessionStorage.getItem('userData'))?.accessToken;
 
 export const getUserGroups = async (status) => {

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+/* eslint-disable react/prop-types */
 const Container = styled.div`
   width: 568px;
   height: 371px;
@@ -21,13 +21,17 @@ const GradientOverlay = styled.div`
   position: absolute;
   left: -1px;
   top: -1px;
-  background: linear-gradient(to bottom, rgba(217, 217, 217, 0.5), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(
+    to bottom,
+    rgba(217, 217, 217, 0.5),
+    rgba(0, 0, 0, 0.5)
+  );
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap:10px;
+  gap: 10px;
   justify-content: flex-end;
   width: 400px;
   position: absolute;

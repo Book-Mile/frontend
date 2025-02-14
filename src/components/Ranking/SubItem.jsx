@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
-
+/* eslint-disable react/prop-types */
 const SubItem = ({ rank, profileImage, name, percentage }) => {
-  const defaultImage = "../../../public/images/basic_profile.png";
+  const defaultImage = '../../../public/images/basic_profile.png';
 
   return (
     <Link
@@ -11,37 +11,36 @@ const SubItem = ({ rank, profileImage, name, percentage }) => {
       style={{
         textDecoration: 'none',
         color: 'inherit',
-        width: '100%'
+        width: '100%',
       }}
     >
-    <Container>
-      <Header>
-        {/* 순위를 */}
-        <Number>{rank}</Number>
+      <Container>
+        <Header>
+          {/* 순위를 */}
+          <Number>{rank}</Number>
 
-        {/* 프로필 이미지, 없으면 기본 이미지 사용 */}
-        <ProfileImageWrapper>
-          <ProfileImage src={profileImage || defaultImage} alt="Profile" />
-        </ProfileImageWrapper>
+          {/* 프로필 이미지, 없으면 기본 이미지 사용 */}
+          <ProfileImageWrapper>
+            <ProfileImage src={profileImage || defaultImage} alt="Profile" />
+          </ProfileImageWrapper>
 
-        <Content>
-          <TitleWrapper>
-            <Title>{name}</Title>
-            <Percentage>{percentage}%</Percentage>
-          </TitleWrapper>
+          <Content>
+            <TitleWrapper>
+              <Title>{name}</Title>
+              <Percentage>{percentage}%</Percentage>
+            </TitleWrapper>
 
-          <ProgressBarWrapper>
-            <ProgressBar percentage={percentage} />
-          </ProgressBarWrapper>
-        </Content>
-      </Header>
-    </Container>
+            <ProgressBarWrapper>
+              <ProgressBar percentage={percentage} />
+            </ProgressBarWrapper>
+          </Content>
+        </Header>
+      </Container>
     </Link>
   );
 };
 
 export default SubItem;
-
 
 const progressAnimation = (percentage) => keyframes`
   from {
@@ -82,9 +81,8 @@ const Number = styled.p`
   flex-shrink: 0;
   font-size: 16px;
   text-align: left;
-    min-width: 24px;
-    text-align: center; 
-
+  min-width: 24px;
+  text-align: center;
 `;
 
 // 프로필 이미지 래퍼 스타일
@@ -118,7 +116,6 @@ const Content = styled.div`
   flex-grow: 1;
   gap: 10px;
   width: 100%;
-
 `;
 
 // 제목 및 비율을 포함한 래퍼 스타일
@@ -165,7 +162,7 @@ const ProgressBarWrapper = styled.div`
 
 const ProgressBar = styled.div`
   height: 100%;
-  width: ${props => (props.percentage ? `${props.percentage}%` : "0%")}; 
-  background-color: ${props => props.theme.colors.main};
-  animation: ${props => progressAnimation(props.percentage)} 1s ease-in-out;
+  width: ${(props) => (props.percentage ? `${props.percentage}%` : '0%')};
+  background-color: ${(props) => props.theme.colors.main};
+  animation: ${(props) => progressAnimation(props.percentage)} 1s ease-in-out;
 `;
