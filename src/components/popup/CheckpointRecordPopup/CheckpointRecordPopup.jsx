@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
 import uploadRecord from '../../../api/Popup/CheckpointRecordPopupSubmit.jsx';
-
 import Loading from '../../../animations/Loading.jsx';
 import CompletePopup from '../RegisterCompletePopup/RegisterCompletePopup';
 
