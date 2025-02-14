@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie'; 
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -12,7 +13,7 @@ const apiClient = axios.create({
 // Access Token 갱신 API
 const refreshAccessToken = async () => {
   try {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = Cookies.get('refreshToken');  
     if (!refreshToken) throw new Error('No refresh token available');
 
     const response = await axios.post(`${BASE_URL}/users/reissue`, null, {
@@ -22,24 +23,20 @@ const refreshAccessToken = async () => {
     });
 
     const newAccessToken = response.data.accessToken;
-    localStorage.setItem('accessToken', newAccessToken);
+    Cookies.set('accessToken', newAccessToken, { expires: 7, secure: true, sameSite: 'Strict' });  
     return newAccessToken;
   } catch (error) {
-    console.error(
-      'Refresh token expired or invalid:',
-      error.response?.data || error.message,
-    );
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    console.error('Refresh token expired or invalid:', error.response?.data || error.message);
+    Cookies.remove('accessToken');  
+    Cookies.remove('refreshToken');
     return null;
   }
-
 };
 
 // 요청을 보낼 때 Access Token 자동 추가
 apiClient.interceptors.request.use(
   async (config) => {
-    let token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -51,7 +48,6 @@ apiClient.interceptors.request.use(
 // 응답을 받을 때 Access Token 갱신 로직 추가
 apiClient.interceptors.response.use(
   (response) => response,
-
 
   async (error) => {
     if (error.response?.status === 401) {
@@ -67,4 +63,3 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
-

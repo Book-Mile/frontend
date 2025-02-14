@@ -6,7 +6,7 @@ import ModalButton from '../components/modalButton/ModalCustomButton';
 import BookLabel from '../components/search/BookLabel';
 import SearchBar from '../components/search/SearchBar';
 import Rating from '../components/search/Rating';
-import Loading from '../animations/Loding';
+import Loading from '../animations/Loading';
 
 const SearchResults = () => {
   const navigate = useNavigate();

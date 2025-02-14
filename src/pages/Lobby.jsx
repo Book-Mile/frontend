@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -8,32 +8,187 @@ import GroupedPeople from '../components/GroupedPeople';
 import WhiteButton from '../components/button/whitebutton';
 import EndGroupPopup from '../components/popup/EndGroupPopup/EndGroupPopup';
 import { useLocation } from 'react-router-dom';
+import apiClient from '../api/apiClient';
+import Loading from '../animations/Loading';
+import { getUserInfoFromToken } from '../api/getusertoken';
+import Cookies from 'js-cookie';
+
+
+const Lobby = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const groupId = '27';  // 예시로 '27' 사용, 실제로는 URL에서 받아올 수 있음
+
+  const navigate = useNavigate();
+
+  const [groupData, setGroupData] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 쿠키에서 토큰 추출
+  const token = Cookies.get('accessToken');
+  console.log("Token from Cookies: ", token); // 쿠키에서 토큰 값 확인
+
+  // JWT 토큰에서 사용자 정보 추출
+  const userInfo = getUserInfoFromToken(token); // JWT 토큰에서 사용자 정보 추출
+  console.log("User Info from token: ", userInfo); // 추출된 사용자 정보 확인
+
+  useEffect(() => {
+    if (!groupId || !userInfo) {
+      console.error('Group ID or User Info is missing');
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchGroupData = async () => {
+      try {
+        // 그룹 데이터 가져오기
+        const responseGroup = await apiClient.get(`/groups/${groupId}`);
+        setGroupData(responseGroup.data);
+
+        // 그룹 멤버 가져오기
+        const responseMembers = await apiClient.get(`/groups/${groupId}/members`);
+        setMembers(responseMembers.data);
+
+        // 현재 로그인한 사용자가 그룹에 포함되어 있는지 확인
+        const currentUser = responseMembers.data.find(member => member.userId === userInfo.userId);
+        
+        if (currentUser) {
+          setUserRole(currentUser.role); // 'MASTER' 또는 'MEMBER' 설정
+        }
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching group or members data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchGroupData();
+  }, [groupId, userInfo]); // userInfo가 변경될 때마다 useEffect 실행
+
+  const handleStartClick = () => {
+    navigate(`/bookprogress?bookId=${groupData?.book.isbn13}`);
+  };
+
+  const handleCloseClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  return (
+    <>
+      {isPopupOpen && <EndGroupPopup onClose={handlePopupClose} />}
+
+      <ImageContainer>
+        <GradientOverlay />
+        {userRole === 'MASTER' && (
+          <Close onClick={handleCloseClick}>그룹종료</Close>
+        )}
+        <ContentWrapper>
+          <LeftContent>
+            <Title>{groupData.book.title}</Title>
+            <SubTitle>{groupData.book.author}</SubTitle>
+            <GroupInfo>
+              <span>{groupData.book.totalPage}페이지</span>
+            </GroupInfo>
+          </LeftContent>
+          {userRole === 'MASTER' && (
+            <WhiteButton onClick={handleStartClick}>시작하기</WhiteButton>
+          )}
+        </ContentWrapper>
+      </ImageContainer>
+
+      <MarginContainer>
+        <GroupContainer>
+          <MemberInfo>
+            <MemberImage src={groupData.masterImage} />
+            <MemberName>{groupData.masterNickname}</MemberName>
+          </MemberInfo>
+          <MemberDetails>
+            <FlexRow>
+              <DetailText size="large">{groupData.groupName}</DetailText>
+              <BookLabel text={groupData.goalType === 'PAGE' ? '페이지' : groupData.goalType === 'CUSTOM' ? '나만의 속도로' : '횟수로'} fontSize="16px" />
+            </FlexRow>
+            <DetailText size="small">{groupData.groupDescription}</DetailText>
+          </MemberDetails>
+        </GroupContainer>
+
+        <BackgroundContainer>
+          <MembersContainer>
+            <MembersWrapper>
+              <FlexRowWrapper>
+                <GroupMembersText>그룹원</GroupMembersText>
+                <GroupSizeWrapper>
+                  <MemberSpan type="current">{groupData.currentMembers}</MemberSpan>
+                  <MemberSpan type="total">/{groupData.maxMembers}</MemberSpan>
+                </GroupSizeWrapper>
+              </FlexRowWrapper>
+              <WaitMessageStyled>
+                그룹원이 모두 모일 때까지 기다리고 있어요.
+              </WaitMessageStyled>
+            </MembersWrapper>
+            <ProgressBarContainer>
+              {members.map((member) => {
+                if (member.role === 'MEMBER') {
+                  return (
+                    <MembersWrapper key={member.userId}>
+                      <GroupedPeople
+                        title={member.nickname}
+                        imageUrl={member.image}
+                      />
+                    </MembersWrapper>
+                  );
+                }
+                return null;
+              })}
+            </ProgressBarContainer>
+          </MembersContainer>
+        </BackgroundContainer>
+      </MarginContainer>
+    </>
+  );
+};
+
+export default Lobby;
+
+
+
 const MarginContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 9.86%;
   position: relative;
   gap: 20px;
 `;
 
-const ImageContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  position: relative;
+const BackgroundContainer = styled.div`
+  background-color: #f5f5f5;
   width: 100%;
-  height: 432px;
 `;
 
-const Image = styled.img`
+const ImageContainer = styled.div`
+  background-image: url("../../public/images/cover/dinnerindrawer.png");
+  display: flex;
+  align-items: flex-end;
+  position: relative;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 332px;
+  background-position: center;
+  background-size: cover;
 `;
+
 
 const GradientOverlay = styled.div`
   width: 100%;
-  height: 432px;
+  height: 332px;
   position: absolute;
   top: 0;
   left: 0;
@@ -46,15 +201,14 @@ const GradientOverlay = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  position: absolute;
-  bottom: 60px;
   z-index: 2;
   color: white;
-  margin: 0 9.86%;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  width: calc(100% - 2 * 9.86%);
+  width: 1156px;
+  padding-bottom: 60px;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -88,10 +242,9 @@ const Close = styled.button`
   color: #d5d5d5;
   cursor: pointer;
   z-index: 3;
-  margin-top: 80px;
   display: flex;
   position: absolute;
-  top: 16px;
+  top: 40px;
   left: 40px;
   background: none;
   border: none;
@@ -152,10 +305,10 @@ const LeftContent = styled.div`
 
 const GroupContainer = styled.div`
   display: flex;
-  margin-top: 70px;
-  margin-bottom: 50px;
   flex-direction: column;
   gap: 30px;
+  width: 1156px;
+  margin: 60px auto;
 `;
 
 const MemberInfo = styled.div`
@@ -193,8 +346,9 @@ const DetailText = styled.span`
 const MembersContainer = styled.div`
   position: relative;
   background-color: #f5f5f5;
-  width: 100%;
+  width: 1156px;
   height: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -236,86 +390,3 @@ const WaitMessageStyled = styled(WaitMessage)`
   color: ${(props) => props.theme.colors.body};
   margin: 0;
 `;
-
-const Lobby = () => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
-
-  const navigate = useNavigate();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  const handleStartClick = () => {
-    navigate(`/bookprogress?isbn=${bookId}`);
-  };
-
-  const handleCloseClick = () => {
-    setIsPopupOpen(true);
-  };
-
-  const handlePopupClose = () => {
-    setIsPopupOpen(false);
-  };
-
-  return (
-    <>
-      {isPopupOpen && <EndGroupPopup onClose={handlePopupClose} />}
-
-      <ImageContainer>
-        <Image src="../../public/images/cover/dinnerindrawer.png" />
-        <GradientOverlay />
-        <Close onClick={handleCloseClick}>그룹종료</Close>{' '}
-        {/* Add onClick handler */}
-        <ContentWrapper>
-          <LeftContent>
-            <Title>채식주의자</Title>
-            <SubTitle>한강 저</SubTitle>
-            <GroupInfo>
-              <span>198페이지</span>
-              <span>9챕터</span>
-            </GroupInfo>
-          </LeftContent>
-          <WhiteButton onClick={handleStartClick}>시작하기</WhiteButton>{' '}
-          {/* Add onClick handler */}
-        </ContentWrapper>
-      </ImageContainer>
-      <MarginContainer>
-        <GroupContainer>
-          <MemberInfo>
-            <MemberImage src="../../public/images/cover/dinnerindrawer.png" />
-            <MemberName>김기수</MemberName>
-          </MemberInfo>
-          <MemberDetails>
-            <FlexRow>
-              <DetailText size="large">같이 어휘력을 쌓읍시다</DetailText>
-              <BookLabel text="페이지" fontSize="16px" />
-            </FlexRow>
-            <DetailText size="small">2024-11-30까지 모집 중</DetailText>
-          </MemberDetails>
-        </GroupContainer>
-        <MembersContainer>
-          <MembersWrapper>
-            <FlexRowWrapper>
-              <GroupMembersText>그룹원</GroupMembersText>
-              <GroupSizeWrapper>
-                <MemberSpan type="current">4</MemberSpan>
-                <MemberSpan type="total">/8</MemberSpan>
-              </GroupSizeWrapper>
-            </FlexRowWrapper>
-            <WaitMessageStyled>
-              그룹원이 모두 모일 때까지 기다리고 있어요.
-            </WaitMessageStyled>
-          </MembersWrapper>
-          <ProgressBarContainer>
-            <GroupedPeople
-              title="구구단을 외우자"
-              imageUrl="../../public/images/cover/dinnerindrawer.png"
-            />
-          </ProgressBarContainer>
-        </MembersContainer>
-      </MarginContainer>
-    </>
-  );
-};
-
-export default Lobby;

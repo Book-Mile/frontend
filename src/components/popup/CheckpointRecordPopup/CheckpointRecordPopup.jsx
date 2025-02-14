@@ -8,7 +8,7 @@ import {
 import styled from 'styled-components';
 import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
-import Loding from '../../../animations/Loding';
+import Loding from '../../../animations/Loading';
 import CompletePopup from '../RegisterCompletePopup/RegisterCompletePopup';
 
 // eslint-disable-next-line react/prop-types
