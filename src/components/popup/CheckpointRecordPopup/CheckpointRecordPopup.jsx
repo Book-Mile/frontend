@@ -10,7 +10,7 @@ import ModalButtonOk from '../../modalButton/ModalButtonOk';
 import ModalButtonCancel from '../../modalButton/ModalButtonCancel';
 import uploadRecord from '../../../api/Popup/CheckpointRecordPopupSubmit.jsx';
 
-import Loding from '../../../animations/Loding';
+import Loading from '../../../animations/Loading';
 import CompletePopup from '../RegisterCompletePopup/RegisterCompletePopup';
 
 // 업로드 미리보기창에 보여지는 각 파일 컴포넌트
@@ -213,7 +213,7 @@ const CheckpointRecordPopup = (groupId = 19) => {
         </PopUpInnerBox1>
       </PopupInner>
 
-      {loading && <Loding />}
+      {loading && <Loading />}
       {isCompleted && <CompletePopup />}
     </PopupContainer>
   );
