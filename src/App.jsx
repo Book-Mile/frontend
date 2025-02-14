@@ -15,12 +15,16 @@ import RegisterCompletePopup from './components/popup/RegisterCompletePopup/Regi
 
 import RatingPopup from './components/popup/RatingPopup/RatingPopup.jsx';
 import Loading from './animations/Loading.jsx';
-
+import useUserStore from './store/store.js';
+import { handleRedirect } from './api/Pages/LoginRequest.jsx';
 
 const MakingGroupPage = React.lazy(() => import('./pages/MakingGroupPage'));
 const Login = React.lazy(() => import('./pages/Login'));
+
 const SignUp = React.lazy(() => import('./pages/SignUp'));
-const CheckPointRecordPage = React.lazy(() => import('./pages/CheckPointRecordPage'));
+const CheckPointRecordPage = React.lazy(
+  () => import('./pages/CheckPointRecordPage'),
+);
 const EditMyInfo = React.lazy(() => import('./pages/EditMyInfo.jsx'));
 const SearchResults = React.lazy(() => import('./pages/SearchResults'));
 const Lobby = React.lazy(() => import('./pages/Lobby'));
@@ -32,17 +36,21 @@ const Main = React.lazy(() => import('./pages/Main.jsx'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const { setName } = useUserStore();
+  useEffect(() => {
+    handleRedirect(setName);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000); // 예시로 2초 후에 로딩 해제
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
-    return <Loading theme={theme}/>;
+    return <Loading theme={theme} />;
   }
 
   return (
@@ -52,7 +60,7 @@ function App() {
           <div className="app-container">
             <NavBar />
             <div className="main-content">
-              <Suspense fallback={<Loading theme={theme}/>}>
+              <Suspense fallback={<Loading theme={theme} />}>
                 <Routes>
                   <Route path="/" element={<Main />} />
                   <Route path="/login" element={<Login />} />
@@ -61,17 +69,23 @@ function App() {
                   <Route path="/searchresults" element={<SearchResults />} />
                   <Route path="/creategroup" element={<MakingGroupPage />} />
                   <Route path="/mypage" element={<MyPage />} />
-                  <Route path="/checkpoints" element={<CheckPointRecordPage />} />
+                  <Route
+                    path="/checkpoints"
+                    element={<CheckPointRecordPage />}
+                  />
                   <Route path="/lobby" element={<Lobby />} />
                   <Route path="/edit-profile" element={<EditMyInfo />} />
                   <Route path="/snsmanagement" element={<SNSManage />} />
-                  <Route path='/bookprogress' element={<BookProgress />} />
+                  <Route path="/bookprogress" element={<BookProgress />} />
 
                   {/* 팝업 URL 제거 */}
                   <Route path="/joingroup" element={<JoinGroupPopup />} />
                   <Route path="/leavegroup" element={<SecessionUserPopup />} />
                   <Route path="/endgroup" element={<EndGroupPopup />} />
-                  <Route path="/checkpoint" element={<CheckpointRecordPopup />} />
+                  <Route
+                    path="/checkpoint"
+                    element={<CheckpointRecordPopup />}
+                  />
                   <Route path="/complete" element={<RegisterCompletePopup />} />
                   <Route path="/rate" element={<RatingPopup />} />
                   <Route path="/EditMyInfo" element={<EditMyInfo />} />
