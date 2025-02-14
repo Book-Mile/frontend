@@ -3,7 +3,6 @@ import Cookies from 'js-cookie';
 
 export const login = async (email, password, navigate, setName) => {
   const apiUrl = '/users/sign-in'; 
-  // const groupId = params.get('groupId'); /creategroup에서 만든 그룹의 id URL로 받아오기
 
   const requestBody = {
     email: email,
