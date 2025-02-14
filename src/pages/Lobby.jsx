@@ -25,9 +25,6 @@ const Lobby = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [userRole, setUserRole] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  // 상태 변수로 토큰과 사용자 정보 저장
-  const [token, setToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -35,7 +32,6 @@ const Lobby = () => {
     const fetchedToken = Cookies.get('accessToken');
     const fetchedUserInfo = getUserInfoFromToken(fetchedToken);
     
-    setToken(fetchedToken);
     setUserInfo(fetchedUserInfo);
   }, []); 
 
