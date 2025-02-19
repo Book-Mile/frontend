@@ -24,7 +24,9 @@ export const RatingPopupSubmit = async (rating, text, location) => {
     if (response.status === 200) {
       alert(response.data.message); // 성공 메시지 알림
     }
+    alert('성공'); // 성공 메시지 알림
   } catch (err) {
+    alert('실패'); // 성공 메시지 알림
     console.error('실패:', err);
   }
 };

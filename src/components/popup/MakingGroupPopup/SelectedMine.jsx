@@ -108,6 +108,9 @@ const SelectedMine = ({ imgPath, title, content, handleClose, subject }) => {
         )}
       </PopUpInnerBox1>
       <PopUpInnerBox2>
+        <span className="popup_close" onClick={handleClose}>
+          X
+        </span>
         <ModalContainer>
           <ModalContent
             className={isAnimating ? 'animating' : ''}
@@ -131,9 +134,6 @@ const SelectedMine = ({ imgPath, title, content, handleClose, subject }) => {
             )}
           </ModalContent>
         </ModalContainer>
-        <span className="popup_close" onClick={handleClose}>
-          X
-        </span>
       </PopUpInnerBox2>
     </>
   );
