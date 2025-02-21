@@ -377,6 +377,9 @@ export default function EditMyInfo() {
                       <SNSidFrame>Naver</SNSidFrame>
                     </>
                   )}
+                  {!(isNaver || isGoogle || isKakao) && (
+                    <>연동된 SNS 계정이 없습니다.</>
+                  )}
                 </Type2RightSecondLine>
               </Type2Middle>
               <Type2Right
