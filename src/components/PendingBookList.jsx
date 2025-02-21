@@ -19,7 +19,7 @@ function Override({ groupName, groupKing, mode }) {
         </UserImg>
         <UserImg index={1}>
           <img
-            src={'/src/assets/EditMyInfoAssets/Profile.svg'}
+            src={'/src/assets/EditMyInfoAssets/ProfileModal.svg'}
             style={{ width: '100%' }}
           />
         </UserImg>
