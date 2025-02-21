@@ -4,6 +4,7 @@ import useUserStore from '../../src/store/store.js';
 import { validatePassword } from '../utils/publicFunctions.js';
 
 import LGButton from '../components/LGButton/LGButton';
+import editImgBtn from '/src/assets/EditMyInfoAssets/editImgBtn.svg';
 
 import emailAsset from '/src/assets/EditMyInfoAssets/email.svg';
 import passwordAsset from '/src/assets/EditMyInfoAssets/password.svg';
@@ -25,6 +26,7 @@ import {
 } from '/src/api/Pages/EditMyInfoRequest.jsx';
 import { getLinkedSocialLogins } from '/src/api/Pages/EditMyInfoRequest.jsx';
 import SecessionUserPopup from '../components/popup/SecessionUserPopup/SecessionUserPopup.jsx';
+import ProfileModal from './ProfileModal';
 
 export default function EditMyInfo() {
   const { setName } = useUserStore();
@@ -56,6 +58,12 @@ export default function EditMyInfo() {
   const [isGoogle, setIsGoogle] = useState(false);
   const [isKakao, setIsKakao] = useState(false);
   const [isNaver, setIsNaver] = useState(false);
+
+  //프로필사진 관련
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleProfileClick = () => {
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -186,14 +194,32 @@ export default function EditMyInfo() {
         <UpperFrame>
           <BoxFrame>
             <BoxType1>
-              <Type1Left>
+              <Type1Left style={{ position: 'relative' }}>
                 <img
                   src={image}
                   alt="profileAsset"
                   width="66px"
                   height="66px"
+                  style={{
+                    borderRadius: '50%', // 원형으로 만들기
+                    border: '2px solid #ccc', // 회색 테두리
+                  }}
+                />
+                <img
+                  src={editImgBtn}
+                  alt="editProfile"
+                  onClick={handleProfileClick}
+                  style={{
+                    position: 'absolute',
+                    bottom: '5px',
+                    right: '0px',
+                    width: '25px', // 버튼 크기 조정
+                    height: '25px', // 버튼 크기 조정
+                    cursor: 'pointer', // 클릭 가능한 커서 모양
+                  }}
                 />
               </Type1Left>
+
               <Type1Right>
                 <Type1RightFirstLine>닉네임</Type1RightFirstLine>
                 <Type1RightSecondLine>
@@ -416,6 +442,15 @@ export default function EditMyInfo() {
         </DownFrame>
       </OuterFrame>
       {showPopup && <SecessionUserPopup onClose={closePopup} />}
+      {/*프로필 사진 변경 모달*/}
+      <ProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpdate={() => {
+          //프로필 변경에 성공하면 서버로부터 유저 정보를 다시 받아와서 화면에 업데이트 한다
+          getUserInfo(setEmail, setNickname, setImage);
+        }}
+      />
     </MainContainer>
   );
 }

@@ -41,7 +41,14 @@ export default function MyPage() {
           <UpperFrame>
             <UserFrame>
               <UserFrameLeft>
-                <img src={profileImage} style={{ width: '100px' }} />
+                <img
+                  src={profileImage}
+                  style={{
+                    width: '100px',
+                    borderRadius: '50%',
+                    border: '2px solid #ccc',
+                  }}
+                />
               </UserFrameLeft>
               <UserFrameRight>
                 <NickName>

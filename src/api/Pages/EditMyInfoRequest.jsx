@@ -183,3 +183,25 @@ export const changeNicknameEmail = async (
     throw error;
   }
 };
+
+// 프로필 이미지 변경 API 호출 함수
+export const updateProfileImage = async (file, accessToken) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.put(
+      'https://bookmile.site/api/v1/users/profile',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('프로필 사진 변경에 실패했습니다. 다시 시도해주세요.');
+  }
+};

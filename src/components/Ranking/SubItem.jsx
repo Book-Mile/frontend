@@ -21,7 +21,10 @@ const SubItem = ({ rank, profileImage, name, percentage }) => {
 
           {/* 프로필 이미지, 없으면 기본 이미지 사용 */}
           <ProfileImageWrapper>
-            <ProfileImage src={profileImage || defaultImage} alt="Profile" />
+            <ProfileImage
+              src={profileImage || defaultImage}
+              alt="ProfileModal"
+            />
           </ProfileImageWrapper>
 
           <Content>
