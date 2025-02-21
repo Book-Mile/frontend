@@ -28,7 +28,7 @@ const CheckPointRecordPage = ({ subject = 'CUSTOM' }) => {
 
   const { error, handleError } = useErrorHandling();
   // useEffect(() => {
-  //   CheckPointRecordRequest(setData, setApiErrorMsg).catch((err) => {
+  //   CheckPointRecordRequest(setData, setApiErrorMsg, groupID).catch((err) => {
   //     handleError(err);
   //   }); // 분리된 fetchGroups 함수 호출
   // }, []);

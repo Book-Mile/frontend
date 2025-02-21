@@ -16,10 +16,14 @@ import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 import Rightpopup_one from './RightPopup_one';
 import { RightPopup_oneRequestList } from '../../../api/Popup/RightPopup_oneRequestList';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
+import { useLocation } from 'react-router-dom';
 
 const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
   const [inputValue, setInputValue] = useState('');
   const [apiErrorMsg, setApiErrorMsg] = useState('');
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
   const {
     selectedGroup,
     errorMessage,
@@ -65,13 +69,15 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
 
   const { error, handleError } = useErrorHandling();
   // useEffect(() => {
-  //   RightPopup_oneRequestList(setGroups, setApiErrorMsg,subject).catch((err) => {
-  //     handleError(err);
-  //   }); // 분리된 fetchGroups 함수 호출
+  //   RightPopup_oneRequestList(setGroups, setApiErrorMsg, subject, bookId).catch(
+  //     (err) => {
+  //       handleError(err);
+  //     },
+  //   ); // 분리된 fetchGroups 함수 호출
   // }, []);
-  // if (error) {
-  //   throw apiErrorMsg; // 렌더링 시 에러 발생
-  // }
+  if (error) {
+    throw apiErrorMsg; // 렌더링 시 에러 발생
+  }
 
   // 줄바꿈 처리 (일반적으로는 \n을 <br />로 변환)
   const titleWithBreaks = title.split('\n').map((line, index) => (
@@ -126,6 +132,9 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
         )}
       </PopUpInnerBox1>
       <PopUpInnerBox2>
+        <span className="popup_close" onClick={handleClose}>
+          X
+        </span>
         <ModalContainer>
           <ModalContent
             className={isAnimating ? 'animating' : ''}
@@ -149,9 +158,6 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
             )}
           </ModalContent>
         </ModalContainer>
-        <span className="popup_close" onClick={handleClose}>
-          X
-        </span>
       </PopUpInnerBox2>
     </>
   );
