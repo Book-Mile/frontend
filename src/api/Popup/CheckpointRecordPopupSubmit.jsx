@@ -15,15 +15,18 @@ const uploadRecord = async (groupId, content, page, uploadedFiles) => {
       currentPage: page,
     }),
   );
-  // 이미지 파일을 FormData에 추가
-  // 어케하노진짜 별짓을해도 업로드가 안되네
-  uploadedFiles.forEach((file) => {
-    console.log(file);
-    formData.append('images', file);
-  });
 
-  console.log('폼데이터');
-  console.log(formData);
+  uploadedFiles.forEach((file) => {
+    // 이미지 URL을 실제 파일 객체로 변환하여 추가
+    const byteString = atob(file.imageUrl.split(',')[1]); // Base64 데이터에서 실제 byte 데이터 추출
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const fileBlob = new Blob([ab], { type: 'image/jpeg' }); // 타입은 실제 이미지 타입에 맞게 설정
+    formData.append('images', fileBlob, file.name);
+  });
 
   try {
     const response = await axios.post(
@@ -32,14 +35,15 @@ const uploadRecord = async (groupId, content, page, uploadedFiles) => {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${accessToken}`, // 여기에 토큰값을 넣어줍니다.
+          Authorization: `Bearer ${accessToken}`,
         },
       },
     );
 
     return response.data;
   } catch (error) {
-    throw error;
+    console.error('업로드 실패:', error);
+    throw error; // 필요 시 사용자에게 더 명확한 에러 메시지를 전달할 수 있습니다.
   }
 };
 
