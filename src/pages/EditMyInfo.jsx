@@ -8,7 +8,11 @@ import LGButton from '../components/LGButton/LGButton';
 import emailAsset from '/src/assets/EditMyInfoAssets/email.svg';
 import passwordAsset from '/src/assets/EditMyInfoAssets/password.svg';
 import snsAsset from '/src/assets/EditMyInfoAssets/sns.svg';
+
+import googleLogo from '/src/assets/snslogo/google.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
+import naverLogo from '/src/assets/snslogo/naver.svg';
+
 import { useNavigate } from 'react-router-dom';
 import {
   getSocialInfo,
@@ -19,6 +23,7 @@ import {
   changePassword,
   changeNicknameEmail,
 } from '/src/api/Pages/EditMyInfoRequest.jsx';
+import { getLinkedSocialLogins } from '/src/api/Pages/EditMyInfoRequest.jsx';
 import SecessionUserPopup from '../components/popup/SecessionUserPopup/SecessionUserPopup.jsx';
 
 export default function EditMyInfo() {
@@ -29,7 +34,6 @@ export default function EditMyInfo() {
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
-  const [snsId] = useState('email@kakao.com');
   const [isLinkedSNS] = useState(false);
 
   //닉네임 변경 관련
@@ -48,6 +52,11 @@ export default function EditMyInfo() {
 
   const [isTracking, setIsTracking] = useState(false); // 트래킹 활성화 여부
 
+  //SNS계정 관련
+  const [isGoogle, setIsGoogle] = useState(false);
+  const [isKakao, setIsKakao] = useState(false);
+  const [isNaver, setIsNaver] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       await getUserInfo(setEmail, setNickname, setImage);
@@ -65,6 +74,29 @@ export default function EditMyInfo() {
     // isChanged가 변경될 때 실행할 로직
     console.log('isChanged가 변경됨:', isChanged);
   }, [isChanged, isTracking]);
+
+  useEffect(() => {
+    const fetchLinkedSocialLogins = async () => {
+      try {
+        const data = await getLinkedSocialLogins(); // API 함수 호출
+        if (data?.response) {
+          if (data.response?.includes('google')) {
+            setIsGoogle(true);
+          }
+          if (data.response?.includes('kakao')) {
+            setIsKakao(true);
+          }
+          if (data.response?.includes('naver')) {
+            setIsNaver(true);
+          }
+        }
+      } catch (error) {
+        console.error('소셜 로그인 연동 조회 실패:', error);
+      }
+    };
+
+    fetchLinkedSocialLogins();
+  }, []);
 
   const onClickCheckNickname = async () => {
     if (nickname.length >= 2) {
@@ -313,17 +345,41 @@ export default function EditMyInfo() {
                 <img src={snsAsset} alt="snsAsset" width="50px" height="50px" />
               </Type2Left>
               <Type2Middle>
-                <Type2RightFirstLine>SNS 연동</Type2RightFirstLine>
+                <Type2RightFirstLine>연결된 SNS 계정</Type2RightFirstLine>
                 <Type2RightSecondLine>
-                  <SNSFrame>
-                    <img
-                      src={kakaoLogo}
-                      alt="Kakao Logo"
-                      width="100%"
-                      height="100%"
-                    />
-                  </SNSFrame>
-                  <SNSidFrame>{snsId}</SNSidFrame>
+                  {isGoogle && (
+                    <>
+                      <SNSIconWrapper>
+                        <SNSIcon src={googleLogo} alt="Google Logo"></SNSIcon>
+                      </SNSIconWrapper>
+                      <SNSidFrame>Google</SNSidFrame>
+                    </>
+                  )}
+                  {isKakao && (
+                    <>
+                      <SNSIconWrapper style={{ background: '#f7e600' }}>
+                        <SNSIcon src={kakaoLogo} alt="Kakao Logo"></SNSIcon>
+                      </SNSIconWrapper>
+
+                      <SNSidFrame>Kakao</SNSidFrame>
+                    </>
+                  )}
+                  {isNaver && (
+                    <>
+                      <SNSIconWrapper style={{ background: '#2db400' }}>
+                        <SNSIcon
+                          src={naverLogo}
+                          alt="Naver Logo"
+                          style={{ width: '80%', height: '80%' }}
+                        ></SNSIcon>
+                      </SNSIconWrapper>
+
+                      <SNSidFrame>Naver</SNSidFrame>
+                    </>
+                  )}
+                  {!(isNaver || isGoogle || isKakao) && (
+                    <>연동된 SNS 계정이 없습니다.</>
+                  )}
                 </Type2RightSecondLine>
               </Type2Middle>
               <Type2Right
@@ -331,7 +387,7 @@ export default function EditMyInfo() {
                   navigate('/snsmanagement');
                 }}
               >
-                연동하기 &gt;
+                연동 관리 &gt;
               </Type2Right>
             </BoxType2>
           </BoxFrame>
@@ -532,24 +588,27 @@ const Type2RightSecondLine = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const SNSFrame = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-
+const SNSIconWrapper = styled.div`
   width: 30px;
   height: 30px;
+  padding: 5px;
+  border: 2px solid #d9d9d9;
+  border-radius: 50%;
+  overflow: hidden; /* 자식 요소가 원 밖으로 나가지 않도록 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-  background: #f7e600;
-  border: 2px solid #f4f4f4;
-  border-radius: 50px;
+const SNSIcon = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const SNSidFrame = styled.div`
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 32px;
   /* identical to box height, or 229% */
