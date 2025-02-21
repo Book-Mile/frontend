@@ -3,6 +3,8 @@ import axios from 'axios';
 export { emailRequest, checkEmailVerification } from './SignUpRequest.jsx';
 import { handleLogout } from '/src/utils/publicFunctions.js';
 
+export { getLinkedSocialLogins } from '/src/api/Pages/SNSManageRequest.jsx';
+
 const accessToken = JSON.parse(sessionStorage.getItem('userData'))?.accessToken;
 
 export const getUserInfo = async (setEmail, setNickname, setImage) => {

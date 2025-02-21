@@ -12,19 +12,21 @@ import Cookies from 'js-cookie';
 export default function NavBar() {
   const { name, setName } = useUserStore();
   const location = useLocation();
-  
+
   const [userInfo, setUserInfo] = useState(null);
-  const [isProfileDropdownVisible, setIsProfileDropdownVisible] = useState(false);
-  
+  const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
+    useState(false);
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
     if (name !== null) {
-      apiClient.get('/users')
-        .then(response => {
+      apiClient
+        .get('/users')
+        .then((response) => {
           setUserInfo(response.data.response);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('사용자 정보 가져오기 실패:', error);
         });
     }
@@ -45,14 +47,16 @@ export default function NavBar() {
   }, []);
 
   useEffect(() => {
-    setIsProfileDropdownVisible(false); 
+    setIsProfileDropdownVisible(false);
   }, [location]);
 
   const logoutAndCloseDropdown = () => {
     handleLogout(setName);
-    setIsProfileDropdownVisible(false); 
-    Cookies.remove('accessToken'); 
-    Cookies.remove('refreshToken'); 
+    setIsProfileDropdownVisible(false);
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
+    alert('로그아웃 되었습니다. 로비로 이동합니다.');
+    window.location.href = '/'; //로비로 이동
   };
 
   return (
@@ -71,7 +75,7 @@ export default function NavBar() {
                 {/* <NotifBell /> */}
                 <ProfileImage
                   onClick={(e) => {
-                    e.stopPropagation();  
+                    e.stopPropagation();
                     setIsProfileDropdownVisible(!isProfileDropdownVisible);
                   }}
                   style={{ backgroundImage: `url(${userInfo?.image})` }}
@@ -81,14 +85,16 @@ export default function NavBar() {
           )}
         </LoginContainer>
       </MainContainer>
-      
+
       {/* 사용자 정보 드롭다운 */}
       {isProfileDropdownVisible && userInfo && (
         <ProfileDropdown ref={dropdownRef}>
           <DropdownContent>
             <DropdownName>{userInfo.nickName} 님</DropdownName>
-            <ProfileLink to="/mypage">회원정보 수정</ProfileLink>
-            <LogoutButton onClick={logoutAndCloseDropdown}>로그아웃</LogoutButton>
+            <ProfileLink to="/mypage">마이페이지</ProfileLink>
+            <LogoutButton onClick={logoutAndCloseDropdown}>
+              로그아웃
+            </LogoutButton>
           </DropdownContent>
         </ProfileDropdown>
       )}
@@ -116,7 +122,7 @@ const NotifiContainer = styled.div`
 const ProfileDropdown = styled.div`
   position: absolute;
   top: 50px;
-  right: 0; 
+  right: 0;
   background-color: white;
   padding: 15px;
   border: 1px solid #ccc;
@@ -142,6 +148,7 @@ const ProfileLink = styled(Link)`
   display: block;
   text-decoration: none;
   color: ${(props) => props.theme.colors.body};
+
   &:hover {
     cursor: pointer;
   }
