@@ -5,12 +5,13 @@ import useUserStore from '../../src/store/store.js';
 import {
   PopupContainer,
   PopupInner,
-} from '../../src/styled_components/popupStyle.jsx';
+} from '../styled_components/popupStyle.jsx';
+
+import Loading from '/src/animations/Loading.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
 import { login, socialLogin } from '../api/Pages/LoginRequest.jsx';
 
-// import { ReactComponent as Google } from '../assets/snslogo/google.svg';
 import googleLogo from '/src/assets/snslogo/google.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
 import naverLogo from '/src/assets/snslogo/naver.svg';
@@ -23,17 +24,36 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isClosing] = useState(false); // 닫힘 상태 관리
 
+  const [isLoading, setIsLoading] = useState(false); //로딩 화면 관리
+
   const navigate = useNavigate();
   const { setName } = useUserStore();
 
-  const handleLogin = () => {
-    console.log('Email:', email);
-    console.log('Password:', password);
-    login(email, password, navigate, setName);
+  const handleLogin = async () => {
+    // console.log('Email:', email);
+    // console.log('Password:', password);
+    setIsLoading(true);
+
+    try {
+      // 로그인 요청이 완료될 때까지 기다림
+      await login(email, password, navigate, setName);
+    } catch (err) {
+      console.error('Login failed:', err);
+    } finally {
+      // 로그인 요청 완료 후 로딩 상태 해제
+      setIsLoading(false);
+    }
   };
 
-  const handleSocial = (social) => {
-    socialLogin(social); // 플랫폼별 로그인
+  const handleSocial = async (social) => {
+    try {
+      await socialLogin(social);
+    } catch (err) {
+      console.error('Login failed:', err);
+    } finally {
+      // 로그인 요청 완료 후 로딩 상태 해제
+      setIsLoading(false);
+    }
   };
 
   //회원가입 버튼 눌렸을 때
@@ -55,6 +75,7 @@ export default function Login() {
   return (
     <PopupContainer>
       <PopupInner>
+        {isLoading && <Loading />}
         <LoginWrapper>
           <LoginBox>
             <CloseButton src={Cancel} onClick={handleClose} />

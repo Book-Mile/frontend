@@ -36,7 +36,7 @@ export const login = async (email, password, navigate, setName) => {
       alert('로그인 중 오류가 발생하였습니다.');
     }
   } catch (error) {
-    alert('아이디 또는 비밀번호를 확인해주세요.');
+    alert(error.response.data.message);
     console.error(error);
   }
 };
@@ -81,7 +81,7 @@ const getUserInfo = async (accessToken, refreshToken, setName) => {
 };
 
 // 소셜로그인
-export function socialLogin(platform) {
+export const socialLogin = async (platform) => {
   const baseUrl = 'https://bookmile.site/oauth2/authorize'; // 기본 URL
   const redirectUri = encodeURIComponent('http://localhost:3000/'); // 리디렉션 URI (변경 필요)
 
@@ -90,7 +90,7 @@ export function socialLogin(platform) {
 
   // 새로운 창에서 소셜 로그인 페이지로 리다이렉트
   window.location.href = loginUrl;
-}
+};
 
 // 리다이렉트 후, URL에서 파라미터를 추출하고 로그인 처리하는 함수
 export function handleRedirect(setName) {

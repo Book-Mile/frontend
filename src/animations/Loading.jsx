@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const LoadingContainer = styled.div`
   display: flex;
@@ -10,21 +10,21 @@ const LoadingContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(239, 239, 239, 0.7);
   z-index: 400;
+  //background: rgba(239, 239, 239, 0.7);
 `;
 
 const LoadingIcon = styled.div`
   width: 80px;
   height: 80px;
-  background: url("../../public/images/loding.png") no-repeat center center;
+  background: url('../../public/images/loding.png') no-repeat center center;
   background-size: contain;
 `;
 
 const LoadingText = styled.div`
   margin-top: 6px;
   font-size: 1rem;
-  color: #AB0909;
+  color: #ab0909;
   font-weight: 500;
 `;
 
