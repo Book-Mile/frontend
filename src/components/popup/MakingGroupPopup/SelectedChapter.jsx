@@ -35,46 +35,46 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
   } = useModalSelectedGroup();
   // 예시 데이터
   const [groups, setGroups] = useState([
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
+    // {
+    //   name: '횟수정하자 그룹',
+    //   meetings: 18,
+    //   members: 10,
+    // },
+    // {
+    //   name: '다시하자 그룹',
+    //   meetings: 15,
+    //   members: 12,
+    // },
+    // {
+    //   name: '횟수정하자 그룹',
+    //   meetings: 18,
+    //   members: 10,
+    // },
+    // {
+    //   name: '다시하자 그룹',
+    //   meetings: 15,
+    //   members: 12,
+    // },
+    // {
+    //   name: '횟수정하자 그룹',
+    //   meetings: 18,
+    //   members: 10,
+    // },
+    // {
+    //   name: '다시하자 그룹',
+    //   meetings: 15,
+    //   members: 12,
+    // },
   ]);
 
   const { error, handleError } = useErrorHandling();
-  // useEffect(() => {
-  //   RightPopup_oneRequestList(setGroups, setApiErrorMsg, subject, bookId).catch(
-  //     (err) => {
-  //       handleError(err);
-  //     },
-  //   ); // 분리된 fetchGroups 함수 호출
-  // }, []);
+  useEffect(() => {
+    RightPopup_oneRequestList(setGroups, setApiErrorMsg, subject, bookId).catch(
+      (err) => {
+        handleError(err);
+      },
+    ); // 분리된 fetchGroups 함수 호출
+  }, []);
   if (error) {
     throw apiErrorMsg; // 렌더링 시 에러 발생
   }
@@ -127,7 +127,7 @@ const SelectedChapter = ({ imgPath, title, content, handleClose, subject }) => {
             bgColor={'#FFF0F0'}
             textSize={'15px'}
             height={'37px'}
-            onClick={() => handleCompleteClick(inputValue)}
+            func={() => handleCompleteClick(inputValue)}
           />
         )}
       </PopUpInnerBox1>

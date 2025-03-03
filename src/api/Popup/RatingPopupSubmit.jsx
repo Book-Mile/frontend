@@ -12,9 +12,10 @@ export const RatingPopupSubmit = async (rating, text, location) => {
 
     console.log(rating, text);
     const response = await axios.post(
-      `${BASE_URL}/api/v1/reviews?bookId=${bookId}`,
+      `${BASE_URL}/api/v1/reviews`,
       { rating, text },
       {
+        params: { bookId },
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`, // 여기에 토큰값을 넣어줍니다.

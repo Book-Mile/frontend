@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import BookLabel from '../components/search/BookLabel';
@@ -9,12 +9,38 @@ import apiClient from '../api/apiClient';
 import Loading from '../animations/Loading';
 import { getUserInfoFromToken } from '../api/getusertoken';
 import Cookies from 'js-cookie';
-import { ImageContainer, MarginContainer, GradientOverlay, ContentWrapper, LeftContent, Title, SubTitle, GroupInfo, Close, GroupContainer, MemberInfo, MemberImage, MemberName, MemberDetails, DetailText, MembersContainer, ProgressBarContainer, FlexRowWrapper, GroupMembersText, GroupSizeWrapper, WaitMessageStyled, MemberSpan, MembersWrapper,FlexRow,BackgroundContainer } from '../styled_components/LobbyStyles';
-
+import {
+  ImageContainer,
+  MarginContainer,
+  GradientOverlay,
+  ContentWrapper,
+  LeftContent,
+  Title,
+  SubTitle,
+  GroupInfo,
+  Close,
+  GroupContainer,
+  MemberInfo,
+  MemberImage,
+  MemberName,
+  MemberDetails,
+  DetailText,
+  MembersContainer,
+  ProgressBarContainer,
+  FlexRowWrapper,
+  GroupMembersText,
+  GroupSizeWrapper,
+  WaitMessageStyled,
+  MemberSpan,
+  MembersWrapper,
+  FlexRow,
+  BackgroundContainer,
+} from '../styled_components/LobbyStyles';
 
 const Lobby = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const bookId = params.get('isbn');
   const groupId = '27';
   // const groupId = params.get('groupId'); /creategroup에서 만든 그룹의 id URL로 받아오기
 
@@ -31,55 +57,57 @@ const Lobby = () => {
     // 토큰과 사용자 정보를 한번만 가져오기
     const fetchedToken = Cookies.get('accessToken');
     const fetchedUserInfo = getUserInfoFromToken(fetchedToken);
-    
+
     setUserInfo(fetchedUserInfo);
-  }, []); 
+  }, []);
 
   useEffect(() => {
-    
-      if (groupId && userInfo) {
-        console.log('그룹 ID와 사용자 정보는 모두 유효합니다.');
+    if (groupId && userInfo) {
+      console.log('그룹 ID와 사용자 정보는 모두 유효합니다.');
+      setIsLoading(false);
+    } else {
+      console.error('Group ID 또는 User Info가 없습니다');
+      setIsLoading(false);
+    }
+
+    const fetchGroupData = async () => {
+      try {
+        // 그룹 데이터 가져오기
+        const responseGroup = await apiClient.get(`/groups/${groupId}`);
+        setGroupData(responseGroup.data);
+
+        // 그룹 멤버 가져오기
+        const responseMembers = await apiClient.get(
+          `/groups/${groupId}/members`,
+        );
+        setMembers(responseMembers.data);
+
+        // 멤버 리스트에서 userId가 일치하는 항목 찾기
+        const currentUser = responseMembers.data
+          .filter((member) => member !== null && member !== undefined)
+          .find((member) => member.userId === userInfo.userId);
+
+        if (currentUser) {
+          setUserRole(currentUser.role);
+        } else {
+          console.log('해당 사용자 정보가 그룹에 없습니다.');
+        }
+
         setIsLoading(false);
-      } else {
-        console.error('Group ID 또는 User Info가 없습니다');
+      } catch (error) {
+        console.error(
+          '그룹 데이터나 멤버 데이터를 가져오는 중 오류 발생:',
+          error,
+        );
         setIsLoading(false);
       }
-  
-      const fetchGroupData = async () => {
-        try {
-          // 그룹 데이터 가져오기
-          const responseGroup = await apiClient.get(`/groups/${groupId}`);
-          setGroupData(responseGroup.data);
-      
-          // 그룹 멤버 가져오기
-          const responseMembers = await apiClient.get(`/groups/${groupId}/members`);
-          setMembers(responseMembers.data);
-      
-          // 멤버 리스트에서 userId가 일치하는 항목 찾기
-          const currentUser = responseMembers.data
-            .filter(member => member !== null && member !== undefined)
-            .find(member => member.userId === userInfo.userId);
-          
-          if (currentUser) {
-            setUserRole(currentUser.role);
-          } else {
-            console.log("해당 사용자 정보가 그룹에 없습니다.");
-          }
-      
-          setIsLoading(false);
-        } catch (error) {
-          console.error('그룹 데이터나 멤버 데이터를 가져오는 중 오류 발생:', error);
-          setIsLoading(false);
-        }
-      };
-  
+    };
+
     fetchGroupData();
   }, [groupId, userInfo]);
-  
-  
 
   const handleStartClick = () => {
-    navigate(`/bookprogress?groupId=${groupId}`);
+    navigate(`/bookprogress?groupId=${groupId}&isbn=${bookId}`);
   };
 
   const handleCloseClick = () => {
@@ -92,11 +120,11 @@ const Lobby = () => {
   if (isLoading) {
     return <Loading />;
   }
-  
+
   if (!groupData) {
     return <div>그룹 데이터를 로드할 수 없습니다.</div>;
   }
-  
+
   return (
     <>
       {isPopupOpen && <EndGroupPopup onClose={handlePopupClose} />}
@@ -129,7 +157,16 @@ const Lobby = () => {
           <MemberDetails>
             <FlexRow>
               <DetailText size="large">{groupData.groupName}</DetailText>
-              <BookLabel text={groupData.goalType === 'PAGE' ? '페이지' : groupData.goalType === 'CUSTOM' ? '나만의 속도로' : '횟수로'} fontSize="16px" />
+              <BookLabel
+                text={
+                  groupData.goalType === 'PAGE'
+                    ? '페이지'
+                    : groupData.goalType === 'CUSTOM'
+                      ? '나만의 속도로'
+                      : '횟수로'
+                }
+                fontSize="16px"
+              />
             </FlexRow>
             <DetailText size="small">{groupData.groupDescription}</DetailText>
           </MemberDetails>
@@ -141,7 +178,9 @@ const Lobby = () => {
               <FlexRowWrapper>
                 <GroupMembersText>그룹원</GroupMembersText>
                 <GroupSizeWrapper>
-                  <MemberSpan type="current">{groupData.currentMembers}</MemberSpan>
+                  <MemberSpan type="current">
+                    {groupData.currentMembers}
+                  </MemberSpan>
                   <MemberSpan type="total">/{groupData.maxMembers}</MemberSpan>
                 </GroupSizeWrapper>
               </FlexRowWrapper>

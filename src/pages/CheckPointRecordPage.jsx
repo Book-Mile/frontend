@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import { useRef, useState, useEffect } from 'react';
 import useIntersectionObserver from '../hooks/useInterserctionObserver';
 import {
   CheckPointRecordPageContainer,
@@ -17,24 +18,34 @@ import ImagePopup from '../components/popup/ImgPopup/ImgPopup';
 import { CheckPointRecordRequest } from '../api/Pages/CheckPointRecordRequest';
 import { useErrorHandling } from '../hooks/useErrorHandling';
 import ScrollBar from '../components/ScrollBar';
+import { useLocation } from 'react-router-dom';
 
-const CheckPointRecordPage = ({ subject = 'CUSTOM' }) => {
+const CheckPointRecordPage = ({
+  subject = 'CUSTOM',
+  bookName = '젊은베르테르의 슬픔',
+}) => {
   //api에서 받아올 것들
   const [user, setUser] = useState('무진장세일');
   const [bookTitle, setBookTitle] = useState('젊은 베르테르의 슬픔');
   const [popupImage, setPopupImage] = useState(null); // To manage the popup image
   const [apiErrorMsg, setApiErrorMsg] = useState('');
   const [data, setData] = useState(checkPoints);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const groupID = params.get('groupID'); // URL에서 그룹ID 가져옴
 
   const { error, handleError } = useErrorHandling();
-  // useEffect(() => {
-  //   CheckPointRecordRequest(setData, setApiErrorMsg, groupID).catch((err) => {
-  //     handleError(err);
-  //   }); // 분리된 fetchGroups 함수 호출
-  // }, []);
-  // if (error) {
-  //   throw apiErrorMsg; // 렌더링 시 에러 발생
-  // }
+  useEffect(() => {
+    CheckPointRecordRequest(setData, setApiErrorMsg, 1).catch((err) => {
+      handleError(err);
+    }); // 분리된 fetchGroups 함수 호출
+    const nickName = JSON.parse(sessionStorage.getItem('userData'))?.nickName;
+    setUser(nickName);
+    setBookTitle(bookName);
+  }, []);
+  if (error) {
+    throw apiErrorMsg; // 렌더링 시 에러 발생
+  }
 
   const [activeTarget, setActiveTarget] = useState(null);
 
