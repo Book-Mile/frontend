@@ -45,8 +45,8 @@ const SearchResults = () => {
     fetchBooks();
   }, [query]);
 
-  const handleCreateGroup = () => {
-    navigate(`/creategroup?isbn=${123123123213}`);
+  const handleCreateGroup = (isbn13) => {
+    navigate(`/creategroup?isbn=${isbn13}`);
   };
 
   const handleBookClick = (isbn13) => {
@@ -114,7 +114,7 @@ const SearchResults = () => {
               <ModalButton
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleCreateGroup();
+                  handleCreateGroup(book.isbn13);
                 }}
               >
                 참여하기

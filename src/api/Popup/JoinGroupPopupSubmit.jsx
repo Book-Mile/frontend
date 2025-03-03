@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주소 불러오기
-export const handleOkClick = async (id = 1, password) => {
+export const handleOkClick = async (id = 2, password) => {
   try {
     const processedPassword = password ?? '';
     // 요청 데이터 객체 생성

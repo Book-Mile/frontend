@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   PopUpInnerBox1,
   CardTitle,
@@ -16,9 +16,14 @@ import Rightpopup_one from './RightPopup_one';
 import useModalSelectedGroup from '../../../hooks/useModalSelectedGroup';
 import { RightPopup_oneRequestList } from '../../../api/Popup/RightPopup_oneRequestList';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
+import { useLocation } from 'react-router-dom';
 
 const SelectedNumber = ({ imgPath, title, content, handleClose, subject }) => {
   const [inputValue, setInputValue] = useState('');
+  const [apiErrorMsg, setApiErrorMsg] = useState('');
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
   const {
     selectedGroup,
     errorMessage,
@@ -31,47 +36,49 @@ const SelectedNumber = ({ imgPath, title, content, handleClose, subject }) => {
 
   // 예시 데이터
   const [groups, setGroups] = useState([
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
-    {
-      name: '횟수정하자 그룹',
-      meetings: 18,
-      members: 10,
-    },
-    {
-      name: '다시하자 그룹',
-      meetings: 15,
-      members: 12,
-    },
+    // {
+    //   name: '횟수정하자 그룹',
+    //   meetings: 18,
+    //   members: 10,
+    // },
+    // {
+    //   name: '다시하자 그룹',
+    //   meetings: 15,
+    //   members: 12,
+    // },
+    // {
+    //   name: '횟수정하자 그룹',
+    //   meetings: 18,
+    //   members: 10,
+    // },
+    // {
+    //   name: '다시하자 그룹',
+    //   meetings: 15,
+    //   members: 12,
+    // },
+    // {
+    //   name: '횟수정하자 그룹',
+    //   meetings: 18,
+    //   members: 10,
+    // },
+    // {
+    //   name: '다시하자 그룹',
+    //   meetings: 15,
+    //   members: 12,
+    // },
   ]);
 
   const { error, handleError } = useErrorHandling();
-  // useEffect(() => {
-  //   RightPopup_oneRequestList(setGroups, setApiErrorMsg,subject).catch((err) => {
-  //     handleError(err);
-  //   }); // 분리된 fetchGroups 함수 호출
-  // }, []);
-  // if (error) {
-  //   throw apiErrorMsg; // 렌더링 시 에러 발생
-  // }
+  useEffect(() => {
+    RightPopup_oneRequestList(setGroups, setApiErrorMsg, subject, bookId).catch(
+      (err) => {
+        handleError(err);
+      },
+    ); // 분리된 fetchGroups 함수 호출
+  }, []);
+  if (error) {
+    throw apiErrorMsg; // 렌더링 시 에러 발생
+  }
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -122,7 +129,7 @@ const SelectedNumber = ({ imgPath, title, content, handleClose, subject }) => {
             bgColor={'#FFF0F0'}
             textSize={'15px'}
             height={'37px'}
-            onClick={() => handleCompleteClick(inputValue)}
+            func={() => handleCompleteClick(inputValue)}
           />
         )}
       </PopUpInnerBox1>

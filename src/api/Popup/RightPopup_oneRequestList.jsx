@@ -13,25 +13,25 @@ export const RightPopup_oneRequestList = async (
       sessionStorage.getItem('userData'),
     )?.accessToken;
 
-    const response = await axios.post(
-      `${BASE_URL}/api/v1/templates/${bookId}`,
+    const response = await axios.get(
+      `${BASE_URL}/api/v1/templates/${bookId}`, // bookId를 path parameter로 전달
       {
-        params: { subject },
+        params: { bookId, goalType: subject }, // 쿼리 파라미터 추가
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`, // 여기에 토큰값을 넣어줍니다.
+          Authorization: `Bearer ${accessToken}`, // 토큰 추가
         },
       },
     );
 
     if (response.status === 200) {
-      setGroups(response.data); // 그룹 데이터를 상태에 저장
+      setGroups(response.data.response); // 그룹 데이터를 상태에 저장
     } else {
-      setErrorMessage('그룹 정보를 불러오는 데 실패했습니다.');
+      setGroups(response.data.response); // 그룹 데이터를 상태에 저장
     }
   } catch (error) {
     setErrorMessage('서버 오류가 발생했습니다.');
-    console.log('sadjflsdjlf');
+    console.log('오류오류');
     throw error;
   }
 };
