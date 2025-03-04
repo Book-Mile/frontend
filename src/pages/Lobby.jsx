@@ -107,7 +107,7 @@ const Lobby = () => {
   }, [groupId, userInfo]);
 
   const handleStartClick = () => {
-    navigate(`/bookprogress?groupId=${groupId}&isbn=${bookId}`);
+    navigate(`/bookprogress?groupId=${groupId}`);
   };
 
   const handleCloseClick = () => {

@@ -4,7 +4,8 @@ const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주�
 
 export const RatingPopupSubmit = async (rating, text, location) => {
   const params = new URLSearchParams(location.search);
-  const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
+  let bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용//수정해야됨!!!!!!!!!!!!!!!!!!!!!!!
+  bookId = 1;
   try {
     const accessToken = JSON.parse(
       sessionStorage.getItem('userData'),

@@ -117,7 +117,7 @@ const SearchResults = () => {
                   handleCreateGroup(book.isbn13);
                 }}
               >
-                참여하기
+                생성하기
               </ModalButton>
             </ModalButtonWrapper>
           </BookSectionWrapper>
