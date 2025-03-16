@@ -1,17 +1,13 @@
 import axios from 'axios';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const fetchNewBooks = async (accessToken) => {
-  const apiUrl = 'https://bookmile.site/api/v1/books/new-books'; // API 엔드포인트
 
+export const fetchNewBooks = async () => {
   try {
-    const response = await axios.get(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await axios.get(`${BASE_URL}/books/new-books`);
 
     if (response.status === 200 && response.data?.response) {
-      return response.data.response; // 책 데이터 반환
+      return response.data.response;
     } else {
       console.warn('API Response Error:', response.data);
       return [];
