@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import apiClient from '../api/apiClient';
@@ -8,6 +8,7 @@ import ActivityCard from '../components/group/ActivityCard';
 import ProgressGroup from '../components/group/ProgressGroup';
 import Loding from '../animations/Loding';
 import ReviewCard from '../components/search/ReviewCard';
+import ReviewList from '../components/starRating/ReviewList';
 
 const Detail = () => {
   const { isbn13 } = useParams();
@@ -21,9 +22,54 @@ const Detail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('detail')
+
+  const detailRef = useRef(null);
+  const reviewRef = useRef(null);
 
   const toggleDescription = () => {
     setIsExpanded((prevState) => !prevState);
+  };
+
+  const handleScrollToDetail = () => {
+    setActiveTab('detail');
+    detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  
+  const handleScrollToReviews = () => {
+    setActiveTab('reviews');
+    reviewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const fetchAllReviews = async (bookId) => {
+    const pageSize = 1;
+    let pageNumber = 1;
+    let allReviews = [];
+  
+    try {
+      while (true) {
+        const response = await apiClient.get(`/reviews`, {
+          params: { bookId, pageNumber, pageSize },
+        });
+    
+        const reviews = response.data.response.content;
+  
+        if (!reviews || reviews.length === 0) break;
+  
+        const formattedReviews = reviews.map(review => ({
+          username: review.name,
+          date: formatDate(review.createdAt),
+          comment: review.text,
+          rating: review.rating,
+        }));
+  
+        allReviews = [...allReviews, ...formattedReviews];
+        pageNumber++;
+      }
+  
+      setRecentReviews(allReviews);
+    } catch (error) {
+    }
   };
 
   useEffect(() => {
@@ -48,6 +94,7 @@ const Detail = () => {
 
           const recentReviewsResponse = await apiClient.get(`/reviews/recent-reviews`, { params: { bookId: fixedBookId } });
           setRecentReviews(recentReviewsResponse.data.response || []);
+          fetchAllReviews(fixedBookId);
         }
 
         const [inProgressResponse, completedResponse] = await Promise.all([
@@ -68,27 +115,60 @@ const Detail = () => {
     fetchBookAndGroupData();
   }, [isbn13]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target.id === 'detail') {
+              setActiveTab('detail');
+            } else if (entry.target.id === 'reviews') {
+              setActiveTab('reviews');
+            }
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+  
+    if (detailRef.current) observer.observe(detailRef.current);
+    if (reviewRef.current) observer.observe(reviewRef.current);
+  
+    return () => {
+      if (detailRef.current) observer.unobserve(detailRef.current);
+      if (reviewRef.current) observer.unobserve(reviewRef.current);
+    };
+  }, []);
 
   const handleButtonClick = () => {
     window.location.href = `/creategroup?isbn=${isbn13}`;
   };
-
-  if (loading) return <Loding />;
-  if (error) return <div>오류 발생: {error}</div>;
 
   const getRandomGroups = (groups, count) => {
     if (groups.length <= count) return groups;
     const shuffled = [...groups].sort(() => Math.random() - 0.5); 
     return shuffled.slice(0, count);
   };
-
-  const formatDate = (dateString) => {
+    const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString().slice(2);
     return `${year}.${month}.${day}`;
   };
+
+  const scrollToSection = (ref, tabName) => {
+    if (ref.current) {
+      window.scrollTo({
+        top: ref.current.offsetTop - 80,
+        behavior: "smooth",
+      });
+      setActiveTab(tabName);
+    }
+  };
+
+  if (loading) return <Loding />;
+  if (error) return <div>오류 발생: {error}</div>;
   
   return (
     <Container>
@@ -101,7 +181,10 @@ const Detail = () => {
             </BookCover>
   
             <StyledBookInfo>
+              <TitleRow>
               <Title>{bookData.response[0].title}</Title>
+              <Aladin src="/images/aladinlogo.png" alt="알라딘 연결 링크" onClick={() => window.open(`${bookData.response[0].link}`, "_blank")}/>
+              </TitleRow>
               <InfoSection>
                 <InfoRow>
                   <Label>저자:</Label>
@@ -153,28 +236,43 @@ const Detail = () => {
       <PreviewRanking>
         <RatingRow>
           <GroupTitle>BookMile 리뷰</GroupTitle>
-          <span>더보기</span>
+          <More onClick={handleScrollToReviews}>더보기</More>
         </RatingRow>
         <RatingRow>
         {recentReviews.length > 0 ? (
-            recentReviews.map((review) => (
-              <ReviewCard
-                key={review.reviewId}
-                rating={review.rating}
-                name={review.name}
-                date={formatDate(review.createdAt)}
-                review={review.text}
-              />
-            ))
-          ) : (
-            <EmptyMessage>리뷰가 없습니다.</EmptyMessage>
-          )}
+          recentReviews.map((review, index) => (
+            <ReviewCard
+              key={index}
+              rating={review.rating}
+              name={review.username} 
+              date={review.date} 
+              review={review.comment}
+            />
+          ))
+        ) : (
+          <EmptyMessage>리뷰가 없습니다.</EmptyMessage>
+        )}
         </RatingRow>
       </PreviewRanking>
   
       {/* 모집 중인 그룹 섹션 */}
-      <GroupWrapper>
+      <GroupWrapper ref={detailRef}>
         <GroupSection>
+          <NavBar>
+            <NavButton
+              onClick={handleScrollToDetail}
+              active={activeTab === 'detail'}
+            >
+              상세정보
+            </NavButton>
+            <NavButton
+              onClick={handleScrollToReviews}
+              active={activeTab === 'reviews'}
+            >
+              BookMile 리뷰
+            </NavButton>
+          </NavBar>
+
           <GroupTitle>모집중인 그룹</GroupTitle>
           <ActivityList>
             {recruitingGroups.response && recruitingGroups.response.length > 0 ? (
@@ -247,6 +345,40 @@ const Detail = () => {
           </ActivityList>
         </GroupSection>
       </GroupWrapper>
+
+        <ReviewSection ref={reviewRef}>
+          <NavBar>
+            <NavButton
+              onClick={handleScrollToDetail}
+              active={activeTab === 'detail'}
+            >
+              상세정보
+            </NavButton>
+            <NavButton
+              onClick={handleScrollToReviews}
+              active={activeTab === 'reviews'}
+            >
+              BookMile 리뷰
+            </NavButton>  
+          </NavBar>
+
+          <ALLRating>
+            <GroupTitle>전체 평점</GroupTitle>
+            <Rating rating={bookRating} totalStars={5} starSize="24px" fontSize="24px" />
+          </ALLRating>
+          {recentReviews.length > 0 ? (
+              recentReviews.map((review) => (
+                <ReviewList
+                  username={review.username}
+                  date={review.date}
+                  comment={review.comment}
+                  rating={review.rating}
+                />
+              ))
+            ) : (
+            <EmptyMessage>리뷰가 없습니다.</EmptyMessage>
+          )}
+        </ReviewSection> 
     </Container>
   );
 };
@@ -307,11 +439,24 @@ const StyledBookInfo = styled.section`
   word-wrap: break-word;
 `;
 
+const TitleRow = styled.div`
+  display: flex;
+  align-items: start;
+  gap: 12px;
+`;
+
 const Title = styled.h1`
   font-size: 32px;
   font-weight: bold;
   color: ${(props) => props.theme.colors.body};
   margin: 0;
+`;
+const Aladin = styled.img`
+  object-fit: cover;
+  width: 56px;
+  height: 30px;
+  cursor: pointer;
+  margin-top: 10px;
 `;
 
 const InfoSection = styled.section`
@@ -398,6 +543,12 @@ const GroupTitle = styled.div`
   color: ${(props) => props.theme.colors.body};
 `;
 
+const More = styled.span`
+  cursor: pointer;
+  color: ${(props) => props.theme.colors.body};
+
+`;
+
 const ActivityList = styled.div`
   display: flex;
   gap: 20px;
@@ -409,3 +560,35 @@ const ActivityList = styled.div`
     align-items: center;
   }
 `;
+
+const ALLRating = styled.div`
+  display: flex;
+  gap: 32px;
+  `;
+
+const NavBar = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  `;
+
+  const NavButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background: ${(props) => props.theme.colors.background};
+  color: ${(props) => (props.active ? props.theme.colors.body : '#565656')};
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 700;
+  transition: background 0.3s;
+  border-bottom: 4px solid ${(props) => (props.active ? props.theme.colors.main : '#D9D9D9')};
+  padding: 10px 30px;
+  cursor: pointer;
+`;
+
+const ReviewSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background: #f9f9f9;
+`;
+
