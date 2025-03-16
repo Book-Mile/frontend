@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { validatePassword } from '../utils/publicFunctions.js';
 import Cancel from '../assets/cancel.svg';
@@ -11,28 +11,52 @@ import {
 import {
   PopupContainer,
   PopupInner,
-} from '../../src/styled_components/popupStyle.jsx';
+} from '../styled_components/popupStyle.jsx';
 
+import Loading from '/src/animations/Loading.jsx';
 import LGButton from '../components/LGButton/LGButton';
 import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [isSented, setIsSented] = useState(false);
-  const [authNum, setAuthNum] = useState('');
-  const [isAuthed, setIsAuthed] = useState(false);
+  const [isSented, setIsSented] = useState(false); //이메일 인증 코드가 발송되었는지 체크
+  const [authNum, setAuthNum] = useState(''); //사용자가 입력하는 인증코드
+  const [isAuthed, setIsAuthed] = useState(false); //인증에 성공하였는지 관리
 
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordconfirm] = useState('');
 
-  const handleSubmit = () => {
-    // event.preventDefault();
-    // console.log('Email:', email);
-    // console.log('Password:', password);
-    if (!isAuthed) {
+  const [isLoading, setIsLoading] = useState(false); //로딩 화면 관리
+
+  //이메일 칸이 변경되는 경우 상태값들을 초기화하여 재인증 유도
+  useEffect(() => {
+    setIsSented(false);
+    setIsAuthed(false);
+  }, [email]);
+
+  //비밀번호란과 비밀번호 확인란이 동일하게 입력되었는지 체크
+  const isSamePassword = () => {
+    return password === passwordconfirm;
+  };
+
+  //회원가입하기 버튼 눌렀을 때 작동하는 함수
+  const handleSubmit = async () => {
+    //이메일 인증이 완료된 경우에만 요청 가능
+    if (isAuthed) {
+      console.log(isAuthed);
+      //비밀번호 형식이 올바른지 체크
       if (validatePassword(password)) {
-        registerUser(email, password, passwordconfirm, navigate());
+        if (isSamePassword()) {
+          try {
+            setIsLoading(true);
+            await registerUser(email, password, passwordconfirm, navigate());
+          } finally {
+            setIsLoading(false);
+          }
+        } else {
+          alert('비밀번호가 동일하지 않습니다.');
+        }
       } else {
         alert(
           '비밀번호는 8~16자의 영문 대소문자, 숫자, 특수문자로 이루어져야 합니다.',
@@ -44,34 +68,57 @@ export default function SignUp() {
     // alert('회원가입이 정상적으로 되었습니다.');
   };
 
+  //로그인 버튼 눌렀을 때 로그인 화면으로 이동시킴
   const handleLoginButton = () => {
     navigate('/login');
   };
 
+  //사용자가 입력한 이메일 형식이 valid한 형식인지 체크
   function isValidEmail(email) {
     // 이메일 형식 검증을 위한 정규식
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
 
-  const handleSendAuthBtn = () => {
+  //인증번호 전송 버튼을 눌렀을 때 작동하는 함수
+  const handleSendAuthBtn = async () => {
+    if (isAuthed) {
+      alert('이미 인증된 이메일입니다.');
+      return;
+    }
     if (isValidEmail(email)) {
       console.log('유효한 이메일 형식입니다.');
-      emailRequest(email);
-      setIsSented(true);
+      try {
+        setIsLoading(true);
+        await emailRequest(email);
+        setIsSented(true);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       alert('유효하지 않은 이메일 형식입니다.');
     }
   };
 
-  const checkAuthNum = () => {
+  //인증번호 확인 버튼을 눌렀을 때 작동하는 함수
+  const checkAuthNum = async () => {
+    if (isAuthed) {
+      alert('이미 인증이 완료되었습니다.');
+      return;
+    }
     if (authNum.length === 6) {
-      checkEmailVerification(email, authNum, setIsAuthed);
+      try {
+        setIsLoading(true);
+        await checkEmailVerification(email, authNum, setIsAuthed);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       alert('인증번호는 6자리입니다.');
     }
   };
 
+  //회원가입 모달창 닫는 함수(메인페이지로 이동)
   const handleClose = () => {
     navigate('/');
   };
@@ -81,6 +128,8 @@ export default function SignUp() {
       <PopupInner>
         <MainContainer>
           <Frame>
+            {isLoading && <Loading />}
+
             <CloseBtn src={Cancel} onClick={handleClose} />
 
             <SignInLogo>

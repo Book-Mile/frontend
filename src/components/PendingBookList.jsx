@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import ModeTag from '/src/components/modeTag/ModeTag.jsx';
 import { getUserGroups } from '../api/Pages/MyPageRequest.jsx';
+import { useNavigate } from 'react-router-dom';
 
 function Override({ groupName, groupKing, mode }) {
   return (
@@ -19,7 +20,7 @@ function Override({ groupName, groupKing, mode }) {
         </UserImg>
         <UserImg index={1}>
           <img
-            src={'/src/assets/EditMyInfoAssets/Profile.svg'}
+            src={'/src/assets/EditMyInfoAssets/ProfileModal.svg'}
             style={{ width: '100%' }}
           />
         </UserImg>
@@ -80,13 +81,26 @@ const UserImg = styled.div`
         : '0'}; /* 첫 번째는 0, 두 번째는 18px, 세 번째는 36px */
 `;
 
-function Book({ img, bookname, writer, groupMode, groupKing, groupName }) {
+function Book({
+  img,
+  bookname,
+  writer,
+  groupMode,
+  groupKing,
+  groupName,
+  groupId,
+}) {
   const [ishover, setHover] = useState(false);
+  const navigate = useNavigate();
+
   const handleHover = () => {
     setHover(!ishover);
   };
+  const handleClickBook = () => {
+    navigate(`/lobby?groupId=${groupId}`);
+  };
   return (
-    <ColFrame>
+    <ColFrame onClick={handleClickBook}>
       <BookImgFrame onMouseEnter={handleHover} onMouseLeave={handleHover}>
         <img src={img} style={{ width: '100%', height: '100%' }} />
         {ishover && (
@@ -129,6 +143,7 @@ export default function PendingBookList() {
               groupMode={data.goalType}
               groupName={data.groupName}
               groupKing={data.masterNickname}
+              groupId={data.groupId}
             />
           ))}
         </ListRowFrame>
@@ -179,6 +194,7 @@ const BookImgFrame = styled.div`
   z-index: 1;
   position: relative; /* 부모 요소를 기준으로 자식 요소 위치 설정 */
   box-sizing: border-box;
+  cursor: pointer;
 `;
 
 const OverrideFrame = styled.div`

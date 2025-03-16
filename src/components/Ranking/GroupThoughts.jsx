@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Memberstory from './Memberstory'; // Memberstory 컴포넌트 불러오기
+import Memberstory from './memberstory'; // Memberstory 컴포넌트 불러오기
 
 // 스타일 정의
 const Container = styled.div`
