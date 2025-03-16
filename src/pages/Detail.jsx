@@ -12,7 +12,10 @@ import ReviewCard from '../components/search/ReviewCard';
 const Detail = () => {
   const { isbn13 } = useParams();
   const [bookData, setBookData] = useState(null);
+  const [BookId,setBookId] = useState(null);
+  const [bookRating, setBookRating] = useState(0);
   const [recruitingGroups, setRecruitingGroups] = useState([]);
+  const [recentReviews, setRecentReviews] = useState([]);
   const [inProgressGroups, setInProgressGroups] = useState([]);
   const [completedGroups, setCompletedGroups] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,13 +34,27 @@ const Detail = () => {
         const bookResponse = await apiClient.post('/books/detail', { isbn13 });
         setBookData(bookResponse.data);
 
-        const [recruitingResponse, inProgressResponse, completedResponse] = await Promise.all([
-          apiClient.get(`/groups/list/recruiting`, { params: { isbn13 } }),
+        const recruitingResponse = await apiClient.get(`/groups/list/recruiting`, { params: { isbn13 } });
+        setRecruitingGroups(recruitingResponse.data || []);
+
+        if (recruitingResponse.data?.response?.length > 0) {
+          const groupId = recruitingResponse.data.response[0].groupId;
+          const groupDetailResponse = await apiClient.get(`/groups/${groupId}`);
+          const fixedBookId = groupDetailResponse.data.bookId;
+          setBookId(fixedBookId);
+
+          const ratingResponse = await apiClient.get(`/reviews/${fixedBookId}/total-rate`);
+          setBookRating(ratingResponse.data.response || 0);
+
+          const recentReviewsResponse = await apiClient.get(`/reviews/recent-reviews`, { params: { bookId: fixedBookId } });
+          setRecentReviews(recentReviewsResponse.data.response || []);
+        }
+
+        const [inProgressResponse, completedResponse] = await Promise.all([
           apiClient.get(`/groups/list/in-progress`, { params: { isbn13 } }),
           apiClient.get(`/groups/list/completed`, { params: { isbn13 } }),
         ]);
 
-        setRecruitingGroups(recruitingResponse.data || []);
         setInProgressGroups(inProgressResponse.data || []);
         setCompletedGroups(completedResponse.data || []);
       } catch (err) {
@@ -61,8 +78,16 @@ const Detail = () => {
 
   const getRandomGroups = (groups, count) => {
     if (groups.length <= count) return groups;
-    const shuffled = [...groups].sort(() => Math.random() - 0.5); // 배열을 랜덤하게 섞음
-    return shuffled.slice(0, count); // 지정된 개수만큼 리턴
+    const shuffled = [...groups].sort(() => Math.random() - 0.5); 
+    return shuffled.slice(0, count);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString().slice(2);
+    return `${year}.${month}.${day}`;
   };
   
   return (
@@ -100,7 +125,7 @@ const Detail = () => {
                 </InfoRow>
                 <InfoRow>
                   <Label>BookMile 평점:</Label>
-                  <Rating rating={4} totalStars={5} />
+                  <Rating rating={bookRating} totalStars={5} />
                 </InfoRow>
               </InfoSection>
   
@@ -131,18 +156,19 @@ const Detail = () => {
           <span>더보기</span>
         </RatingRow>
         <RatingRow>
-          <ReviewCard
-            rating={4}
-            name="똑똑한황구30"
-            date="25.01.15"
-            review="진심 좋음... 그냥 왜 명작이라고 하는지 알 것 같은 기분"
-          />
-          <ReviewCard
-            rating={3}
-            name="똑똑한황구312"
-            date="24.12.22"
-            review="팀원들이 별로였음ㄹㅇ 근데 책 내용은 좋았음"
-          />
+        {recentReviews.length > 0 ? (
+            recentReviews.map((review) => (
+              <ReviewCard
+                key={review.reviewId}
+                rating={review.rating}
+                name={review.name}
+                date={formatDate(review.createdAt)}
+                review={review.text}
+              />
+            ))
+          ) : (
+            <EmptyMessage>리뷰가 없습니다.</EmptyMessage>
+          )}
         </RatingRow>
       </PreviewRanking>
   
