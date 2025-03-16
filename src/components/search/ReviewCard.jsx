@@ -9,9 +9,10 @@ const Container = styled.div`
   align-items: flex-start;
   overflow: hidden;
   gap: 0.625rem;
-  padding: 0.875rem 2rem;
+  padding: 2rem 2rem;
   border-radius: 20px;
   background-color: white;
+  border: 1px solid #d9d9d9;
 `;
 
 const InnerContainer = styled.div`
@@ -39,7 +40,7 @@ const Text = styled.p`
   margin: 0;
   flex-grow: 0;
   flex-shrink: 0;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   text-align: left;
   color: #565656;
 `;
@@ -48,8 +49,9 @@ const ReviewText = styled.p`
   margin: 0;
   flex-grow: 0;
   flex-shrink: 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
   text-align: left;
+  font-weight: 500;
   color: #565656;
 `;
 
