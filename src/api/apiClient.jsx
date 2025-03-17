@@ -1,77 +1,45 @@
 import axios from 'axios';
-import Cookies from 'js-cookie'; 
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+import useUserStore from '../store/store';
 
 const apiClient = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
-// Access Token 갱신 API
-const refreshAccessToken = async () => {
-  try {
-    const refreshToken = localStorage.getItem('refreshToken');
-    console.log('📌 현재 refreshToken:', refreshToken);
-
-    if (!refreshToken) {
-      console.error('시간초과로 자동 로그아웃되었습니다.');
-      handleLogout();
-      return null;
-    }
-
-    const response = await axios.post(`${BASE_URL}/users/reissue`, null, {
-      headers: {
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    });
-
-    console.log('✅ 토큰 갱신 성공!', response.data);
-
-    const { accessToken, refreshToken: newRefreshToken } = response.data.response;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', newRefreshToken);
-
-    return accessToken;
-  } catch (error) {
-    console.error('🚨 토큰 갱신 실패:', error.response?.data || error.message);
-    handleLogout();
-    return null;
+apiClient.interceptors.request.use((config) => {
+  const token = useUserStore.getState().accessToken;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-};
+  return config;
+});
 
-
-// 요청을 보낼 때 Access Token 자동 추가
-apiClient.interceptors.request.use(
-  async (config) => {
-    const token = Cookies.get('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
-// 응답을 받을 때 Access Token 갱신 로직 추가
+// Access Token이 만료되면 자동 갱신
 apiClient.interceptors.response.use(
   (response) => response,
-
   async (error) => {
-    if (error.response?.status === 401) {
-      // Access Token이 만료된 경우
-      const newAccessToken = await refreshAccessToken();
-      if (newAccessToken) {
+    if (error.response && error.response.status === 401) {
+      console.log('🔄 Access Token 만료, 갱신 시도 중...');
+      try {
+        const res = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/users/reissue`,
+          {},
+          { withCredentials: true } 
+        );
+
+        const newAccessToken = res.data.accessToken;
+        useUserStore.getState().setAccessToken(newAccessToken);
         error.config.headers.Authorization = `Bearer ${newAccessToken}`;
-        return apiClient(error.config);
+
+        return apiClient.request(error.config);
+      } catch (reissueError) {
+        console.error('🚨 토큰 갱신 실패:', reissueError);
+        return Promise.reject(reissueError);
       }
     }
     return Promise.reject(error);
-  },
+  }
 );
-
-
 
 export default apiClient;
