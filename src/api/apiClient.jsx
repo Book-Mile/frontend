@@ -13,8 +13,14 @@ const apiClient = axios.create({
 // Access Token 갱신 API
 const refreshAccessToken = async () => {
   try {
-    const refreshToken = Cookies.get('refreshToken');  
-    if (!refreshToken) throw new Error('No refresh token available');
+    const refreshToken = localStorage.getItem('refreshToken');
+    console.log('📌 현재 refreshToken:', refreshToken);
+
+    if (!refreshToken) {
+      console.error('시간초과로 자동 로그아웃되었습니다.');
+      handleLogout();
+      return null;
+    }
 
     const response = await axios.post(`${BASE_URL}/users/reissue`, null, {
       headers: {
@@ -22,16 +28,20 @@ const refreshAccessToken = async () => {
       },
     });
 
-    const newAccessToken = response.data.accessToken;
-    Cookies.set('accessToken', newAccessToken, { expires: 7, secure: true, sameSite: 'Strict' });  
-    return newAccessToken;
+    console.log('✅ 토큰 갱신 성공!', response.data);
+
+    const { accessToken, refreshToken: newRefreshToken } = response.data.response;
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', newRefreshToken);
+
+    return accessToken;
   } catch (error) {
-    console.error('Refresh token expired or invalid:', error.response?.data || error.message);
-    Cookies.remove('accessToken');  
-    Cookies.remove('refreshToken');
+    console.error('🚨 토큰 갱신 실패:', error.response?.data || error.message);
+    handleLogout();
     return null;
   }
 };
+
 
 // 요청을 보낼 때 Access Token 자동 추가
 apiClient.interceptors.request.use(
@@ -61,5 +71,7 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+
 
 export default apiClient;

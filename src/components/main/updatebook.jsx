@@ -8,17 +8,8 @@ const BookList = () => {
   const [startIndex, setStartIndex] = useState(0);
 
   useEffect(() => {
-    const retrievedToken = JSON.parse(
-      sessionStorage.getItem('userData'),
-    )?.accessToken;
-
-    if (!retrievedToken) {
-      console.warn('No access token available');
-      return;
-    }
-
     const fetchBooks = async () => {
-      const newBooks = await fetchNewBooks(retrievedToken);
+      const newBooks = await fetchNewBooks();
       setBooks(newBooks);
     };
 

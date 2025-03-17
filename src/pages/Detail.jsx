@@ -1,10 +1,396 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import apiClient from '../api/apiClient';
 import Rating from '../components/search/Rating';
 import ModalButton from '../components/modalButton/ModalCustomButton';
 import ActivityCard from '../components/group/ActivityCard';
 import ProgressGroup from '../components/group/ProgressGroup';
+import Loading from '../animations/Loading';
 import ReviewCard from '../components/search/ReviewCard';
+import ReviewList from '../components/starRating/ReviewList';
+
+const Detail = () => {
+  const { isbn13 } = useParams();
+  const [bookData, setBookData] = useState(null);
+  const [BookId,setBookId] = useState(null);
+  const [bookRating, setBookRating] = useState(0);
+  const [recruitingGroups, setRecruitingGroups] = useState([]);
+  const [recentReviews, setRecentReviews] = useState([]);
+  const [inProgressGroups, setInProgressGroups] = useState([]);
+  const [completedGroups, setCompletedGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('detail')
+
+  const detailRef = useRef(null);
+  const reviewRef = useRef(null);
+
+  const toggleDescription = () => {
+    setIsExpanded((prevState) => !prevState);
+  };
+
+  const handleScrollToDetail = () => {
+    setActiveTab('detail');
+    detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  
+  const handleScrollToReviews = () => {
+    setActiveTab('reviews');
+    reviewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const fetchAllReviews = async (bookId) => {
+    const pageSize = 1;
+    let pageNumber = 1;
+    let allReviews = [];
+  
+    try {
+      while (true) {
+        const response = await apiClient.get(`/reviews`, {
+          params: { bookId, pageNumber, pageSize },
+        });
+    
+        const reviews = response.data.response.content;
+  
+        if (!reviews || reviews.length === 0) break;
+  
+        const formattedReviews = reviews.map(review => ({
+          username: review.name,
+          date: formatDate(review.createdAt),
+          comment: review.text,
+          rating: review.rating,
+        }));
+  
+        allReviews = [...allReviews, ...formattedReviews];
+        pageNumber++;
+      }
+  
+      setRecentReviews(allReviews);
+    } catch (error) {
+    }
+  };
+
+  useEffect(() => {
+    const fetchBookAndGroupData = async () => {
+      try {
+        setLoading(true);
+
+        const bookResponse = await apiClient.post('/books/detail', { isbn13 });
+        setBookData(bookResponse.data);
+
+        const recruitingResponse = await apiClient.get(`/groups/list/recruiting`, { params: { isbn13 } });
+        setRecruitingGroups(recruitingResponse.data || []);
+
+        if (recruitingResponse.data?.response?.length > 0) {
+          const groupId = recruitingResponse.data.response[0].groupId;
+          const groupDetailResponse = await apiClient.get(`/groups/${groupId}`);
+          const fixedBookId = groupDetailResponse.data.bookId;
+          setBookId(fixedBookId);
+
+          const ratingResponse = await apiClient.get(`/reviews/${fixedBookId}/total-rate`);
+          setBookRating(ratingResponse.data.response || 0);
+
+          const recentReviewsResponse = await apiClient.get(`/reviews/recent-reviews`, { params: { bookId: fixedBookId } });
+          setRecentReviews(recentReviewsResponse.data.response || []);
+          fetchAllReviews(fixedBookId);
+        }
+
+        const [inProgressResponse, completedResponse] = await Promise.all([
+          apiClient.get(`/groups/list/in-progress`, { params: { isbn13 } }),
+          apiClient.get(`/groups/list/completed`, { params: { isbn13 } }),
+        ]);
+
+        setInProgressGroups(inProgressResponse.data || []);
+        setCompletedGroups(completedResponse.data || []);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError(err.message || '데이터를 불러오는 중 오류가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBookAndGroupData();
+  }, [isbn13]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target.id === 'detail') {
+              setActiveTab('detail');
+            } else if (entry.target.id === 'reviews') {
+              setActiveTab('reviews');
+            }
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+  
+    if (detailRef.current) observer.observe(detailRef.current);
+    if (reviewRef.current) observer.observe(reviewRef.current);
+  
+    return () => {
+      if (detailRef.current) observer.unobserve(detailRef.current);
+      if (reviewRef.current) observer.unobserve(reviewRef.current);
+    };
+  }, []);
+
+  const handleButtonClick = () => {
+    window.location.href = `/creategroup?isbn=${isbn13}`;
+  };
+
+  const getRandomGroups = (groups, count) => {
+    if (groups.length <= count) return groups;
+    const shuffled = [...groups].sort(() => Math.random() - 0.5); 
+    return shuffled.slice(0, count);
+  };
+    const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString().slice(2);
+    return `${year}.${month}.${day}`;
+  };
+
+  const scrollToSection = (ref, tabName) => {
+    if (ref.current) {
+      window.scrollTo({
+        top: ref.current.offsetTop - 80,
+        behavior: "smooth",
+      });
+      setActiveTab(tabName);
+    }
+  };
+
+  if (loading) return <Loading />;
+  if (error) return <div>오류 발생: {error}</div>;
+  
+  return (
+    <Container>
+      {/* 책 정보 섹션 */}
+      <BookDetailWrapper>
+        {bookData && bookData.response && bookData.response.length > 0 ? (
+          <>
+            <BookCover>
+              <img src={bookData.response[0].cover} alt="Book cover" />
+            </BookCover>
+  
+            <StyledBookInfo>
+              <TitleRow>
+              <Title>{bookData.response[0].title}</Title>
+              <Aladin src="/images/aladinlogo.png" alt="알라딘 연결 링크" onClick={() => window.open(`${bookData.response[0].link}`, "_blank")}/>
+              </TitleRow>
+              <InfoSection>
+                <InfoRow>
+                  <Label>저자:</Label>
+                  <InfoText>{bookData.response[0].author}</InfoText>
+                </InfoRow>
+                <InfoRow>
+                  <Label>출판사:</Label>
+                  <InfoText>{bookData.response[0].publisher}</InfoText>
+                </InfoRow>
+                <InfoRow>
+                  <Label>ISBN13:</Label>
+                  <InfoText>{isbn13}</InfoText>
+                </InfoRow>
+                <InfoRow>
+                  <Label>전체 페이지:</Label>
+                  <InfoText>{bookData.response[0].subInfo?.itemPage || '정보 없음'}쪽</InfoText>
+                </InfoRow>
+                <InfoRow>
+                  <Label>알라딘 평점:</Label>
+                  <Rating rating={(bookData.response[0].customerReviewRank / 2) || 0} totalStars={5} />
+                </InfoRow>
+                <InfoRow>
+                  <Label>BookMile 평점:</Label>
+                  <Rating rating={bookRating} totalStars={5} />
+                </InfoRow>
+              </InfoSection>
+  
+              {/* 더보기 설명 */}
+              <DescriptionWrapper>
+                <Description isExpanded={isExpanded} onClick={toggleDescription}>
+                  {bookData.response[0].description}
+                  {!isExpanded && (
+                    <Ellipsis onClick={toggleDescription}>...</Ellipsis>
+                  )}
+                </Description>
+              </DescriptionWrapper>
+  
+              <ModalButton onClick={handleButtonClick} width="168px" height="44px" fontWeight="500">
+                새로 생성하기
+              </ModalButton>
+            </StyledBookInfo>
+          </>
+        ) : (
+          <Loading />
+        )}
+      </BookDetailWrapper>
+  
+      {/* 미리보기 리뷰 */}
+      <PreviewRanking>
+        <RatingRow>
+          <GroupTitle>BookMile 리뷰</GroupTitle>
+          <More onClick={handleScrollToReviews}>더보기</More>
+        </RatingRow>
+        <RatingRow>
+        {recentReviews.length > 0 ? (
+          recentReviews.map((review, index) => (
+            <ReviewCard
+              key={index}
+              rating={review.rating}
+              name={review.username} 
+              date={review.date} 
+              review={review.comment}
+            />
+          ))
+        ) : (
+          <EmptyMessage>리뷰가 없습니다.</EmptyMessage>
+        )}
+        </RatingRow>
+      </PreviewRanking>
+  
+      {/* 모집 중인 그룹 섹션 */}
+      <GroupWrapper ref={detailRef}>
+        <GroupSection>
+          <NavBar>
+            <NavButton
+              onClick={handleScrollToDetail}
+              active={activeTab === 'detail'}
+            >
+              상세정보
+            </NavButton>
+            <NavButton
+              onClick={handleScrollToReviews}
+              active={activeTab === 'reviews'}
+            >
+              BookMile 리뷰
+            </NavButton>
+          </NavBar>
+
+          <GroupTitle>모집중인 그룹</GroupTitle>
+          <ActivityList>
+            {recruitingGroups.response && recruitingGroups.response.length > 0 ? (
+              getRandomGroups(recruitingGroups.response, 3).map((group) => (
+                <ActivityCard
+                  key={group.groupId}
+                  activity={{
+                    groupName: group.groupName,
+                    pageInfo: group.groupDescription,
+                    maxMembers: group.maxMembers,
+                    currentMembers: group.currentMembers,
+                    masterNickname: group.masterNickname,
+                    masterImage: group.masterImage,
+                    goalContent: group.goalContent,
+                    goalType: group.goalType,
+                    groupDescription: group.groupDescription,
+                  }}
+                  completed={group.status === 'COMPLETED'}
+                />
+              ))
+            ) : (
+              <EmptyMessage>현재 생성된 그룹이 없습니다.</EmptyMessage>
+            )}
+          </ActivityList>
+        </GroupSection>
+  
+        {/* 진행 중인 그룹 섹션 */}
+        <GroupSection>
+          <GroupTitle>독서 진행중인 그룹</GroupTitle>
+          <ActivityList>
+            {inProgressGroups.response && inProgressGroups.response.length > 0 ? (
+              getRandomGroups(inProgressGroups.response, 4).map((group) => (
+                <ProgressGroup
+                  key={group.groupId}
+                  groupName={group.groupName}
+                  pageInfo={group.goalContent}
+                  membersCount={`${group.currentMembers}/${group.maxMembers}명`}
+                />
+              ))
+            ) : (
+              <EmptyMessage>현재 생성된 그룹이 없습니다.</EmptyMessage>
+            )}
+          </ActivityList>
+        </GroupSection>
+  
+        {/* 완료된 그룹 섹션 */}
+        <GroupSection>
+          <GroupTitle>독서 완료 그룹</GroupTitle>
+          <ActivityList>
+            {completedGroups.response && completedGroups.response.length > 0 ? (
+              getRandomGroups(completedGroups.response, 3).map((group) => (
+                <ActivityCard
+                  key={group.groupId}
+                  activity={{
+                    groupName: group.groupName,
+                    pageInfo: group.groupDescription,
+                    maxMembers: group.maxMembers,
+                    currentMembers: group.currentMembers,
+                    masterNickname: group.masterNickname,
+                    masterImage: group.masterImage,
+                    goalContent: group.goalContent,
+                    goalType: group.goalType,
+                  }}
+                  completed={group.status === 'COMPLETED'}
+                />
+              ))
+            ) : (
+              <EmptyMessage>현재 생성된 그룹이 없습니다.</EmptyMessage>
+            )}
+          </ActivityList>
+        </GroupSection>
+      </GroupWrapper>
+
+        <ReviewSection ref={reviewRef}>
+          <NavBar>
+            <NavButton
+              onClick={handleScrollToDetail}
+              active={activeTab === 'detail'}
+            >
+              상세정보
+            </NavButton>
+            <NavButton
+              onClick={handleScrollToReviews}
+              active={activeTab === 'reviews'}
+            >
+              BookMile 리뷰
+            </NavButton>  
+          </NavBar>
+
+          <ALLRating>
+            <GroupTitle>전체 평점</GroupTitle>
+            <Rating rating={bookRating} totalStars={5} starSize="24px" fontSize="24px" />
+          </ALLRating>
+          {recentReviews.length > 0 ? (
+              recentReviews.map((review) => (
+                <ReviewList
+                  username={review.username}
+                  date={review.date}
+                  comment={review.comment}
+                  rating={review.rating}
+                />
+              ))
+            ) : (
+            <EmptyMessage>리뷰가 없습니다.</EmptyMessage>
+          )}
+        </ReviewSection> 
+    </Container>
+  );
+};
+
+export default Detail;
+
+const EmptyMessage = styled.div`
+  text-align: center;
+  color: #999;
+  margin-top: 1rem;
+`;
+
 
 const Container = styled.main`
   width: 1156px;
@@ -12,7 +398,7 @@ const Container = styled.main`
   flex-direction: column;
   justify-content: center;
   margin: 0 auto;
-  top: 160px;
+  top: 80px;
   position: relative;
 `;
 
@@ -53,11 +439,24 @@ const StyledBookInfo = styled.section`
   word-wrap: break-word;
 `;
 
+const TitleRow = styled.div`
+  display: flex;
+  align-items: start;
+  gap: 12px;
+`;
+
 const Title = styled.h1`
   font-size: 32px;
   font-weight: bold;
   color: ${(props) => props.theme.colors.body};
   margin: 0;
+`;
+const Aladin = styled.img`
+  object-fit: cover;
+  width: 56px;
+  height: 30px;
+  cursor: pointer;
+  margin-top: 10px;
 `;
 
 const InfoSection = styled.section`
@@ -144,6 +543,12 @@ const GroupTitle = styled.div`
   color: ${(props) => props.theme.colors.body};
 `;
 
+const More = styled.span`
+  cursor: pointer;
+  color: ${(props) => props.theme.colors.body};
+
+`;
+
 const ActivityList = styled.div`
   display: flex;
   gap: 20px;
@@ -156,220 +561,34 @@ const ActivityList = styled.div`
   }
 `;
 
-const Detail = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const ALLRating = styled.div`
+  display: flex;
+  gap: 32px;
+  `;
 
-  const bookData = {
-    title: '젊은 베르테르의 슬픔',
-    author: '요한 볼프강 폰 괴테',
-    publisher: '민음사',
-    isbn: '9788937460258',
-    pageCount: 244,
-    chapters: '12',
-    aladinRating: 8.8 * 0.5,
-    bookmileRating: 4.2,
-    coverUrl: '../../public/images/cover/werther.png',
-    description:
-      '질풍노도의 시대를 이끈 청년 괴테의 대표작 청춘의 열병, 이룰 수 없는 사랑의 상징이 된 이름 세계적인 베스트셀러가 된 최초의 독일소설 “인간을 행복하게 만드는 것이 동시에 불행의 원천이 될 수 있다는 사실은 과연 필연인 것일까?” 괴테는 25세 되던 해 봄, 이미 약혼자가 있었던 샤로테 부프를 사랑하게 되었다. 그녀를 향한 이룰 수 없는 사랑에 절망한 나머지 괴테는 도망치다시피 귀향했다. 그 후 그의 친구 예루살렘이 남편이 있는 부인에게 연정을 품다가 자살했다는 소식을 들었다. 괴테는 마신에 홀린 것 같은 상태에서 예루살렘의 이야기와 자신의 체험을 엮어 불과 14주 만에 『젊은 베르테르의 슬픔』이라는 문제작을 완성했다. 이 작품은 1774년 출간되자마자 젊은 독자층을 완전히 감동의 소용돌이 속에 몰아넣었다. 실연당한 남자들이 베르테르처럼 자살하는 일도 있었고, 젊은 남자들은 노랑 조끼에 파랑 상의를 입었으며 여자들은 로테처럼 사랑받기를 원했다. ‘질풍노도의 시대’를 이끈 청년 괴테의 대표작이자 세계적으로 가장 많은 독자를 가지게 된 이 작품은 사랑의 열병을 앓는 전 세계 젊은이들의 영혼을 울렸다. 젊은 날의 생생한 사랑의 체험에서 나오는 생명감과 순수한 열정이 이토록 섬세하고 아름답게 묘사된 예는 다시 찾아볼 수 없을 것이다.',
-  };
+const NavBar = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  `;
 
-  const handleButtonClick = () => {
-    window.location.href = `/creategroup?isbn=${bookData.isbn}`;
-  };
+  const NavButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background: ${(props) => props.theme.colors.background};
+  color: ${(props) => (props.active ? props.theme.colors.body : '#565656')};
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 700;
+  transition: background 0.3s;
+  border-bottom: 4px solid ${(props) => (props.active ? props.theme.colors.main : '#D9D9D9')};
+  padding: 10px 30px;
+  cursor: pointer;
+`;
 
-  const [activityData] = useState([
-    {
-      groupName: '베르테르 독서모임',
-      pageInfo: '20페이지 씩',
-      membersCount: '10명',
-    },
-    {
-      groupName: '문학적 탐방',
-      pageInfo: '50페이지 씩',
-      membersCount: '15명',
-    },
-    {
-      groupName: '책과 함께하는 나의 여정',
-      pageInfo: '30횟수',
-      membersCount: '8명',
-    },
-  ]);
+const ReviewSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background: #f9f9f9;
+`;
 
-  // 진행중인 그룹 데이터
-  const [progressGroupData] = useState([
-    {
-      groupName: '젊은 베르테르의 진행 모임',
-      pageInfo: '15페이지 씩 진행 중',
-      membersCount: '12명',
-    },
-    {
-      groupName: '고전 독서클럽',
-      pageInfo: '25페이지 씩 진행 중',
-      membersCount: '20명',
-    },
-    {
-      groupName: '고전 독서클럽',
-      pageInfo: '25페이지 씩 진행 중',
-      membersCount: '20명',
-    },
-  ]);
-
-  // 완료된 그룹 데이터
-  const [completedGroupData] = useState([
-    {
-      groupName: '완료된 그룹 A',
-      pageInfo: '20페이지',
-      membersCount: '10명',
-    },
-    {
-      groupName: '완료된 그룹 B',
-      pageInfo: '나만의 속도',
-      membersCount: '5명',
-    },
-    {
-      groupName: '완료된 그룹 B',
-      pageInfo: '30페이지',
-      membersCount: '5명',
-    },
-  ]);
-
-  const toggleDescription = () => {
-    setIsExpanded((prevState) => !prevState);
-  };
-
-  return (
-    <Container>
-      <BookDetailWrapper>
-        {/* 책 커버 */}
-        <BookCover>
-          <img src={bookData.coverUrl} alt="Book cover" />
-        </BookCover>
-
-        {/* 책 정보 */}
-        <StyledBookInfo>
-          <Title>{bookData.title}</Title>
-
-          {/* 저자, 출판사, ISBN 등 정보 */}
-          <InfoSection>
-            <InfoRow>
-              <Label>저자:</Label>
-              <InfoText>{bookData.author}</InfoText>
-            </InfoRow>
-
-            <InfoRow>
-              <Label>출판사:</Label>
-              <InfoText>{bookData.publisher}</InfoText>
-            </InfoRow>
-
-            <InfoRow>
-              <Label>ISBN13:</Label>
-              <InfoText>{bookData.isbn}</InfoText>
-            </InfoRow>
-
-            <InfoRow>
-              <Label>전체 페이지:</Label>
-              <InfoText>{bookData.pageCount}쪽</InfoText>
-            </InfoRow>
-
-            <InfoRow>
-              <Label>챕터:</Label>
-              <InfoText>{bookData.chapters}</InfoText>
-            </InfoRow>
-
-            <InfoRow>
-              <Label>알라딘 평점:</Label>
-              <Rating rating={bookData.aladinRating} totalStars={5} />
-            </InfoRow>
-            <InfoRow>
-              <Label>BookMile 평점:</Label>
-              <Rating rating={bookData.bookmileRating} totalStars={5} />
-            </InfoRow>
-          </InfoSection>
-
-          {/* 더보기 설명 */}
-          <DescriptionWrapper>
-            <Description isExpanded={isExpanded} onClick={toggleDescription}>
-              {bookData.description}
-              {!isExpanded && (
-                <Ellipsis onClick={toggleDescription}>...</Ellipsis>
-              )}
-            </Description>
-          </DescriptionWrapper>
-          <ModalButton
-            onClick={handleButtonClick}
-            width="168px"
-            height="44px"
-            fontWeight="500"
-          >
-            새로 생성하기
-          </ModalButton>
-        </StyledBookInfo>
-      </BookDetailWrapper>
-
-      {/*미리보기 리뷰*/}
-      <PreviewRanking>
-        <RatingRow>
-          <GroupTitle>BookMile 리뷰</GroupTitle>
-          <span>더보기</span>
-        </RatingRow>
-        <RatingRow>
-          <ReviewCard
-            rating={4}
-            name="똑똑한황구30"
-            date="25.01.15"
-            review="진심 좋음... 그냥 왜 명작이라고 하는지 알 것 같은 기분"
-          />
-          <ReviewCard
-            rating={3}
-            name="똑똑한황구312"
-            date="24.12.22"
-            review="팀원들이 별로였음ㄹㅇ 근데 책 내용은 좋았음"
-          />
-        </RatingRow>
-      </PreviewRanking>
-
-      <GroupWrapper>
-        {/* 모집중인 그룹 */}
-        <GroupSection>
-          <GroupTitle>모집중인 그룹</GroupTitle>
-          <ActivityList>
-            {activityData.map((activity, index) => (
-              <ActivityCard
-                key={index}
-                activity={activity.groupName}
-                completed={false}
-              />
-            ))}
-          </ActivityList>
-        </GroupSection>
-
-        {/* 독서 진행중인 그룹 */}
-        <GroupSection>
-          <GroupTitle>독서 진행중인 그룹</GroupTitle>
-          <ActivityList>
-            {progressGroupData.map((activity, index) => (
-              <ProgressGroup
-                key={index}
-                groupName={activity.groupName}
-                pageInfo={activity.pageInfo}
-                membersCount={activity.membersCount}
-              />
-            ))}
-          </ActivityList>
-        </GroupSection>
-
-        {/* 독서 완료 그룹 */}
-        <GroupSection>
-          <GroupTitle>독서 완료 그룹</GroupTitle>
-          <ActivityList>
-            {completedGroupData.map((activity, index) => (
-              <ActivityCard key={index} activity={activity} completed={true} />
-            ))}
-          </ActivityList>
-        </GroupSection>
-      </GroupWrapper>
-    </Container>
-  );
-};
-
-export default Detail;

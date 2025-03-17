@@ -54,7 +54,7 @@ const RatingNumber = styled.div`
   font-weight: 900;
 `;
 
-const Rating = ({ rating, totalStars = 5, starSize, fontSize }) => {
+const Rating = ({ rating=0, totalStars = 5, starSize, fontSize }) => {
   const fullStars = Math.floor(rating);
   const decimal = rating - fullStars;
   const quarterStars = Math.floor(decimal * 4);
