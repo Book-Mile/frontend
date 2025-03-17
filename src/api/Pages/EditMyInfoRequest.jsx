@@ -3,6 +3,8 @@ import axios from 'axios';
 export { emailRequest, checkEmailVerification } from './SignUpRequest.jsx';
 import { handleLogout } from '/src/utils/publicFunctions.js';
 
+export { getLinkedSocialLogins } from '/src/api/Pages/SNSManageRequest.jsx';
+
 const accessToken = JSON.parse(sessionStorage.getItem('userData'))?.accessToken;
 
 export const getUserInfo = async (setEmail, setNickname, setImage) => {
@@ -77,8 +79,10 @@ export const checkNicknameExists = async (nickname) => {
       if (!response.data) {
         //true인 경우(이미 존재)
         alert('사용할 수 있는 닉네임입니다.');
+        return true;
       } else {
         alert('이미 존재하는 닉네임입니다.');
+        return false;
       }
       console.log('닉네임 중복 검사 성공!');
       console.log(response.data);
@@ -177,5 +181,27 @@ export const changeNicknameEmail = async (
     }
 
     throw error;
+  }
+};
+
+// 프로필 이미지 변경 API 호출 함수
+export const updateProfileImage = async (file, accessToken) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.put(
+      'https://bookmile.site/api/v1/users/profile',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('프로필 사진 변경에 실패했습니다. 다시 시도해주세요.');
   }
 };

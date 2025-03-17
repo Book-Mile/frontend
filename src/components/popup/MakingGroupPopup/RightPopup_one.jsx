@@ -21,6 +21,7 @@ import makingGroupForm from '../../../hooks/makingGroupForm';
 import { handleMakingGroupSubmit } from '../../../api/Popup/MakingGroupPopupSubmit';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Rightpopup_one = ({
   handleBack,
@@ -29,6 +30,7 @@ const Rightpopup_one = ({
   inputValue,
   handleClose,
 }) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const bookId = params.get('isbn'); // URL에서 isbn13 가져와서 bookId로 사용
@@ -38,6 +40,7 @@ const Rightpopup_one = ({
   const [titleErrorMessage, setTitleErrorMessage] = useState(''); // 에러 메시지 상태
   const [passwordErrorMessage, setPasswordErrorMessage] = useState(''); // 에러 메시지 상태
   const [memberErrorMessage, setMemberErrorMessage] = useState('');
+  const [descriptionErrorMessage, setDescriptionErrorMessage] = useState('');
   const { error, handleError } = useErrorHandling();
   const [text, setText] = useState(''); // 현재 입력된 텍스트 상태
 
@@ -53,6 +56,11 @@ const Rightpopup_one = ({
     let errorCheck = 0;
     if (!groupData.groupName) {
       setTitleErrorMessage('그룹명을 입력하세요.');
+      errorCheck = 1;
+    }
+
+    if (!text) {
+      setDescriptionErrorMessage('소개를 입력하세요!');
       errorCheck = 1;
     }
 
@@ -94,7 +102,7 @@ const Rightpopup_one = ({
       handleError(err);
     });
     handleClose();
-    window.location.href = `/lobby?isbn=${bookId}`;
+    navigate(`/lobby?isbn=${bookId}`);
   };
 
   if (error) {
@@ -246,6 +254,8 @@ const Rightpopup_one = ({
             >
               {text.length}/50
             </div>
+            {/* 에러 메시지 출력 */}
+            <ErrorMessageEmpty>{descriptionErrorMessage}</ErrorMessageEmpty>
           </Content>
         </div>
       </Rightpopup_oneContinaer>

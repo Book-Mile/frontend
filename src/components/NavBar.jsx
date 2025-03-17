@@ -1,6 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import apiClient from '../api/apiClient.jsx';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import apiClient from '../api/apiClient.jsx';
@@ -174,6 +178,7 @@ const MainContainer = styled.div`
 const LogoContainer = styled(Link)`
   text-decoration: none;
   font-weight: bold;
+  color: ${(props) => props.theme.colors.main};
   color: ${(props) => props.theme.colors.main};
 `;
 

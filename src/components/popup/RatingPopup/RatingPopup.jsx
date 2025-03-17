@@ -106,10 +106,11 @@ const RatingPopup = ({ onClose = false, id = 1, onSubmit }) => {
     setText(e.target.value); // 텍스트 업데이트
   };
 
-  const { error, handleError } = useErrorHandling();
+  const { error } = useErrorHandling();
 
   const onOkClick = () => {
     onSubmit(rating, text); // Call the onSubmit handler from RankingPage
+    RatingPopupSubmit(rating, text, location);
   };
 
   if (error) {

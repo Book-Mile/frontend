@@ -56,7 +56,7 @@ export const handleMakingGroupSubmit = async (
     if (response.status === 200) {
       alert('성공' + response.data.message);
     }
-    alert('dkdkdk');
+    alert('성공');
   } catch (err) {
     alert('실패패');
     console.error('그룹 생성 실패:', err);

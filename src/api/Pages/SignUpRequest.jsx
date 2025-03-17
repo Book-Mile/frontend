@@ -56,6 +56,7 @@ export const emailRequest = async (email) => {
     });
 
     if (response.status === 200) {
+      console.log(response);
       alert('이메일로 인증번호를 전송하였습니다.');
     } else {
       alert(

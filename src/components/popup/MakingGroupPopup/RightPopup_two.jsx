@@ -9,6 +9,7 @@ import {
   GroupOverflowContainer,
 } from '../../../styled_components/popupStyle';
 const RightPopup_two = ({ groups, handleGroupClick }) => {
+  console.log(groups);
   return (
     <>
       <Title>

@@ -85,7 +85,6 @@ const SearchBar = ({ initialQuery }) => {
 
 export default SearchBar;
 
-
 const SearchBarContainer = styled.div`
     display: flex;
     justify-content: center;

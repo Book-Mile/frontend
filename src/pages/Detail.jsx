@@ -6,7 +6,7 @@ import Rating from '../components/search/Rating';
 import ModalButton from '../components/modalButton/ModalCustomButton';
 import ActivityCard from '../components/group/ActivityCard';
 import ProgressGroup from '../components/group/ProgressGroup';
-import Loding from '../animations/Loding';
+import Loading from '../animations/Loading';
 import ReviewCard from '../components/search/ReviewCard';
 import ReviewList from '../components/starRating/ReviewList';
 
@@ -167,7 +167,7 @@ const Detail = () => {
     }
   };
 
-  if (loading) return <Loding />;
+  if (loading) return <Loading />;
   if (error) return <div>오류 발생: {error}</div>;
   
   return (
@@ -228,7 +228,7 @@ const Detail = () => {
             </StyledBookInfo>
           </>
         ) : (
-          <Loding />
+          <Loading />
         )}
       </BookDetailWrapper>
   

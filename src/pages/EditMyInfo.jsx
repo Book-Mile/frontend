@@ -4,11 +4,16 @@ import useUserStore from '../../src/store/store.js';
 import { validatePassword } from '../utils/publicFunctions.js';
 
 import LGButton from '../components/LGButton/LGButton';
+import editImgBtn from '/src/assets/EditMyInfoAssets/editImgBtn.svg';
 
 import emailAsset from '/src/assets/EditMyInfoAssets/email.svg';
 import passwordAsset from '/src/assets/EditMyInfoAssets/password.svg';
 import snsAsset from '/src/assets/EditMyInfoAssets/sns.svg';
+
+import googleLogo from '/src/assets/snslogo/google.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';
+import naverLogo from '/src/assets/snslogo/naver.svg';
+
 import { useNavigate } from 'react-router-dom';
 import {
   getSocialInfo,
@@ -19,35 +24,101 @@ import {
   changePassword,
   changeNicknameEmail,
 } from '/src/api/Pages/EditMyInfoRequest.jsx';
+import { getLinkedSocialLogins } from '/src/api/Pages/EditMyInfoRequest.jsx';
 import SecessionUserPopup from '../components/popup/SecessionUserPopup/SecessionUserPopup.jsx';
+import ProfileModal from './ProfileModal';
 
-export default function MyPage() {
+export default function EditMyInfo() {
   const { setName } = useUserStore();
+  const navigate = useNavigate();
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
-  const [snsId] = useState('email@kakao.com');
   const [isLinkedSNS] = useState(false);
+
+  //닉네임 변경 관련
+  const [isCheckedNickname, setCheckedNickname] = useState(false);
+
+  //이메일 변경 관련
   const [isSented, setIsSented] = useState(false);
-  const [authNum] = useState('');
-  const [setIsAuthed] = useState(false);
+  const [authNum, setAuthNum] = useState('');
+  const [isAuthed, setIsAuthed] = useState(false);
 
   const [originPassword, setOriginPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
 
-  const navigate = useNavigate();
+  const [isChanged, setIsChanged] = useState(false);
+
+  const [isTracking, setIsTracking] = useState(false); // 트래킹 활성화 여부
+
+  //SNS계정 관련
+  const [isGoogle, setIsGoogle] = useState(false);
+  const [isKakao, setIsKakao] = useState(false);
+  const [isNaver, setIsNaver] = useState(false);
+
+  //프로필사진 관련
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleProfileClick = () => {
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
-    getUserInfo(setEmail, setNickname, setImage);
-    getSocialInfo(); //일단은 정보 받아오기만 하고, 화면 연동은 나중에..
+    const fetchData = async () => {
+      await getUserInfo(setEmail, setNickname, setImage);
+      await getSocialInfo(); // 일단은 정보 받아오기만 하고, 화면 연동은 나중에..
+
+      setIsTracking(true); // getUserInfo 완료 후 트래킹 시작
+    };
+
+    fetchData();
   }, []);
 
-  const onClickCheckNickname = () => {
+  useEffect(() => {
+    if (!isTracking) return; // getUserInfo가 끝나기 전에는 실행 안 함
+
+    // isChanged가 변경될 때 실행할 로직
+    console.log('isChanged가 변경됨:', isChanged);
+  }, [isChanged, isTracking]);
+
+  useEffect(() => {
+    const fetchLinkedSocialLogins = async () => {
+      try {
+        const data = await getLinkedSocialLogins(); // API 함수 호출
+        if (data?.response) {
+          if (data.response?.includes('google')) {
+            setIsGoogle(true);
+          }
+          if (data.response?.includes('kakao')) {
+            setIsKakao(true);
+          }
+          if (data.response?.includes('naver')) {
+            setIsNaver(true);
+          }
+        }
+      } catch (error) {
+        console.error('소셜 로그인 연동 조회 실패:', error);
+      }
+    };
+
+    fetchLinkedSocialLogins();
+  }, []);
+
+  const onClickCheckNickname = async () => {
     if (nickname.length >= 2) {
-      checkNicknameExists(nickname);
+      try {
+        const response = checkNicknameExists(nickname);
+        if (response) {
+          //사용 가능한 경우
+          setCheckedNickname(true);
+        } else {
+          setCheckedNickname(false);
+        }
+      } catch (error) {
+        alert(error.message);
+      }
     } else {
       alert('닉네임은 최소 2글자 이상이어야 합니다.');
     }
@@ -93,6 +164,19 @@ export default function MyPage() {
 
   //하단 완료 버튼 눌렀을 시 동작할 함수
   const handleSubmit = () => {
+    if (!isChanged) {
+      //변경된 사항이 없으면
+      alert('변경된 사항이 없습니다.');
+      return;
+    }
+    if (!isCheckedNickname) {
+      alert('닉네임 검사를 완료해주세요!');
+      return;
+    }
+    if (!isAuthed) {
+      alert('이메일 인증을 완료해주세요!');
+      return;
+    }
     changeNicknameEmail(nickname, email, setName, navigate);
   };
 
@@ -110,14 +194,32 @@ export default function MyPage() {
         <UpperFrame>
           <BoxFrame>
             <BoxType1>
-              <Type1Left>
+              <Type1Left style={{ position: 'relative' }}>
                 <img
                   src={image}
                   alt="profileAsset"
                   width="66px"
                   height="66px"
+                  style={{
+                    borderRadius: '50%', // 원형으로 만들기
+                    border: '2px solid #ccc', // 회색 테두리
+                  }}
+                />
+                <img
+                  src={editImgBtn}
+                  alt="editProfile"
+                  onClick={handleProfileClick}
+                  style={{
+                    position: 'absolute',
+                    bottom: '5px',
+                    right: '0px',
+                    width: '25px', // 버튼 크기 조정
+                    height: '25px', // 버튼 크기 조정
+                    cursor: 'pointer', // 클릭 가능한 커서 모양
+                  }}
                 />
               </Type1Left>
+
               <Type1Right>
                 <Type1RightFirstLine>닉네임</Type1RightFirstLine>
                 <Type1RightSecondLine>
@@ -125,7 +227,10 @@ export default function MyPage() {
                     type="text"
                     id="nickname"
                     value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
+                    onChange={(e) => {
+                      setNickname(e.target.value);
+                      setIsChanged(true);
+                    }}
                     placeholder="닉네임을 입력하세요"
                   />
                   <LGButton
@@ -176,7 +281,7 @@ export default function MyPage() {
                       type="text"
                       id="authNum"
                       value={authNum}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setAuthNum(e.target.value)}
                     />
                     <LGButton
                       text="인증하기"
@@ -266,17 +371,41 @@ export default function MyPage() {
                 <img src={snsAsset} alt="snsAsset" width="50px" height="50px" />
               </Type2Left>
               <Type2Middle>
-                <Type2RightFirstLine>SNS 연동</Type2RightFirstLine>
+                <Type2RightFirstLine>연결된 SNS 계정</Type2RightFirstLine>
                 <Type2RightSecondLine>
-                  <SNSFrame>
-                    <img
-                      src={kakaoLogo}
-                      alt="Kakao Logo"
-                      width="100%"
-                      height="100%"
-                    />
-                  </SNSFrame>
-                  <SNSidFrame>{snsId}</SNSidFrame>
+                  {isGoogle && (
+                    <>
+                      <SNSIconWrapper>
+                        <SNSIcon src={googleLogo} alt="Google Logo"></SNSIcon>
+                      </SNSIconWrapper>
+                      <SNSidFrame>Google</SNSidFrame>
+                    </>
+                  )}
+                  {isKakao && (
+                    <>
+                      <SNSIconWrapper style={{ background: '#f7e600' }}>
+                        <SNSIcon src={kakaoLogo} alt="Kakao Logo"></SNSIcon>
+                      </SNSIconWrapper>
+
+                      <SNSidFrame>Kakao</SNSidFrame>
+                    </>
+                  )}
+                  {isNaver && (
+                    <>
+                      <SNSIconWrapper style={{ background: '#2db400' }}>
+                        <SNSIcon
+                          src={naverLogo}
+                          alt="Naver Logo"
+                          style={{ width: '80%', height: '80%' }}
+                        ></SNSIcon>
+                      </SNSIconWrapper>
+
+                      <SNSidFrame>Naver</SNSidFrame>
+                    </>
+                  )}
+                  {!(isNaver || isGoogle || isKakao) && (
+                    <>연동된 SNS 계정이 없습니다.</>
+                  )}
                 </Type2RightSecondLine>
               </Type2Middle>
               <Type2Right
@@ -284,7 +413,7 @@ export default function MyPage() {
                   navigate('/snsmanagement');
                 }}
               >
-                연동하기 &gt;
+                연동 관리 &gt;
               </Type2Right>
             </BoxType2>
           </BoxFrame>
@@ -313,6 +442,15 @@ export default function MyPage() {
         </DownFrame>
       </OuterFrame>
       {showPopup && <SecessionUserPopup onClose={closePopup} />}
+      {/*프로필 사진 변경 모달*/}
+      <ProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpdate={() => {
+          //프로필 변경에 성공하면 서버로부터 유저 정보를 다시 받아와서 화면에 업데이트 한다
+          getUserInfo(setEmail, setNickname, setImage);
+        }}
+      />
     </MainContainer>
   );
 }
@@ -321,14 +459,12 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: nowrap;
   position: relative;
   width: 100%;
   height: 100%;
-  margin: 0 auto;
   background: #fafafa;
-  box-sizing: border-box;
   overflow-y: auto;
+  flex-wrap: wrap;
 `;
 
 const OuterFrame = styled.div`
@@ -336,8 +472,6 @@ const OuterFrame = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-
-  padding-top: 100px;
 
   gap: 50px;
 `;
@@ -489,24 +623,27 @@ const Type2RightSecondLine = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const SNSFrame = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-
+const SNSIconWrapper = styled.div`
   width: 30px;
   height: 30px;
+  padding: 5px;
+  border: 2px solid #d9d9d9;
+  border-radius: 50%;
+  overflow: hidden; /* 자식 요소가 원 밖으로 나가지 않도록 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-  background: #f7e600;
-  border: 2px solid #f4f4f4;
-  border-radius: 50px;
+const SNSIcon = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const SNSidFrame = styled.div`
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 32px;
   /* identical to box height, or 229% */
