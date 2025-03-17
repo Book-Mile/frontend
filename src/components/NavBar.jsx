@@ -24,6 +24,7 @@ export default function NavBar() {
 
   useEffect(() => {
     if (name !== null) {
+
       apiClient.get('/users')
         .then(response => {
           setUserInfo(response.data.response);
@@ -54,9 +55,11 @@ export default function NavBar() {
 
   const logoutAndCloseDropdown = () => {
     handleLogout(setName);
-    setIsProfileDropdownVisible(false); 
-    Cookies.remove('accessToken'); 
-    Cookies.remove('refreshToken'); 
+    setIsProfileDropdownVisible(false);
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
+    alert('로그아웃 되었습니다. 로비로 이동합니다.');
+    window.location.href = '/'; //로비로 이동
   };
 
   return (
@@ -120,7 +123,7 @@ const NotifiContainer = styled.div`
 const ProfileDropdown = styled.div`
   position: absolute;
   top: 50px;
-  right: 0; 
+  right: 0;
   background-color: white;
   padding: 15px;
   border: 1px solid #ccc;
@@ -146,6 +149,7 @@ const ProfileLink = styled(Link)`
   display: block;
   text-decoration: none;
   color: ${(props) => props.theme.colors.body};
+
   &:hover {
     cursor: pointer;
   }
@@ -219,3 +223,4 @@ const SignUpLink = styled(Link)`
     background-color: #961414;
   }
 `;
+

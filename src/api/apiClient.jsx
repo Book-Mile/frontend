@@ -38,6 +38,10 @@ const refreshAccessToken = async () => {
   } catch (error) {
     console.error('🚨 토큰 갱신 실패:', error.response?.data || error.message);
     handleLogout();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 649ce485ec448d3740a1ce420ba25ddc33bda869
     return null;
   }
 };
