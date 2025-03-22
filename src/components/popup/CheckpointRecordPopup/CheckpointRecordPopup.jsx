@@ -33,7 +33,7 @@ const FileInfo = ({ file, onDelete }) => {
 };
 
 //팝업창 컴포넌트
-const CheckpointRecordPopup = () => {
+const CheckpointRecordPopup = ({ groupId }) => {
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const [page, setPage] = useState('');
   const [content, setContent] = useState('');
@@ -42,10 +42,6 @@ const CheckpointRecordPopup = () => {
 
   const [loading, setLoading] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
-
-  const groupId = 19; //임시로 테스트를 위해 groupId를 19로 기본값을 주었습니다.
-
-  const navigate = useNavigate();
 
   const handleClose = () => {
     setIsClosing(true); // 닫히는 애니메이션 시작

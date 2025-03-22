@@ -1,8 +1,30 @@
 /* eslint-disable react/prop-types */
 import styled, { keyframes } from 'styled-components';
 import SubRanking from './SubRanking';
+import DefaultProfile from '../../../public/images/profile.png';
 
-const RankingList1 = ({ onSelectItem }) => {
+const RankingList1 = ({ onSelectItem, progressData }) => {
+  const responseData = progressData?.response;
+
+  if (!Array.isArray(responseData)) {
+    console.error("progressData가 배열이 아닙니다:", progressData);
+    return <NoData>데이터 형식 오류입니다.</NoData>;
+  }
+
+  if (responseData.length === 0) {
+    return <NoData>데이터가 없습니다.</NoData>;
+  }
+
+  const sortedData = [...responseData]
+    .sort((a, b) => parseFloat(b.progress) - parseFloat(a.progress))
+    .map((item) => ({
+      ...item,
+      progress: Math.floor(parseFloat(item.progress)),
+    }));
+  const topRanks = sortedData.slice(0, 3);
+  const remainingRanks = sortedData.slice(3);
+  
+
   return (
     <Container>
       <SvgOne
@@ -43,39 +65,40 @@ const RankingList1 = ({ onSelectItem }) => {
         </g>
         <SvgGradientFilterTwo />
       </SvgTwo>
+
       <MainWapper>
         <Background>
-          <One>
-            <ProfileImage src="../../../public/images/profile.png" />
-            <Name>미친운체개발자</Name>
-          </One>
-          <Two>
-            <ProfileImage src="../../../public/images/profile.png" />
-            <Name>미친운체개발자</Name>
-          </Two>
-          <Three>
-            <ProfileImage src="../../../public/images/profile.png" />
-            <Name>미친운체개발자</Name>
-          </Three>
-          <PercentOne>95%</PercentOne>
-          <PercentTwo>90%</PercentTwo>
-          <PercentThree>88%</PercentThree>
-          <ImageOne
-            src="../../../public/images/ranking/rectangle1.png"
-            delay="0s"
-          />
-          <ImageTwo
-            src="../../../public/images/ranking/rectangle2.png"
-            delay="0.3s"
-          />
-          <ImageThree
-            src="../../../public/images/ranking/rectangle3.png"
-            delay="0.6s"
-          />
+          {topRanks[0] && (
+            <One>
+              <ProfileImage src={topRanks[0].profile || DefaultProfile} />
+              <Name>{topRanks[0].nickname}</Name>
+            </One>
+          )}
+          {topRanks[1] && (
+            <Two>
+              <ProfileImage src={topRanks[1].profile || DefaultProfile} />
+              <Name>{topRanks[1].nickname}</Name>
+            </Two>
+          )}
+          {topRanks[2] && (
+            <Three>
+              <ProfileImage src={topRanks[2].profile || DefaultProfile} />
+              <Name>{topRanks[2].nickname}</Name>
+            </Three>
+          )}
+
+          {topRanks[0] && <PercentOne>{topRanks[0].progress}%</PercentOne>}
+          {topRanks[1] && <PercentTwo>{topRanks[1].progress}%</PercentTwo>}
+          {topRanks[2] && <PercentThree>{topRanks[2].progress}%</PercentThree>}
+
+          {topRanks[0] && <ImageOne src="../../../public/images/ranking/rectangle1.png" />}
+          {topRanks[1] && <ImageTwo src="../../../public/images/ranking/rectangle2.png" />}
+          {topRanks[2] &&<ImageThree src="../../../public/images/ranking/rectangle3.png" />}
         </Background>
       </MainWapper>
+
       <SubRankingContainer>
-        <SubRanking onSelectItem={onSelectItem} />
+        <SubRanking onSelectItem={onSelectItem} remainingRanks={remainingRanks} />
       </SubRankingContainer>
     </Container>
   );
@@ -92,6 +115,13 @@ const slideUp = () => keyframes`
     transform: translateY(0);
     opacity: 1;
   }
+`;
+
+const NoData = styled.div`
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+  color: #999;
 `;
 
 const Container = styled.div`
@@ -181,7 +211,7 @@ const SubRankingContainer = styled.div`
 
 const PercentOne = styled.div`
   position: absolute;
-  left: 390px;
+  left: 375px;
   top: 200px;
   z-index: 3;
   font-weight: 800;
@@ -225,6 +255,7 @@ const One = styled.div`
   top: 30px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   z-index: 3;
   gap: 10px;
   animation: ${({ delay }) => slideUp(delay)} 1s ease-out forwards;
@@ -232,10 +263,11 @@ const One = styled.div`
 
 const Two = styled.div`
   position: absolute;
-  left: 230px;
+  left: 220px;
   top: 150px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   z-index: 3;
   gap: 10px;
   animation: ${({ delay }) => slideUp(delay)} 2s ease-out forwards;
@@ -247,6 +279,7 @@ const Three = styled.div`
   top: 220px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   z-index: 3;
   gap: 10px;
   animation: ${({ delay }) => slideUp(delay)} 3s ease-out forwards;
@@ -329,3 +362,5 @@ const SvgGradientFilterTwo = () => (
     </defs>
   </>
 );
+
+

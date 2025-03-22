@@ -1,129 +1,260 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+import Cookies from 'js-cookie';
+
+import apiClient from '../api/apiClient';
+import { getUserInfoFromToken } from '../api/getusertoken';
+
 import WhiteButton from '../components/button/whitebutton';
 import RankingList1 from '../components/Ranking/RankingList1';
 import GroupThoughts from '../components/Ranking/GroupThoughts';
 import ImgComment from '../components/Ranking/ImgComment';
 import BookCard from '../components/Ranking/BookCard';
+
 import RatingPopup from '../components/popup/RatingPopup/RatingPopup';
 import CheckpointRecordPopup from '../components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
+import EndGroupPopup from '../components/popup/EndGroupPopup/EndGroupPopup';
+
+import Loading from '../animations/Loading'
 import ToggleOn from '../assets/Toggle/ToggleOn.svg';
 import ToggleOff from '../assets/Toggle/ToggleOff.svg';
 
 const BookProgress = () => {
+  const [groupData, setGroupData] = useState(null);
+  const [progressData, setProgressData] = useState([]);
+  const [isToggled, setIsToggled] = useState(null);
   const [RatingModalOpen, setRatingModalOpen] = useState(false);
   const [CheckpointModalOpen, setCheckpointModalOpen] = useState(false);
+  const [isMaster, setIsMaster] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isMember, setIsMember] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState([]);
-  const [isToggled, setIsToggled] = useState(true);
-  const [rating, setRating] = useState(null);
-  const [reviewText, setReviewText] = useState('');
+  const [searchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
+  const [reviewText, setReviewText] = useState('');
+  const [rating, setRating] = useState(null);
+  const [externalData, setExternalData] = useState([]);
+  const [imgComments, setImgComments] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const toggleSwitch = () => {
-    setIsToggled((prevState) => !prevState);
+  const groupId = searchParams.get("groupId");
+  
+  console.log("groupId",groupId)
+
+    useEffect(() => {
+      const fetchedToken = Cookies.get('accessToken');
+      const fetchedUserInfo = getUserInfoFromToken(fetchedToken);
+    
+      setUserInfo(fetchedUserInfo);
+    
+    }, []);
+  
+    useEffect(() => {
+      const fetchGroupData = async () => {
+        try {
+          const responseGroup = await apiClient.get(`/groups/${groupId}`);
+          setGroupData(responseGroup.data);
+  
+          const responseMembers = await apiClient.get(`/groups/${groupId}/members`);
+          setIsMember(responseMembers.data.some(member => member?.userId === userInfo?.userId));
+  
+          if (responseMembers.data.some(member => member?.userId === userInfo?.userId && member.role === 'MASTER')) {
+            setIsMaster(true);
+          }
+  
+          const response = await apiClient.get('/records/progress', {
+            params: { groupId },
+          });
+          setProgressData(response.data || []);
+        } catch (error) {
+          console.error('데이터를 가져오는 중 오류 발생:', error);
+          setIsLoading(false);
+        }
+      };
+  
+      if (groupId && userInfo) {
+        fetchGroupData();
+      }
+    }, [groupId, userInfo]);
+
+
+  useEffect(() => {
+    const savedIsToggled = localStorage.getItem(`group_${groupId}_isToggled`);
+    
+    if (savedIsToggled !== null) {
+      setIsToggled(JSON.parse(savedIsToggled)); 
+    } else {
+      setIsToggled(true); 
+    }
+  }, [groupId]);
+
+  useEffect(() => {
+    if (isToggled !== null) {
+      localStorage.setItem(`group_${groupId}_isToggled`, JSON.stringify(isToggled));
+    }
+  }, [isToggled, groupId]);
+
+  const toggleTemplate = async () => {
+    try {
+      await apiClient.patch(`/groups/${groupId}/private`, {
+        isOpen: !isToggled,
+      });
+      setIsToggled((prev) => !prev);
+      alert("템플릿 공개 설정이 성공적으로 변경되었습니다.");
+    } catch (error) {
+      console.error('템플릿 공개 상태 변경 실패:', error);
+    }
   };
 
   useEffect(() => {
-    console.log('선택된 책 목록:', selectedBooks);
-  }, [selectedBooks]);
+    const fetchRandomRecords = async () => {
+      try {
+        const response = await apiClient.get('/records/random', {
+          params: { groupId },
+        });
+  
+        if (response.data?.response) {
+          const textComments = response.data.response.map(item => ({
+            nickname: item.nickName,
+            text: item.text,
+            page: item.currentPage,
+            imageSrc: item.userImageUrl
+          }));
+  
+          const imageComments = response.data.response
+            .filter(item => item.recordImageUrl)
+            .map(item => ({
+              nickname: item.nickName,
+              comment: item.text,
+              imageSrc: item.recordImageUrl,
+            }));
+  
+          setExternalData(getRandomItems(textComments, 2));
+          setImgComments(getRandomItems(imageComments, 2));
+        }
+      } catch (error) {
+        console.error('랜덤 기록을 가져오는 중 오류 발생:', error);
+      }
+    };
+  
+    if (groupId) {
+      fetchRandomRecords();
+    }
+  }, [groupId]);
 
-  const handleReviewSubmit = (newRating, newReviewText) => {
-    setRating(newRating);
-    setReviewText(newReviewText);
-    setHasReviewed(true);
-    setRatingModalOpen(false);
-  };
-  const handleSelectItem = (item) => {
-    const newBooks = [
-      {
-        imageSrc: 'https://via.placeholder.com/150',
-        title: `${item.name}의 첫 번째 책`,
-        description: `이 책은 ${item.name}의 첫 번째 작품입니다.`,
-      },
-      {
-        imageSrc: 'https://via.placeholder.com/150',
-        title: `${item.name}의 두 번째 책`,
-        description: `이 책은 ${item.name}의 두 번째 작품입니다.`,
-      },
-      {
-        imageSrc: 'https://via.placeholder.com/150',
-        title: `${item.name}의 세 번째 책`,
-        description: `이 책은 ${item.name}의 세 번째 작품입니다.`,
-      },
-    ];
+  const handleReviewButtonClick = () => {
+      if (!(isMaster || isMember)) {
+        alert("그룹에 속한 멤버가 아닙니다!");
+        return; 
+      }
+      setRatingModalOpen(true);
+    };
+  
+    const handleCheckpointButtonClick = () => {
+      if (!(isMaster || isMember)) {
+        alert("그룹에 속한 멤버가 아닙니다!");
+        return; 
+      }
+      setCheckpointModalOpen(true);
+    };
 
-    console.log('새로 추가될 책 목록:', newBooks);
-    setSelectedBooks(newBooks);
+    const handleReviewSubmit = (newRating, newReviewText) => {
+      setRating(newRating);
+      setReviewText(newReviewText);
+      setHasReviewed(true);
+      setRatingModalOpen(false);
+  
+      localStorage.setItem(
+        `group_${groupId}_review`,
+        JSON.stringify({ savedRating: newRating, savedReviewText: newReviewText })
+      );
+    };
+
+  const getRandomItems = (array, count) => {
+    if (array.length <= count) return array;
+    return array.sort(() => Math.random() - 0.5).slice(0, count);
   };
+
+  const handleCloseClick = () => {
+    setIsPopupOpen(true);
+  };
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+  };
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
-      <ImageContainer>
-        <Image src="../../public/images/cover/dinnerindrawer.png" />
-        <GradientOverlay />
-        <Close>그룹종료</Close>
-        <ContentWrapper>
-          <LeftContent>
-            <span>페이지</span>
-            <GroupInfo>
-              <Title>한강 작가 책 도장깨기</Title>
-              <WhiteButton>
+    {isPopupOpen && <EndGroupPopup onClose={handlePopupClose} groupId={groupId} />}
+    <ImageContainer>
+      <Image cover={groupData?.book?.cover || ''} />
+      <GradientOverlay />
+      {isMaster && <Close onClick={handleCloseClick}>그룹 종료</Close>}
+      <ContentWrapper>
+        <LeftContent>
+          <span>{groupData?.goalType === 'NUMBER' ? 'PAGE' : 'CUSTOM'}</span>
+          <GroupInfo>
+            <Title>{groupData?.groupName}</Title>
+            {isMaster && (
+              <WhiteButton onClick={toggleTemplate}>
                 {isToggled ? '템플릿 공개' : '템플릿 비공개'}
                 <img
                   src={isToggled ? ToggleOn : ToggleOff}
                   alt="Toggle"
-                  onClick={toggleSwitch}
                   style={{ cursor: 'pointer' }}
                 />
               </WhiteButton>
-            </GroupInfo>
-            <SubTitle>서랍에 저녁을 넣어 두었다</SubTitle>
-            <GroupInfo>
-              <span>한강 저</span>
-            </GroupInfo>
-          </LeftContent>
-          <GroupInfo>
-            {!hasReviewed ? (
-              <WhiteButton onClick={() => setRatingModalOpen(true)}>
-                리뷰
-              </WhiteButton>
-            ) : (
-              <>
-                <div>
-                  <p>리뷰</p>
-                  <p>
-                    {rating}점: {reviewText}
-                  </p>
-                </div>
-              </>
             )}
-            <WhiteButton onClick={() => setCheckpointModalOpen(true)}>
-              체크포인트 기록
-            </WhiteButton>
           </GroupInfo>
+          <SubTitle>{groupData?.book?.title}</SubTitle>
+          <GroupInfo>
+            <span>{groupData?.book?.author}</span>
+          </GroupInfo>
+        </LeftContent>
+            <GroupInfo>
+              {!hasReviewed ? (
+                <WhiteButton onClick={handleReviewButtonClick}>
+                  리뷰
+                </WhiteButton>
+              ) : (
+                <>
+                  <div>
+                    <p>리뷰</p>
+                    <p>
+                      {rating}점: {reviewText}
+                    </p>
+                  </div>
+                </>
+              )}
+              <WhiteButton onClick={handleCheckpointButtonClick}>
+                체크포인트 기록
+              </WhiteButton>
+            </GroupInfo>
         </ContentWrapper>
       </ImageContainer>
 
-      <RankWrapper>
-        <RankingList1 onSelectItem={handleSelectItem} />
-        {selectedBooks.map((book, index) => (
+    <RankWrapper>
+      <RankingList1 progressData={progressData} />
+      {selectedBooks.map((book, index) => (
           <BookCard key={index} bookData={book} />
         ))}
-      </RankWrapper>
+    </RankWrapper>
 
       <CommentWrapper>
-        <GroupThoughts />
+        <GroupThoughts groupThoughtsData={externalData} />
         <ImgCommentWrapper>
-          <ImgComment
-            nickname="우리이기 이전에"
-            comment="너무 공감갔던 글귀들"
-            imageSrc="../../public/images/cover/dinnerindrawer.png"
-          />
-          <ImgComment
-            nickname="미친운체개발자"
-            comment="스스로를 닦달하지 말고, 매사에 너무 심각하지 말고, 너무 고민하지 말고, 그냥 재미있게 살았으면 좋겠다."
-            imageSrc="../../public/images/cover/dinnerindrawer.png"
-          />
+          {imgComments.map((comment, index) => (
+            <ImgComment
+              key={index}
+              nickname={comment.nickname}
+              comment={comment.comment}
+              imageSrc={comment.imageSrc}
+            />
+          ))}
         </ImgCommentWrapper>
       </CommentWrapper>
 
@@ -131,12 +262,14 @@ const BookProgress = () => {
         <RatingPopup
           onClose={() => setRatingModalOpen(false)}
           onSubmit={handleReviewSubmit}
+          id={groupData?.bookId}
         />
       )}
       {CheckpointModalOpen && (
         <CheckpointRecordPopup
           // onClose={() => setCheckpointModalOpen(false)}
           onSubmit={handleReviewSubmit}
+          groupId={groupId}
         />
       )}
     </>
@@ -154,10 +287,15 @@ const ImageContainer = styled.div`
   height: 360px;
 `;
 
-const Image = styled.img`
+const Image = styled.div`
+  background-image: ${({ cover }) => `url(${cover})`};
+  display: flex;
+  height: 360px;
+  align-items: flex-end;
+  position: relative;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  background-position: center;
+  background-size: cover;
 `;
 
 const GradientOverlay = styled.div`

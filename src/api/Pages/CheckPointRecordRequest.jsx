@@ -4,7 +4,7 @@ const BASE_URL = import.meta.env.VITE_APP_BASE_URL; // 환경 변수에서 주�
 export const CheckPointRecordRequest = async (
   setData,
   setErrorMessage,
-  groupId = 1,
+  groupId
 ) => {
   try {
     const accessToken = JSON.parse(

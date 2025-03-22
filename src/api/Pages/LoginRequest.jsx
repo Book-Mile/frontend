@@ -2,7 +2,6 @@ import apiClient from '../apiClient';
 import Cookies from 'js-cookie';
 
 function setUserInfo(accessToken, refreshToken) {
-  // 쿠키에 토큰 저장
   Cookies.set('accessToken', accessToken, {
     expires: 7,
     secure: true,

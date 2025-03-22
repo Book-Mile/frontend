@@ -78,14 +78,10 @@ function App() {
                   <Route path="/snsmanagement" element={<SNSManage />} />
                   <Route path="/bookprogress" element={<BookProgress />} />
 
-                  {/* 팝업 URL 제거 */}
+                  {/* 추후 팝업 URL 제거 */}
                   <Route path="/joingroup" element={<JoinGroupPopup />} />
                   <Route path="/leavegroup" element={<SecessionUserPopup />} />
                   <Route path="/endgroup" element={<EndGroupPopup />} />
-                  <Route
-                    path="/checkpoint"
-                    element={<CheckpointRecordPopup />}
-                  />
                   <Route path="/complete" element={<RegisterCompletePopup />} />
                   <Route path="/rate" element={<RatingPopup />} />
                   <Route path="/EditMyInfo" element={<EditMyInfo />} />

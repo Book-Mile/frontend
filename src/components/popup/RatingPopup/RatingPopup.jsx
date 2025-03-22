@@ -110,7 +110,7 @@ const RatingPopup = ({ onClose = false, id = 1, onSubmit }) => {
 
   const onOkClick = () => {
     onSubmit(rating, text); // Call the onSubmit handler from RankingPage
-    RatingPopupSubmit(rating, text, location);
+    RatingPopupSubmit(rating, text, id);
   };
 
   if (error) {
