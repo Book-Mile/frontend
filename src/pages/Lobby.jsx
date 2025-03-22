@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import BookLabel from '../components/search/BookLabel';
 import GroupedPeople from '../components/GroupedPeople';
@@ -38,10 +38,10 @@ import {
 } from '../styled_components/LobbyStyles';
 
 const Lobby = () => {
-  const groupId = '28';
-  // const groupId = params.get('groupId');
-
   const navigate = useNavigate();
+  const location = useLocation(); 
+  const params = new URLSearchParams(location.search);
+  const groupId = params.get('groupId');
 
   const [groupData, setGroupData] = useState(null);
   const [members, setMembers] = useState([]);
@@ -93,8 +93,20 @@ const Lobby = () => {
   }, [groupId, userInfo]);
   console.log("groupId",groupId)
 
-  const handleStartClick = () => {
-    navigate(`/bookprogress?groupId=${groupId}`);
+  const handleStartClick = async () => {
+    try {
+      const response = await apiClient.patch(`/groups/${groupId}`, {
+        status: "IN_PROGRESS",
+      });
+
+      if (response.status === 200) {
+        alert('그룹이 시작되었습니다');
+        navigate(`/bookprogress?groupId=${groupId}`);
+      }
+    } catch (error) {
+      console.error('그룹 시작 중 오류 발생:', error);
+      alert('그룹 시작에 실패했습니다.');
+    }
   };
 
   const handleCloseClick = () => {
