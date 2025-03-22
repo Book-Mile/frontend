@@ -17,3 +17,19 @@ export const fetchNewBooks = async () => {
     return [];
   }
 };
+
+export const fetchBestSellers = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/books/best-sellers`);
+
+    if (response.status === 200 && response.data?.response) {
+      return response.data.response;
+    } else {
+      console.warn('API Response Error:', response.data);
+      return [];
+    }
+  } catch (error) {
+    console.error('API Error:', error.response?.data || error.message);
+    return [];
+  }
+};

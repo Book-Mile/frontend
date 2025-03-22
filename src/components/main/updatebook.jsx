@@ -1,46 +1,48 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSpring, animated } from '@react-spring/web';
-import { fetchNewBooks } from '../../api/Pages/MainResponse';
+import { fetchNewBooks, fetchBestSellers } from '../../api/Pages/MainResponse';
 
-const BookList = () => {
+const BookList = ({ title, fetchBooks }) => {
   const [books, setBooks] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      const newBooks = await fetchNewBooks();
-      setBooks(newBooks);
+    const getBooks = async () => {
+      const fetchedBooks = await fetchBooks();
+      setBooks(fetchedBooks);
     };
+    getBooks();
+  }, [fetchBooks]);
 
-    fetchBooks();
-  }, []);
-
-  // 다음 페이지 이동
   const nextBook = () => {
     if (startIndex + 4 < books.length) {
       setStartIndex((prevIndex) => prevIndex + 4);
     }
   };
 
-  // 이전 페이지 이동
   const prevBook = () => {
     if (startIndex - 4 >= 0) {
       setStartIndex((prevIndex) => prevIndex - 4);
     }
   };
 
-  // 스크롤 애니메이션
   const scrollProps = useSpring({
     scrollLeft: startIndex * (1155 / 4),
     config: { tension: 200, friction: 25 },
     reset: true,
   });
 
+  const handleBookClick = (isbn13) => {
+    navigate(`/details/${isbn13}`);
+  };
+
   return (
     <Section>
       <Header>
-        <Title>최신도서</Title>
+        <Title>{title}</Title>
         <Navigation>
           <Icon onClick={prevBook} viewBox="0 0 30 31">
             <path
@@ -59,7 +61,7 @@ const BookList = () => {
       <animated.div style={{ ...scrollProps }}>
         <ContentWrapper>
           {books.slice(startIndex, startIndex + 4).map((book, index) => (
-            <BookCard key={book.title || index}>
+            <BookCard key={book.title || index} onClick={() => handleBookClick(book.isbn13)}>
               <BookImage src={book.cover} alt={book.title} />
               <BookInfo>
                 <BookTitle>{book.title}</BookTitle>
@@ -73,7 +75,22 @@ const BookList = () => {
   );
 };
 
-export default BookList;
+const BooksSection = () => {
+  return (
+    <Container>
+      <BookList title="베스트셀러" fetchBooks={fetchBestSellers} />
+      <BookList title="최신도서" fetchBooks={fetchNewBooks} />
+    </Container>
+  );
+};
+
+export default BooksSection;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+`;
 
 const Section = styled.section`
   position: relative;
@@ -123,14 +140,7 @@ const BookCard = styled.div`
   flex-direction: column;
   gap: 20px;
   width: calc(25% - 20px);
-
-  @media (max-width: 1439px) {
-    width: calc(50% - 20px);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  cursor: pointer;
 `;
 
 const BookImage = styled.img`
