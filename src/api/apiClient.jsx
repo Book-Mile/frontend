@@ -22,19 +22,25 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// 응답을 받을 때 Access Token 갱신 로직 추가
+// Access Token이 만료되면 자동 갱신
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
       const newAccessToken = await refreshAccessToken();
       if (newAccessToken) {
-        error.config.headers.Authorization = `Bearer ${newAccessToken}`;
-        return apiClient(error.config);
+        try {
+          error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+
+          return apiClient.request(error.config);
+        } catch (reissueError) {
+          console.error('🚨 토큰 갱신 실패:', reissueError);
+          return Promise.reject(reissueError);
+        }
       }
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 const refreshAccessToken = async () => {

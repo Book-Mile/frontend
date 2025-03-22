@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import styled from 'styled-components';
 import apiClient from '../api/apiClient';
 import Rating from '../components/search/Rating';
@@ -26,6 +27,7 @@ const Detail = () => {
 
   const detailRef = useRef(null);
   const reviewRef = useRef(null);
+
 
   const toggleDescription = () => {
     setIsExpanded((prevState) => !prevState);
@@ -71,8 +73,15 @@ const Detail = () => {
     } catch (error) {
     }
   };
+  
 
   useEffect(() => {
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      window.location.href = '/login';
+      return;
+    }
     const fetchBookAndGroupData = async () => {
       try {
         setLoading(true);

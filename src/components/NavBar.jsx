@@ -6,11 +6,10 @@ import { Link } from 'react-router-dom';
 import apiClient from '../api/apiClient.jsx';
 import useUserStore from '../../src/store/store.js';
 import { handleLogout } from '/src/utils/publicFunctions.js';
-// import NotifBell from './icons/NotifBell.jsx';
 import Cookies from 'js-cookie';
 
 export default function NavBar() {
-  const { name, setName } = useUserStore();
+  const { name, setName, accessToken, setAccessToken } = useUserStore();
   const location = useLocation();
   
   const [userInfo, setUserInfo] = useState(null);
@@ -18,19 +17,27 @@ export default function NavBar() {
   
   const dropdownRef = useRef(null);
 
+  // 컴포넌트가 처음 로드될 때, Cookies에서 accessToken을 확인하고 상태 업데이트
   useEffect(() => {
-    if (name !== null) {
-      const fetchUserInfo = async () => {
-        const info = await apiClient.getUserInfo();
-        if (info) {
-          setUserInfo(info);
-        } else {
-          handleLogout(setName);
-        }
-      };
-      fetchUserInfo();
+    const tokenFromCookies = Cookies.get('accessToken');
+    if (tokenFromCookies) {
+      setAccessToken(tokenFromCookies);
     }
-  }, [name]);
+  }, [setAccessToken]);
+
+  // 사용자 정보 가져오기
+  useEffect(() => {
+    if (accessToken) {
+      apiClient.get('/users', { headers: { Authorization: `Bearer ${accessToken}` } })
+        .then(response => {
+          setUserInfo(response.data.response);
+          setName(response.data.response.nickName);  // 사용자 이름도 업데이트
+        })
+        .catch(error => {
+          console.error('사용자 정보 가져오기 실패:', error);
+        });
+    }
+  }, [accessToken, setName]);
 
   // 빈 곳을 클릭하면 드롭다운을 닫는 처리
   useEffect(() => {
@@ -46,15 +53,18 @@ export default function NavBar() {
     };
   }, []);
 
+  // 로그인 상태 변경에 따른 드롭다운 닫기 처리
   useEffect(() => {
     setIsProfileDropdownVisible(false); 
   }, [location]);
 
+  // 로그아웃 처리
   const logoutAndCloseDropdown = () => {
     handleLogout(setName);
     setIsProfileDropdownVisible(false);
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
+    setAccessToken(null);  // 상태에서 accessToken 초기화
     alert('로그아웃 되었습니다. 로비로 이동합니다.');
     window.location.href = '/'; //로비로 이동
   };
@@ -99,6 +109,7 @@ export default function NavBar() {
     </nav>
   );
 }
+
 
 const ProfileImage = styled.div`
   width: 40px;
