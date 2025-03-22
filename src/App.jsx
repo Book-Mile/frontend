@@ -82,10 +82,6 @@ function App() {
                   <Route path="/joingroup" element={<JoinGroupPopup />} />
                   <Route path="/leavegroup" element={<SecessionUserPopup />} />
                   <Route path="/endgroup" element={<EndGroupPopup />} />
-                  <Route
-                    path="/checkpoint"
-                    element={<CheckpointRecordPopup />}
-                  />
                   <Route path="/complete" element={<RegisterCompletePopup />} />
                   <Route path="/rate" element={<RatingPopup />} />
                   <Route path="/EditMyInfo" element={<EditMyInfo />} />

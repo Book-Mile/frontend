@@ -16,6 +16,7 @@ import RatingPopup from '../components/popup/RatingPopup/RatingPopup';
 import CheckpointRecordPopup from '../components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
 import EndGroupPopup from '../components/popup/EndGroupPopup/EndGroupPopup';
 
+import Loading from '../animations/Loading'
 import ToggleOn from '../assets/Toggle/ToggleOn.svg';
 import ToggleOff from '../assets/Toggle/ToggleOff.svg';
 
@@ -28,7 +29,6 @@ const BookProgress = () => {
   const [isMaster, setIsMaster] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [isMember, setIsMember] = useState(false);
-  const [member, setMembers] = useState(null);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -38,8 +38,6 @@ const BookProgress = () => {
   const [externalData, setExternalData] = useState([]);
   const [imgComments, setImgComments] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  
-
 
   const groupId = searchParams.get("groupId");
   
@@ -53,52 +51,33 @@ const BookProgress = () => {
     
     }, []);
   
+    useEffect(() => {
+      const fetchGroupData = async () => {
+        try {
+          const responseGroup = await apiClient.get(`/groups/${groupId}`);
+          setGroupData(responseGroup.data);
   
-  useEffect(() => {
-    const fetchGroupData = async () => {
-      try {
-        // 그룹 정보 가져오기
-        const responseGroup = await apiClient.get(`/groups/${groupId}`);
-        setGroupData(responseGroup.data);
-
-        //그룹 멤버 가져오기
-        const responseMembers = await apiClient.get(`/groups/${groupId}/members`);
-        setMembers(responseMembers.data || []);
-
-        // 현재 유저가 멤버인지 확인
-        if (responseMembers.data && userInfo) {
-          const currentUser = responseMembers.data.find(
-            (member) => member?.userId === userInfo?.userId
-          );
-          if (currentUser) {
-            setIsMember(true);
-            if (currentUser.role === 'MASTER') {
-              setIsMaster(true);
-            }
+          const responseMembers = await apiClient.get(`/groups/${groupId}/members`);
+          setIsMember(responseMembers.data.some(member => member?.userId === userInfo?.userId));
+  
+          if (responseMembers.data.some(member => member?.userId === userInfo?.userId && member.role === 'MASTER')) {
+            setIsMaster(true);
           }
+  
+          const response = await apiClient.get('/records/progress', {
+            params: { groupId },
+          });
+          setProgressData(response.data || []);
+        } catch (error) {
+          console.error('데이터를 가져오는 중 오류 발생:', error);
+          setIsLoading(false);
         }
-        // 진행률 데이터 가져오기
-        const fetchGroupData = async () => {
-          try {
-            const response = await apiClient.get('/records/progress', {
-              params: {
-                groupId: groupId,
-              }
-            });
-            setProgressData(response.data || []);
-          } catch (error) {
-            console.error('그룹 데이터나 멤버 데이터를 가져오는 중 오류 발생:', error);
-            setIsLoading(false);
-          }
-        };
+      };
+  
+      if (groupId && userInfo) {
         fetchGroupData();
-      } catch (error) {
-        console.error('그룹 데이터를 가져오는 중 오류 발생:', error);
       }
-    };
-
-    fetchGroupData();
-  }, [groupId, userInfo]);
+    }, [groupId, userInfo]);
 
 
   useEffect(() => {
@@ -217,7 +196,7 @@ const BookProgress = () => {
       {isMaster && <Close onClick={handleCloseClick}>그룹 종료</Close>}
       <ContentWrapper>
         <LeftContent>
-          <span>{groupData?.goalType === 'NUMBER' ? '페이지' : ''}</span>
+          <span>{groupData?.goalType === 'NUMBER' ? 'PAGE' : 'CUSTOM'}</span>
           <GroupInfo>
             <Title>{groupData?.groupName}</Title>
             {isMaster && (
