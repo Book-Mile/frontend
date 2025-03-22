@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import useUserStore from '../../src/store/store.js';
-
 import {
   PopupContainer,
   PopupInner,
@@ -10,7 +9,7 @@ import {
 import Loading from '/src/animations/Loading.jsx';
 
 import LGButton from '../components/LGButton/LGButton';
-import { login, socialLogin } from '../api/Pages/LoginRequest.jsx';
+import { login, socialLogin } from '../api/Pages/LoginRequest';
 
 import googleLogo from '/src/assets/snslogo/google.svg';
 import kakaoLogo from '/src/assets/snslogo/kakao.svg';

@@ -20,14 +20,15 @@ export default function NavBar() {
 
   useEffect(() => {
     if (name !== null) {
-
-      apiClient.get('/users')
-        .then(response => {
-          setUserInfo(response.data.response);
-        })
-        .catch(error => {
-          console.error('사용자 정보 가져오기 실패:', error);
-        });
+      const fetchUserInfo = async () => {
+        const info = await apiClient.getUserInfo();
+        if (info) {
+          setUserInfo(info);
+        } else {
+          handleLogout(setName);
+        }
+      };
+      fetchUserInfo();
     }
   }, [name]);
 

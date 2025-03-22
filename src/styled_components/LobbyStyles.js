@@ -13,7 +13,7 @@ export const BackgroundContainer = styled.div`
 `;
 
 export const ImageContainer = styled.div`
-  background-image: url("../../public/images/cover/dinnerindrawer.png");
+  background-image: ${({ cover }) => `url(${cover})`};
   display: flex;
   align-items: flex-end;
   position: relative;
@@ -61,7 +61,7 @@ export const Title = styled.p`
 `;
 
 export const SubTitle = styled.p`
-  width: 150px;
+  width: full;
   font-size: 1.25rem;
   margin: 5px 0;
 `;

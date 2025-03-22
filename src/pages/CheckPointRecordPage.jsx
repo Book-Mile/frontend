@@ -32,7 +32,7 @@ const CheckPointRecordPage = ({
   const [data, setData] = useState(checkPoints);
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const groupID = params.get('groupID'); // URL에서 그룹ID 가져옴
+  const groupID = params.get('groupId'); // URL에서 그룹ID 가져옴
 
   const { error, handleError } = useErrorHandling();
   useEffect(() => {

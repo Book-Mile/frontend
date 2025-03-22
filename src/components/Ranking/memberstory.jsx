@@ -38,7 +38,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.p`
-  width: 117px;
+  width: full;
   height: 30px;
   font-size: 18px;
   text-align: left;
