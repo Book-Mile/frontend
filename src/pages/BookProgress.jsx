@@ -14,6 +14,7 @@ import BookCard from '../components/Ranking/BookCard';
 
 import RatingPopup from '../components/popup/RatingPopup/RatingPopup';
 import CheckpointRecordPopup from '../components/popup/CheckpointRecordPopup/CheckpointRecordPopup';
+import EndGroupPopup from '../components/popup/EndGroupPopup/EndGroupPopup';
 
 import ToggleOn from '../assets/Toggle/ToggleOn.svg';
 import ToggleOff from '../assets/Toggle/ToggleOff.svg';
@@ -52,8 +53,6 @@ const BookProgress = () => {
     
     }, []);
   
-    console.log("UserInfo",userInfo)
-
   
   useEffect(() => {
     const fetchGroupData = async () => {
@@ -86,7 +85,6 @@ const BookProgress = () => {
                 groupId: groupId,
               }
             });
-            console.log('Response data:', response.data);
             setProgressData(response.data || []);
           } catch (error) {
             console.error('그룹 데이터나 멤버 데이터를 가져오는 중 오류 발생:', error);
@@ -137,7 +135,6 @@ const BookProgress = () => {
         const response = await apiClient.get('/records/random', {
           params: { groupId },
         });
-        console.log('Random Records:', response.data);
   
         if (response.data?.response) {
           const textComments = response.data.response.map(item => ({

@@ -91,7 +91,6 @@ const Lobby = () => {
   
     fetchGroupData();
   }, [groupId, userInfo]);
-  console.log("groupId",groupId)
 
   const handleStartClick = async () => {
     try {
