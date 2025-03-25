@@ -15,6 +15,7 @@ import { handleOkClick } from '../../../api/Popup/JoinGroupPopupSubmit';
 import { useErrorHandling } from '../../../hooks/useErrorHandling';
 import makingGroupForm from '../../../hooks/makingGroupForm';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useLocation } from 'react-router-dom';
 
 const PopUpInnerBox1 = styled.div`
   overflow: hidden;
@@ -47,6 +48,7 @@ const Content = styled.div`
   line-height: 35px;
   color: black;
   width: 100%;
+
   .book-title {
     font-weight: 800;
   }
@@ -59,13 +61,10 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const JoinGroupPopup = ({
-  title = '그룹명',
-  subject = '페이지',
-  password = true,
-  onClose = false,
-  id = 1,
-}) => {
+const JoinGroupPopup = () => {
+  const location = useLocation();
+  const { title, subject, password, onClose, id } = location.state || {};
+
   const [passwordErrorMessage, setPasswordErrorMessage] = useState(''); // 에러 메시지 상태
   const [isClosing, setIsClosing] = useState(false); // 닫힘 상태 관리
   const { error, handleError } = useErrorHandling();

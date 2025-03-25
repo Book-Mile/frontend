@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BookLabel from '../../components/search/BookLabel';
 import ModalButton from '../modalButton/ModalCustomButton';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.article`
   width: 23.92%;
@@ -103,15 +104,16 @@ const Description = styled.div`
   font-size: 14px;
 `;
 
-
 import SpeedIcon from '../../assets/label/speed.svg?react';
 import PageIcon from '../../assets/label/page.svg?react';
 import ChapterIcon from '../../assets/label/chapter.svg?react';
 import CountIcon from '../../assets/label/count.svg?react';
+
 // eslint-disable-next-line react/prop-types
 function ActivityCard({ completed = false, activity }) {
   const [completedMembers, setCompletedMembers] = useState(0);
   const [totalMembers, setTotalMembers] = useState(30);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 예시 API 응답 (실제 API 호출로 대체 필요)
@@ -125,7 +127,17 @@ function ActivityCard({ completed = false, activity }) {
   }, []);
 
   const handleButtonClick = () => {
-    window.location.href = '/joingroup';
+    navigate('/joingroup', {
+      state: {
+        // eslint-disable-next-line react/prop-types
+        title: activity.groupName,
+        subject: textMap[type],
+        password: false,
+        onClose: false,
+        // eslint-disable-next-line react/prop-types
+        id: activity.id,
+      },
+    });
   };
 
   // 아이콘을 매핑하기 위한 객체
@@ -158,7 +170,10 @@ function ActivityCard({ completed = false, activity }) {
     return { type: 'page', text: pageInfo };
   };
 
-  const { type, text } = determineTypeAndText(activity.goalType, activity.pageInfo);
+  const { type, text } = determineTypeAndText(
+    activity.goalType,
+    activity.pageInfo,
+  );
 
   return (
     <Container completed={completed}>
@@ -181,15 +196,12 @@ function ActivityCard({ completed = false, activity }) {
             <AuthorText>{activity.masterNickname}</AuthorText>
             <MainText>{activity.groupName}</MainText>
             <LabelContainer>
-            <BookLabel
-              text={textMap[type]}
-              icon={iconMap[type]}
-            />
-          </LabelContainer>
+              <BookLabel text={textMap[type]} icon={iconMap[type]} />
+            </LabelContainer>
           </InfoContainer>
           <Description>
-          <span>{activity.goalContent}</span>
-          <span>{activity.groupDescription}</span>
+            <span>{activity.goalContent}</span>
+            <span>{activity.groupDescription}</span>
           </Description>
         </GapContainer>
       </SectionWithGap>

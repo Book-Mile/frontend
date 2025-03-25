@@ -25,7 +25,7 @@ export const handleMakingGroupSubmit = async (
     }
     const processedPassword = password ?? '';
     const groupType = isIndividual ? 'individual' : 'group';
-    const processedMaxMembers = isIndividual ? 'null' : maxMembers;
+    const processedMaxMembers = isIndividual ? 1 : maxMembers;
 
     // 요청 데이터 객체 생성
     const data = {
